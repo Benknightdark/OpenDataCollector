@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-service1
+  labels:
+    app: python-service1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-service1
+  template:
+    metadata:
+      labels:
+        app: python-service1
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-port: "5500"
+        dapr.io/app-id: "python-service1"
+    spec:
+      containers:
+      - name: python-service1
+        image: moon791017/python_service1:v0
