@@ -27,9 +27,8 @@ def read_root():
     return {"Hello": "Kao Service"}
 
 
-@app.get("/api/dashboard", response_model=Dashboard)
+@app.get("/api/dashboard", response_model=Dashboard,summary='取得高雄OpenData Dashboard資料')
 def dashboard():
-    ''' 取得高雄OpenData Dashboard資料 '''
     dashboard_res_data = {}
     r = requests.get(root_url)
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -52,3 +51,27 @@ def dashboard():
                 'name': item_name,
             })
     return dashboard_res_data
+@app.get("/api/dataset",summary="資料集列表")
+def data_set(q:str):
+    ''' 
+    q parameter examples: \n
+    (1) https://data.kcg.gov.tw/dataset \n
+    (2) https://data.kcg.gov.tw/dataset?page=2 \n
+    (3) https://data.kcg.gov.tw/dataset?q=%E9%87%91%E9%A1%8D \n
+    '''
+    res_data = {}
+    r = requests.get(q)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    search_form=soup.find(id='dataset-search-form')
+    search_result=re.sub("\n|\r|\s+|-", '', search_form.h2.text)
+    res_data['title']=search_result
+    res_data['data']=[]
+    search_list=soup.find_all(attrs={'class':'dataset-item'})
+    for sl in search_list:
+        content=sl.find(attrs={'class':'dataset-content'})
+        sl_data={'name':sl.h3.a.text,'url':f"{root_url}{sl.h3.a['href']}",'content':content.div.text,'data_type':[]}
+        data_type=sl.find('ul').find_all('li')
+        for dt in data_type:
+            sl_data['data_type'].append(dt.a.text)
+        res_data['data'].append(sl_data)
+    return res_data   
