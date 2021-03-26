@@ -27,7 +27,7 @@ def read_root():
     return {"Hello": "Kao Service"}
 
 
-@app.get("/api/dashboard", response_model=Dashboard,summary='取得高雄OpenData Dashboard資料')
+@app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')
 def dashboard():
     dashboard_res_data = {}
     r = requests.get(root_url)
@@ -51,8 +51,42 @@ def dashboard():
                 'name': item_name,
             })
     return dashboard_res_data
-@app.get("/api/dataset",summary="資料集列表")
-def data_set(q:str):
+
+
+@app.get("/api/org", summary="組織列表")
+def org():
+    res_data = []
+    r = requests.get(f'{root_url}/organization')
+    soup = BeautifulSoup(r.text, 'html.parser')
+    list_data = soup.find_all('li', attrs={'class': 'media-item'})
+    print(list_data)
+    for l in list_data:
+        zero_count = l.find('span', attrs={'class': "count"})
+        data_count=0
+        if zero_count == None:
+            data_count=(l.strong.text.split('個資料集')[0])
+        res_data.append({
+            'image': l.img['src'],
+            'title': l.h3.text,
+            'count':int(data_count) ,
+            'url':f"{root_url}/{l.a['href']}"})
+    return res_data
+
+@app.get("/api/group", summary="群組列表")
+def group():
+    res_data = []
+    r = requests.get(f'{root_url}/group')
+    soup = BeautifulSoup(r.text, 'html.parser')
+    list_data = soup.find_all('li', attrs={'class': 'media-item'})
+    print(list_data)
+    for l in list_data:
+        res_data.append({
+            'image': l.img['src'],
+            'title': l.h3.text,
+            'url':f"{root_url}/{l.a['href']}"})
+    return res_data
+@app.get("/api/dataset", summary="資料集列表")
+def data_set(q: str):
     ''' 
     q parameter examples: \n
     (1) https://data.kcg.gov.tw/dataset \n
@@ -62,16 +96,17 @@ def data_set(q:str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    search_form=soup.find(id='dataset-search-form')
-    search_result=re.sub("\n|\r|\s+|-", '', search_form.h2.text)
-    res_data['title']=search_result
-    res_data['data']=[]
-    search_list=soup.find_all(attrs={'class':'dataset-item'})
+    search_form = soup.find(id='dataset-search-form')
+    search_result = re.sub("\n|\r|\s+|-", '', search_form.h2.text)
+    res_data['title'] = search_result
+    res_data['data'] = []
+    search_list = soup.find_all(attrs={'class': 'dataset-item'})
     for sl in search_list:
-        content=sl.find(attrs={'class':'dataset-content'})
-        sl_data={'name':sl.h3.a.text,'url':f"{root_url}{sl.h3.a['href']}",'content':content.div.text,'data_type':[]}
-        data_type=sl.find('ul').find_all('li')
+        content = sl.find(attrs={'class': 'dataset-content'})
+        sl_data = {'name': sl.h3.a.text,
+                   'url': f"{root_url}{sl.h3.a['href']}", 'content': content.div.text, 'data_type': []}
+        data_type = sl.find('ul').find_all('li')
         for dt in data_type:
             sl_data['data_type'].append(dt.a.text)
         res_data['data'].append(sl_data)
-    return res_data   
+    return res_data
