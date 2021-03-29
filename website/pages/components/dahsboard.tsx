@@ -49,7 +49,7 @@ export default function Dashboard(props) {
     const fetchDashboardData = dashboardData(props.serviceName);
 
     return (
-        <div className="card">
+        <div className="card text-white bg-success">
             <div className="card-header">
                 {fetchDashboardData.data?.title}  </div>
             <div className="card-body">
@@ -57,8 +57,8 @@ export default function Dashboard(props) {
                     {
                         fetchDashboardData.data && fetchDashboardData.data.items.map(d => {
                             return (<div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid grey' }}>
-                                <h3>
-                                    <div className="badge rounded-pill bg-primary">{d.name}</div> </h3>
+                                <h3 className="text-center">
+                                    <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3>
                                 <h4>
                                     <div className="animate__animated animate__flipInX text-center">{d.count}</div>
                                 </h4>
