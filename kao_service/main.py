@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
-
+import os 
 
 class DashboardItems(BaseModel):
     url: str
@@ -16,8 +16,12 @@ class Dashboard(BaseModel):
     title: str
     items: Optional[List[DashboardItems]] = []
 
+if os.getenv("ENVIRONMENT")=='Production':
 
-app = FastAPI()
+    app = FastAPI(docs_url=None, redoc_url=None)
+else:
+    app = FastAPI()
+  
 # app = FastAPI(docs_url=None, redoc_url=None)
 root_url = "https://data.kcg.gov.tw"
 

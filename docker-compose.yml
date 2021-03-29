@@ -81,7 +81,6 @@ services:
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"
-      - "3566:3500"
     networks:
       - open-data
   ############################
