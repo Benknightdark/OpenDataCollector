@@ -32,7 +32,8 @@ services:
       - redis
       - placement
     ports:
-      - "50003:50002"      
+      - "50003:50002"
+      - "8100:8000"     
     networks:
       - open-data     
   kao-service-dapr:

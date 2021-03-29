@@ -8,3 +8,5 @@ passlib[bcrypt]
 beautifulsoup4
 requests
 gunicorn
+uvloop
+httptools
