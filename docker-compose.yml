@@ -3,26 +3,26 @@ services:
   ############################
   # node app + Dapr sidecar
   ############################
-  # nodeapp:
-  #   build: ./website
-  #   depends_on:
-  #     - redis
-  #     - placement
-  #   ports:
-  #     - "3333:3000"
-  #   networks:
-  #     - open-data     
-  # nodeapp-dapr:
-  #   image: "daprio/daprd:edge"
-  #   command: ["./daprd",
-  #   "-app-id", "nodeapp",
-  #   "-placement-host-address", "placement:50006",
-  #    "-components-path", "/components"]
-  #   volumes:
-  #     - "./components/:/components"
-  #   depends_on:
-  #     - nodeapp
-  #   network_mode: "service:nodeapp"
+  nodeapp:
+    build: ./website
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "3333:3000"
+    networks:
+      - open-data     
+  nodeapp-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "nodeapp",
+    "-placement-host-address", "placement:50006",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - nodeapp
+    network_mode: "service:nodeapp"
   ############################
   # kao service
   ############################
