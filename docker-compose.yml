@@ -3,42 +3,42 @@ services:
   ############################
   # node app + Dapr sidecar
   ############################
-  nodeapp:
-    build: ./website
-    depends_on:
-      - redis
-      - placement
-    ports:
-      - "3333:3000"
-    networks:
-      - show-time     
-  nodeapp-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd",
-    "-app-id", "nodeapp",
-    "-placement-host-address", "placement:50006",
-     "-components-path", "/components"]
-    volumes:
-      - "./components/:/components"
-    depends_on:
-      - nodeapp
-    network_mode: "service:nodeapp"
+  # nodeapp:
+  #   build: ./website
+  #   depends_on:
+  #     - redis
+  #     - placement
+  #   ports:
+  #     - "3333:3000"
+  #   networks:
+  #     - open-data     
+  # nodeapp-dapr:
+  #   image: "daprio/daprd:edge"
+  #   command: ["./daprd",
+  #   "-app-id", "nodeapp",
+  #   "-placement-host-address", "placement:50006",
+  #    "-components-path", "/components"]
+  #   volumes:
+  #     - "./components/:/components"
+  #   depends_on:
+  #     - nodeapp
+  #   network_mode: "service:nodeapp"
   ############################
-  # python service1
+  # kao service
   ############################
-  pythonapp1:
-    build: ./python_service1
+  kao-service:
+    build: ./kao_service
     depends_on:
       - redis
       - placement
     ports:
       - "50003:50002"      
     networks:
-      - show-time     
-  pythonapp1-dapr:
+      - open-data     
+  kao-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
-    "-app-id", "pythonapp1",
+    "-app-id", "kao-service",
     "-app-port", "5500",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50003",
@@ -46,33 +46,33 @@ services:
     volumes:
       - "./components/:/components"
     depends_on:
-      - pythonapp1
-    network_mode: "service:pythonapp1"
+      - kao-service
+    network_mode: "service:kao-service"
   ############################
   # Python service2
   ############################
-  pythonapp2:
-    build: ./python_service2
-    depends_on:
-      - redis
-      - placement
-    ports:
-      - "50004:50002"      
-    networks:
-      - show-time
-  pythonapp2-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd",
-    "-app-id", "pythonapp2",
-    "-app-port", "5500",
-    "-placement-host-address", "placement:50006",
-    "-dapr-grpc-port", "50004",
-     "-components-path", "/components"]
-    volumes:
-      - "./components/:/components"
-    depends_on:
-      - pythonapp2
-    network_mode: "service:pythonapp2"    
+  # pythonapp2:
+  #   build: ./python_service2
+  #   depends_on:
+  #     - redis
+  #     - placement
+  #   ports:
+  #     - "50004:50002"      
+  #   networks:
+  #     - open-data
+  # pythonapp2-dapr:
+  #   image: "daprio/daprd:edge"
+  #   command: ["./daprd",
+  #   "-app-id", "pythonapp2",
+  #   "-app-port", "5500",
+  #   "-placement-host-address", "placement:50006",
+  #   "-dapr-grpc-port", "50004",
+  #    "-components-path", "/components"]
+  #   volumes:
+  #     - "./components/:/components"
+  #   depends_on:
+  #     - pythonapp2
+  #   network_mode: "service:pythonapp2"    
   ############################
   # Dapr placement service
   ############################
@@ -81,8 +81,9 @@ services:
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"
+      - "3566:3500"
     networks:
-      - show-time
+      - open-data
   ############################
   # Redis state store
   ############################
@@ -91,6 +92,6 @@ services:
     ports:
       - "6380:6379"
     networks:
-      - show-time
+      - open-data
 networks:
-    show-time:
+    open-data:
