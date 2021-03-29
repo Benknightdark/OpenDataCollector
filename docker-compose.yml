@@ -27,7 +27,7 @@ services:
   # kao service
   ############################
   kao-service:
-    build: ./kao_service
+    build: ./kao-service
     depends_on:
       - redis
       - placement
@@ -52,28 +52,29 @@ services:
   ############################
   # Python service2
   ############################
-  # pythonapp2:
-  #   build: ./python_service2
-  #   depends_on:
-  #     - redis
-  #     - placement
-  #   ports:
-  #     - "50004:50002"      
-  #   networks:
-  #     - open-data
-  # pythonapp2-dapr:
-  #   image: "daprio/daprd:edge"
-  #   command: ["./daprd",
-  #   "-app-id", "pythonapp2",
-  #   "-app-port", "5500",
-  #   "-placement-host-address", "placement:50006",
-  #   "-dapr-grpc-port", "50004",
-  #    "-components-path", "/components"]
-  #   volumes:
-  #     - "./components/:/components"
-  #   depends_on:
-  #     - pythonapp2
-  #   network_mode: "service:pythonapp2"    
+  tainan-service:
+    build: ./tainan-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50007:50002"  
+      - "8200:8000"       
+    networks:
+      - open-data
+  tainan-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "tainan-service",
+    "-app-port", "5500",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50007",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - tainan-service
+    network_mode: "service:tainan-service"    
   ############################
   # Dapr placement service
   ############################
