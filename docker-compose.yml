@@ -40,7 +40,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "kao-service",
-    "-app-port", "5500",
+    "-app-port", "8000",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50003",
      "-components-path", "/components"]
