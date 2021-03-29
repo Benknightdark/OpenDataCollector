@@ -6,7 +6,8 @@ docker compose up
 curl http://localhost:3333/api/python-service1
 curl http://localhost:3333/api/python-service2
 
-
+net stop winnat
+net start winnat
 
 ```
 # Reference
