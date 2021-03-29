@@ -26,7 +26,6 @@ root_url = "https://data.kcg.gov.tw"
 def read_root():
     return {"Hello": "Kao Service"}
 
-
 @app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')
 def dashboard():
     dashboard_res_data = {}
@@ -51,7 +50,6 @@ def dashboard():
                 'name': item_name,
             })
     return dashboard_res_data
-
 
 @app.get("/api/org", summary="組織列表")
 def org():
@@ -85,13 +83,14 @@ def group():
             'title': l.h3.text,
             'url':f"{root_url}/{l.a['href']}"})
     return res_data
+
 @app.get("/api/dataset", summary="資料集列表")
 def data_set(q: str):
     ''' 
-    q parameter examples: \n
-    (1) https://data.kcg.gov.tw/dataset \n
-    (2) https://data.kcg.gov.tw/dataset?page=2 \n
-    (3) https://data.kcg.gov.tw/dataset?q=%E9%87%91%E9%A1%8D \n
+    參數q的範例: 
+    - https://data.kcg.gov.tw/dataset 
+    - https://data.kcg.gov.tw/dataset?page=2 
+    - https://data.kcg.gov.tw/dataset?q=%E9%87%91%E9%A1%8D 
     '''
     res_data = {}
     r = requests.get(q)
@@ -109,4 +108,35 @@ def data_set(q: str):
         for dt in data_type:
             sl_data['data_type'].append(dt.a.text)
         res_data['data'].append(sl_data)
+    return res_data
+
+@app.get("/api/dataset/detail", summary="資料集明細")
+def data_set_detail(q: str):
+    ''' 
+    參數q的範例: 
+    - https://data.kcg.gov.tw/dataset/estimate-committee-propose 
+    '''
+    res_data = {}
+    r = requests.get(q)
+    soup = BeautifulSoup(r.text, 'html.parser')
+    context_module=soup.find('div','context-info')
+    res_data['title']=context_module.div.h1.text
+    res_data['statics']=[]
+    res_data['resources']=[]
+    static_data=context_module.div.div.find_all('dl')
+    for sd in static_data:
+        res_data['statics'].append({
+            'name':sd.dt.text,
+            'value':sd.dd.text
+        })
+    resource_list=soup.find_all('li',attrs={'class':'resource-item'})
+    for rl in resource_list:
+        res_data['resources'].append({
+            'detail' : f"{root_url}{rl.a['href']}",
+            'name':rl.a['title'],
+            'type':rl.a.span.text,
+            "description":re.sub("\n|\r|\s+|-", '', rl.p.text),
+            'downloadLink':rl.div.ul.find_all('li')[1].a['href']
+
+        })
     return res_data
