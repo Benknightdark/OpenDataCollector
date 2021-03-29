@@ -49,14 +49,24 @@ export default function Dashboard(props) {
     const fetchDashboardData = dashboardData(props.serviceName);
 
     return (
-        <div className="card text-white bg-success">
+        <div className="card bg-light">
             <div className="card-header">
-                {fetchDashboardData.data?.title}  </div>
+               {
+                   fetchDashboardData.data?( <div className="d-flex justify-content-between">
+                   <div>🟢 {fetchDashboardData.data?.title}</div>
+                   <div style={{ flex: "1 1 auto;" }}></div>
+                   <span className="material-icons" style={{ cursor: 'pointer' }} onClick={() => {
+                       fetchDashboardData.mutate()
+                   }}>refresh</span>
+           </div>):(<div className="d-flex justify-content-between"> <div>🔴 資料載入中......</div></div>)
+               }
+            </div>
+
             <div className="card-body">
                 <div className="d-flex p-2 bd-highlight flex-wrap justify-content-center">
                     {
                         fetchDashboardData.data && fetchDashboardData.data.items.map(d => {
-                            return (<div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid grey' }}>
+                            return (<div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid white' }}>
                                 <h3 className="text-center">
                                     <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3>
                                 <h4>
@@ -64,7 +74,7 @@ export default function Dashboard(props) {
                                 </h4>
                                 <div className='text-center'>
                                     <a href="#" className="btn btn-warning">
-                                    看更多<span className="material-icons" style={{ fontSize:'18px' }}>open_in_new</span></a>
+                                        看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span></a>
                                 </div>
                             </div>)
                         })

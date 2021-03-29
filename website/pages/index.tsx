@@ -19,7 +19,7 @@ export default function Home() {
 
       </Head>
       <div className="container-fluid px-1">
-        <div className='d-flex p-2 bd-highlight flex-wrap justify-content-evenly'>
+        <div className='d-flex p-1 bd-highlight flex-wrap justify-content-evenly'>
             <Dashboard serviceName='kao_service' />
             <Dashboard serviceName='kao_service' />
         </div>
