@@ -38,13 +38,12 @@ export default function Index() {
                                         <p className="card-text">{d.content}</p>
 
                                     </div>
-                                    <div className="card-footer d-flex mb-3 p-2 bd-highlight flex-wrap align-content-stretch">
+                                    <div className="card-footer d-flex   bd-highlight flex-wrap align-content-stretch">
                                         {
                                             d.data_type && (
                                                 d.data_type.map(dt => {
-                                                    return <div className='p-3'>
-                                                        <span className="badge rounded-pill">{dt}</span>
-                                                    </div>
+                                                    return  <span className='label' data-format={dt.toLowerCase()}>{dt}</span>
+                                                  
                                                 })
                                             )
                                         }
