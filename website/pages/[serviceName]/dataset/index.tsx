@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import CustomHeader from '../../components/custom-header'
 
 import useSWR from "swr"
+import randomColor from "randomcolor"
 const dataSetData = (serviceName: string | string[], pageUrl: string | string[]) => {
     const { data, error, isValidating, mutate } = useSWR(
         `/api/dataset?serviceName=${serviceName}&pageUrl=${pageUrl}`,
@@ -42,7 +43,7 @@ export default function Index() {
                                             d.data_type && (
                                                 d.data_type.map(dt => {
                                                     return <div className='p-3'>
-                                                        <span className="badge rounded-pill bg-primary">{dt}</span>
+                                                        <span className="badge rounded-pill">{dt}</span>
                                                     </div>
                                                 })
                                             )
