@@ -14,17 +14,17 @@ export default async (req, res) => {
       switch (item['name']) {
         case '資料集':
         case '資料':
-          item['route'] = '/dataset'
+          item['route'] = 'dataset'
           break;
         case '組織':
-          item['route'] = '/category/org'
+          item['route'] = 'category/org'
           break;
         case '主題':
         case '群組':
-          item['route'] = '/category/group'
+          item['route'] = 'category/group'
           break;
         default:
-          item['route'] = '/'
+          item['route'] = ''
           break;
       }
     }

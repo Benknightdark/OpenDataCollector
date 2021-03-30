@@ -75,9 +75,11 @@ export default function Dashboard(props) {
                                     <div className="animate__animated animate__flipInX text-center">{d.count}</div>
                                 </h4>
                                 <div className='text-center'>
-                                    <a href={d.route} className="btn btn-warning">
+                                    <button className="btn btn-warning" onClick={()=>{
+                                        router.push(`/${props.serviceName}/${d.route}`);
+                                    }}>
                                         看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span>
-                                        </a>
+                                        </button>
                                 </div>
                             </div>)
                         })
