@@ -42,8 +42,9 @@ export default function Index() {
                                         {
                                             d.data_type && (
                                                 d.data_type.map(dt => {
-                                                    return  <span className='label' data-format={dt.toLowerCase()}>{dt}</span>
-                                                  
+                                                    return  <div className='px-1'> 
+                                                        <span className='label' data-format={dt.toLowerCase()}>{dt}</span> 
+                                                    </div>                                           
                                                 })
                                             )
                                         }
