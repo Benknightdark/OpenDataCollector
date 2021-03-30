@@ -1,8 +1,8 @@
 import CustomHeader from '../../components/custom-header'
 import { useRouter } from "next/router"
 import { useSWRInfinite } from 'swr'
-
-import { useEffect } from 'react'
+import Spinner from '../../components/spinner'
+import { useEffect, useState } from 'react'
 
 
 
@@ -10,6 +10,8 @@ import { useEffect } from 'react'
 export default function Type() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
+    const [showLoading, setShowLoading] = useState(false);
+
     const { serviceName, type } = router.query
     const getKey = (pageIndex, previousPageData) => {
         console.log(pageIndex)
@@ -21,13 +23,20 @@ export default function Type() {
     console.log(data)
     useEffect(() => {
         window.onscroll = async () => {
-            console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight)
             if ((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0) {
-                setSize(size + 1)
+                setShowLoading(true)
+                setSize(size + 1).then(c => {
+                    setShowLoading(false)
+                }).catch(c => {
+                    setShowLoading(false)
+                })
+                //  
+
             }
         };
     })
-    if (!data) return 'loading';
+    if (!data) return <Spinner showLoading='true'></Spinner>
+
 
 
 
@@ -74,6 +83,7 @@ export default function Type() {
                     }
                 </div>
             </div>
+            <Spinner showLoading={showLoading}></Spinner>
         </div>
     )
 }
