@@ -58,7 +58,6 @@ def dashboard():
 @app.get("/api/org", summary="組織列表")
 def org( page: Optional[int] = None):
     res_data = []
-
     page_str=''
     if(page!=None):
         page_str=f'?page={page}'
@@ -80,8 +79,11 @@ def org( page: Optional[int] = None):
 
 @app.get("/api/group", summary="群組列表")
 def group(page: Optional[int] = None):
+    page_str=''
+    if(page!=None):
+        page_str=f'?page={page}'    
     res_data = []
-    r = requests.get(f'{root_url}/group')
+    r = requests.get(f'{root_url}/group{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
     print(list_data)
@@ -103,7 +105,7 @@ def data_set(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    search_form = soup.find(id='dataset-search-form')
+    search_form = soup.find('form',attrs={'class':'search-form'})
     search_result = re.sub("\n|\r|\s+|-", '', search_form.h2.text)
     res_data['title'] = search_result
     res_data['data'] = []

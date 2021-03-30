@@ -27,7 +27,7 @@ export default function Type() {
 
                         fetchDashboardData.data.map(d => {
                             return (
-                                <div className='p-2'>
+                                <div className='p-2' key={d.name}>
                                     <div className="card mb-3 p-2" style={{width:'300px'}}>
                                         <img src={d.image} className="card-img-top" style={{maxWidth:'100%',height:'auto'}}/>
                                         <hr></hr>
@@ -42,7 +42,18 @@ export default function Type() {
                                                     <div className="skill-bar-percent">{d.count}</div>
                                                 </div>
                                             }
-                                            <button className="btn btn-warning">
+                                            <button className="btn btn-warning"
+                                            onClick={()=>{
+                                                router.push(
+                                                    
+                                                    {
+                                                        pathname:   `/${serviceName}/dataset`,
+                                                        query: { queryUrl: d.url },
+                                                      }
+                                                  
+                                                    )
+                                            }}
+                                            >
                                                 看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span>
                                             </button>
                                         </div>

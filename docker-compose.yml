@@ -48,7 +48,7 @@ services:
       - "./components/:/components"
     depends_on:
       - kao-service
-    network_mode: "service:kao-service"
+    network_mode: "service:kao-service" 
   ############################
   # Tainan Service
   ############################
@@ -74,7 +74,7 @@ services:
       - "./components/:/components"
     depends_on:
       - tainan-service
-    network_mode: "service:tainan-service"    
+    network_mode: "service:tainan-service"     
   ############################
   # Dapr placement service
   ############################
@@ -84,7 +84,7 @@ services:
     ports:
       - "50006:50006"
     networks:
-      - open-data
+      - open-data   
   ############################
   # Redis state store
   ############################
