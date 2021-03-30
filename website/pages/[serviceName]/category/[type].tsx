@@ -28,13 +28,13 @@ export default function Type() {
                         fetchDashboardData.data.map(d => {
                             return (
                                 <div className='p-2'>
-                                    <div className="card mb-3 p-2">
-                                        <img src={d.image} className="card-img-top" alt="..." />
+                                    <div className="card mb-3 p-2" style={{width:'300px'}}>
+                                        <img src={d.image} className="card-img-top" style={{maxWidth:'100%',height:'auto'}}/>
                                         <hr></hr>
                                         <div className="card-body">
                                             <h5 className="card-title">{d.title}</h5>
                                             {
-                                                d.count && <div className="skillbar clearfix ">
+                                                d.count>0 && <div className="skillbar clearfix ">
                                                     <div className="skillbar-title">
                                                         <span>資料數量</span>
                                                     </div>

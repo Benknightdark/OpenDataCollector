@@ -56,9 +56,13 @@ def dashboard():
     return dashboard_res_data
 
 @app.get("/api/org", summary="組織列表")
-def org():
+def org( page: Optional[int] = None):
     res_data = []
-    r = requests.get(f'{root_url}/organization')
+
+    page_str=''
+    if(page!=None):
+        page_str=f'&page={page}'
+    r = requests.get(f'{root_url}/organization{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
     print(list_data)
@@ -75,7 +79,7 @@ def org():
     return res_data
 
 @app.get("/api/group", summary="群組列表")
-def group():
+def group(page: Optional[int] = None):
     res_data = []
     r = requests.get(f'{root_url}/group')
     soup = BeautifulSoup(r.text, 'html.parser')
