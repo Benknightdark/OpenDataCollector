@@ -11,39 +11,26 @@ export default function Type() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
     const { serviceName, type } = router.query
-    // const [pageIndex, setPageIndex] = useState(1);
-    // const dashboardData = (serviceName: string | string[], type: string | string[]) => {
-    //     const { data, error, isValidating, mutate } = useSWR(
-    //         `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=${pageIndex}`,
-    //         fetcher,
-    //         {
-    //             refreshInterval: 60000
-    //         })
-    //     return { data, error, isValidating, mutate }
-    // }
-    // const fetchDashboardData = dashboardData(serviceName, type);
     const getKey = (pageIndex, previousPageData) => {
+        console.log(pageIndex)
         if (previousPageData && !previousPageData.length) return null
-        if (pageIndex === 0) return `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=1`
+        return `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=${pageIndex+1}`
 
-        // reached the end
-        return `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=${pageIndex}`
-
-        //`/users?page=${pageIndex}&limit=10`                    // SWR key
     }
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher,)
     console.log(data)
+        useEffect(() => {
+        window.onscroll = async () => {
+          console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight )
+          if ((window.innerHeight + window.scrollY) - document.body.offsetHeight >0) {
+            setSize(size + 1)
+          }
+        };
+      })
     if (!data) return 'loading';
 
 
-    // useEffect(() => {
-    //     window.onscroll = async () => {
-    //       console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight )
-    //       if ((window.innerHeight + window.scrollY) - document.body.offsetHeight >0) {
-    //         setSize(size + 1)
-    //       }
-    //     };
-    //   })
+
     return (
 
         <div>
@@ -83,11 +70,7 @@ export default function Type() {
                             </div>
                         </div>)
                     })
-
-
-
                 }
-                <button onClick={() => setSize(size + 1)}>Load More</button>
             </div>
         </div>
     )
