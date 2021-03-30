@@ -2,10 +2,11 @@
 import useSWR from "swr";
 import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-
+import randomColor from "randomcolor";
+import { useRouter } from 'next/router';
 const options = (rawData) => {
     const seriesData = rawData.map(a => {
-        return { name: a.name, y: a.count }
+        return { name: a.name, y: a.count,color:randomColor() }
     });
     return {
         title: {
@@ -47,6 +48,7 @@ const dashboardData = (serviceName: string) => {
 const fetcher = url => fetch(url).then(r => r.json())
 export default function Dashboard(props) {
     const fetchDashboardData = dashboardData(props.serviceName);
+    const router = useRouter()
 
     return (
         <div className="card bg-light">
@@ -66,15 +68,16 @@ export default function Dashboard(props) {
                 <div className="d-flex p-2 bd-highlight flex-wrap justify-content-center">
                     {
                         fetchDashboardData.data && fetchDashboardData.data.items.map(d => {
-                            return (<div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid white' }}>
+                            return (d.name!=='應用展示'&&<div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid white' }}>
                                 <h3 className="text-center">
                                     <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3>
                                 <h4>
                                     <div className="animate__animated animate__flipInX text-center">{d.count}</div>
                                 </h4>
                                 <div className='text-center'>
-                                    <a href="#" className="btn btn-warning">
-                                        看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span></a>
+                                    <a href={d.route} className="btn btn-warning">
+                                        看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span>
+                                        </a>
                                 </div>
                             </div>)
                         })
