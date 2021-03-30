@@ -61,7 +61,7 @@ def org( page: Optional[int] = None):
 
     page_str=''
     if(page!=None):
-        page_str=f'&page={page}'
+        page_str=f'?page={page}'
     r = requests.get(f'{root_url}/organization{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
