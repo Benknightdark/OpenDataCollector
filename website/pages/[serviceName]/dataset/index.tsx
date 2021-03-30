@@ -2,7 +2,6 @@ import { useRouter } from "next/router"
 import CustomHeader from '../../components/custom-header'
 
 import useSWR from "swr"
-import randomColor from "randomcolor"
 const dataSetData = (serviceName: string | string[], pageUrl: string | string[]) => {
     const { data, error, isValidating, mutate } = useSWR(
         `/api/dataset?serviceName=${serviceName}&pageUrl=${pageUrl}`,
