@@ -4,7 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
-import os 
+import os
+
 
 class DashboardItems(BaseModel):
     url: str
@@ -16,13 +17,13 @@ class Dashboard(BaseModel):
     title: str
     items: Optional[List[DashboardItems]] = []
 
-if os.getenv("ENVIRONMENT")=='Production':
+
+if os.getenv("ENVIRONMENT") == 'Production':
 
     app = FastAPI(docs_url=None, redoc_url=None)
 else:
     app = FastAPI()
-  
-# app = FastAPI(docs_url=None, redoc_url=None)
+
 root_url = "https://data.tainan.gov.tw"
 
 
@@ -30,30 +31,32 @@ root_url = "https://data.tainan.gov.tw"
 def read_root():
     return {"Hello": "Tainan Service"}
 
+
 @app.get("/api/dashboard", response_model=Dashboard, summary='取得台南OpenData Dashboard資料')
 def dashboard():
     dashboard_res_data = {}
     r = requests.get(root_url)
     soup = BeautifulSoup(r.text, 'html.parser')
     dashboard_root = soup.find_all(attrs={"class", "box stats"})[1]
-    dashboard_title = dashboard_root.div.h3.text
+    dashboard_title = dashboard_root.header.h2.text
     dashboard_res_data['title'] = dashboard_title
     dashboard_res_data['items'] = []
-    dashboard_ul = dashboard_root.find_all('ul')
+    dashboard_ul = dashboard_root.find(
+        'div', attrs={'class': 'myslider'}).div.find_all('ul')
     for ul in dashboard_ul:
-        li_list = ul.find_all('li')
-        for li in li_list:
-            item_list = list(filter(lambda x: x != '', re.sub(
-                "\n|\r|\s+", '-', li.a.text.strip()).split('-')))
-            item_count = item_list[0]
-            item_name = item_list[1]
-            item_url = f"{root_url}{li.a['href']}"
+        for li in ul.find_all('li'):
+            item_list = li.a
+            item_count = item_list.b.text
+            item_name = item_list.text
+            item_url = f"{root_url}{item_list['href']}"
             dashboard_res_data['items'].append({
                 'url': item_url,
                 'count': item_count,
-                'name': item_name,
+                'name': list(filter(lambda x: x != '', re.sub(
+                "\n|\r|\s+", '-', item_name.strip()).split('-')))[1].replace('個','').replace('筆',''),
             })
     return dashboard_res_data
+
 
 @app.get("/api/org", summary="組織列表")
 def org():
@@ -64,15 +67,16 @@ def org():
     print(list_data)
     for l in list_data:
         zero_count = l.find('span', attrs={'class': "count"})
-        data_count=0
+        data_count = 0
         if zero_count == None:
-            data_count=(l.strong.text.split('個資料集')[0])
+            data_count = (l.strong.text.split('個資料集')[0])
         res_data.append({
             'image': l.img['src'],
             'title': l.h3.text,
-            'count':int(data_count) ,
-            'url':f"{root_url}/{l.a['href']}"})
+            'count': int(data_count),
+            'url': f"{root_url}/{l.a['href']}"})
     return res_data
+
 
 @app.get("/api/group", summary="群組列表")
 def group():
@@ -85,8 +89,9 @@ def group():
         res_data.append({
             'image': l.img['src'],
             'title': l.h3.text,
-            'url':f"{root_url}/{l.a['href']}"})
+            'url': f"{root_url}/{l.a['href']}"})
     return res_data
+
 
 @app.get("/api/dataset", summary="資料集列表")
 def data_set(q: str):
@@ -114,6 +119,7 @@ def data_set(q: str):
         res_data['data'].append(sl_data)
     return res_data
 
+
 @app.get("/api/dataset/detail", summary="資料集明細")
 def data_set_detail(q: str):
     ''' 
@@ -123,24 +129,24 @@ def data_set_detail(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    context_module=soup.find('div','context-info')
-    res_data['title']=context_module.div.h1.text
-    res_data['statics']=[]
-    res_data['resources']=[]
-    static_data=context_module.div.div.find_all('dl')
+    context_module = soup.find('div', 'context-info')
+    res_data['title'] = context_module.div.h1.text
+    res_data['statics'] = []
+    res_data['resources'] = []
+    static_data = context_module.div.div.find_all('dl')
     for sd in static_data:
         res_data['statics'].append({
-            'name':sd.dt.text,
-            'value':sd.dd.text
+            'name': sd.dt.text,
+            'value': sd.dd.text
         })
-    resource_list=soup.find_all('li',attrs={'class':'resource-item'})
+    resource_list = soup.find_all('li', attrs={'class': 'resource-item'})
     for rl in resource_list:
         res_data['resources'].append({
-            'detail' : f"{root_url}{rl.a['href']}",
-            'name':rl.a['title'],
-            'type':rl.a.span.text,
-            "description":re.sub("\n|\r|\s+|-", '', rl.p.text),
-            'downloadLink':rl.div.ul.find_all('li')[1].a['href']
+            'detail': f"{root_url}{rl.a['href']}",
+            'name': rl.a['title'],
+            'type': rl.a.span.text,
+            "description": re.sub("\n|\r|\s+|-", '', rl.p.text),
+            'downloadLink': rl.div.ul.find_all('li')[1].a['href']
 
         })
     return res_data

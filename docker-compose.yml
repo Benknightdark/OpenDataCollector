@@ -50,7 +50,7 @@ services:
       - kao-service
     network_mode: "service:kao-service"
   ############################
-  # Python service2
+  # Tainan Service
   ############################
   tainan-service:
     build: ./tainan-service
@@ -66,7 +66,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "tainan-service",
-    "-app-port", "5500",
+    "-app-port", "8000",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50007",
      "-components-path", "/components"]
