@@ -20,7 +20,8 @@ export default function Index() {
     console.log(fetchDataSetData.data)
     return <div>
         <CustomHeader goBack='true' />
-        <h3>{fetchDataSetData.data?.title}</h3>
+        <div className="alert alert-warning" role="alert">
+        <h3>{fetchDataSetData.data?.title}</h3></div>
         {
             fetchDataSetData.data && <div className="d-flex mb-3 p-2 bd-highlight flex-wrap justify-content-start align-content-stretch">
                 {

@@ -16,7 +16,7 @@ export default async (req, res) => {
       switch (item['name']) {
         case '資料集':
         case '資料':
-          item['route'] = 'dataset'
+          item['route'] = `dataset?queryUrl=${item['url']}`
           break;
         case '組織':
           item['route'] = 'category/org'
