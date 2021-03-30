@@ -2,9 +2,9 @@ import CustomHeader from '../../components/custom-header'
 import { useRouter } from "next/router"
 import useSWR from 'swr'
 
-const dashboardData = (serviceName: string | string[], type: string | string[]) => {
+const dashboardData = (serviceName: string | string[], type: string | string[],page:number) => {
     const { data, error, isValidating, mutate } = useSWR(
-        `/api/dashboard?serviceName=${serviceName}&dataType=${type}`,
+        `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=${page}`,
         fetcher,
         {
             refreshInterval: 60000
@@ -16,7 +16,7 @@ const fetcher = url => fetch(url).then(r => r.json())
 export default function Type() {
     const router = useRouter()
     const { serviceName, type } = router.query
-    const fetchDashboardData = dashboardData(serviceName, type);
+    const fetchDashboardData = dashboardData(serviceName, type,1);
     return (
 
         <div>

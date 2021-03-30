@@ -7,7 +7,7 @@ export default async (req, res) => {
   //group
   //org
   console.log(req.query)
-  const reqData = await fetch(`${getApiUrl(req.query['serviceName'])}/api/${req.query['dataType']}`)
+  const reqData = await fetch(`${getApiUrl(req.query['serviceName'])}/api/${req.query['dataType']}${req.query['page']==null?'':'&page='+req.query['page']}`)
   const resData = await reqData.json()
   if (req.query['dataType'] === 'dashboard') {
     for (const item of resData.items) {
