@@ -31,7 +31,16 @@ export default function Index() {
                 </div>
             </div>
             <div className="d-flex p-3 mb-3 bd-highlight flex-wrap justify-content-center">
-                
+                {
+                    fetchDetailData.data.statics.map(s=><div className="card  border-success bg-light p-3 m-3">
+                    <div className="card-body">
+                        <h3>                {s.name} 
+                        </h3>
+                        <h2>                {s.value} 
+                        </h2>
+                    </div>
+                </div>)
+                }
             </div>
 
         </div>
