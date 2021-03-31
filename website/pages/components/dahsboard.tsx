@@ -38,7 +38,7 @@ const options = (rawData) => {
 }
 const dashboardData = (serviceName: string) => {
     const { data, error, isValidating, mutate } = useSWR(
-        `/api/dashboard?serviceName=${serviceName}&dataType=dashboard`,
+        `/api/dashboard?serviceName=${serviceName}`,
         fetcher,
         {
             refreshInterval: 60000

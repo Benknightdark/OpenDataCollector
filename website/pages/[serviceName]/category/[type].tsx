@@ -4,9 +4,6 @@ import { useSWRInfinite } from 'swr'
 import Spinner from '../../components/spinner'
 import { useEffect, useState } from 'react'
 
-
-
-
 export default function Type() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
@@ -14,13 +11,12 @@ export default function Type() {
 
     const { serviceName, type } = router.query
     const getKey = (pageIndex, previousPageData) => {
-        console.log(pageIndex)
         if (previousPageData && !previousPageData.length) return null
-        return `/api/dashboard?serviceName=${serviceName}&dataType=${type}&page=${pageIndex + 1}`
-
+        const url =`/api/category?serviceName=${serviceName}&dataType=${type}&page=${pageIndex + 1}`;
+        console.log(url)
+        return url
     }
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher,)
-    console.log(data)
     useEffect(() => {
         window.onscroll = async () => {
             if ((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0) {
@@ -30,16 +26,10 @@ export default function Type() {
                 }).catch(c => {
                     setShowLoading(false)
                 })
-                //  
-
             }
         };
     })
     if (!data) return <Spinner showLoading='true'></Spinner>
-
-
-
-
     return (
 
         <div>

@@ -3,7 +3,7 @@
 import { getApiUrl } from "../../helpers/common_helper"
 
 export default async (req, res) => {
-  const pageUrl=`?q=${req.query['pageUrl']}`
+  const pageUrl=`?q=${req.query['pageUrl']}?page=${req.query['page']}`
   const url=`${getApiUrl(req.query['serviceName'])}/api/dataset${pageUrl}`;
   console.log(url)
   const reqData=await fetch(url)
