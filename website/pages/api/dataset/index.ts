@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import { getApiUrl } from "../../helpers/common_helper"
+import { getApiUrl } from "../../../helpers/common_helper"
 
 export default async (req, res) => {
   const pageUrl=`?q=${req.query['pageUrl']}?page=${req.query['page']}`

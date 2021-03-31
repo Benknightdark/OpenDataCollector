@@ -76,7 +76,7 @@ export default function Dashboard(props) {
                                 </h4>
                                 <div className='text-center'>
                                     <button className="btn btn-warning" onClick={()=>{
-                                        router.push(`/${props.serviceName}/${d.route}`);
+                                        router.push(`/${props.serviceName}/${d.route}`,undefined, { shallow: true });
                                     }}>
                                         看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span>
                                         </button>

@@ -8,7 +8,6 @@ export default function Index() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
     const [showLoading, setShowLoading] = useState(false);
-    const [increasePage, setIncreasePage] = useState(1);
     const { serviceName, queryUrl } = router.query
     const getKey = (pageIndex, previousPageData) => {
         if (previousPageData && !previousPageData.length) return null
