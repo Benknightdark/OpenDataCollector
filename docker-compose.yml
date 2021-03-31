@@ -27,7 +27,7 @@ services:
   # kao service
   ############################
   kao-service:
-    build: ./kao-service
+    build: ./api-service/kao-service
     depends_on:
       - redis
       - placement
@@ -53,7 +53,7 @@ services:
   # Tainan Service
   ############################
   tainan-service:
-    build: ./tainan-service
+    build: ./api-service/tainan-service
     depends_on:
       - redis
       - placement
