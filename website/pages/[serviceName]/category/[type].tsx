@@ -39,7 +39,7 @@ export default function Type() {
                     {
 
                         data.map((lists, index) => {
-                            return lists.map(d => <div className='p-2' key={d.name}>
+                            return lists.map(d => <div className='p-2 animate__animated  animate__zoomIn' key={d.name}>
                                 <div className="card mb-3 p-2" style={{ width: '300px' }}>
                                     <img src={d.image} className="card-img-top" style={{ maxWidth: '100%', height: 'auto' }} />
                                     <hr></hr>

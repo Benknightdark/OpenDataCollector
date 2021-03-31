@@ -33,13 +33,13 @@ export default function Index() {
     if (!data) return <Spinner showLoading='true'></Spinner>
     return (<div>
         <CustomHeader goBack='true' />
-        {/* <div className="alert alert-warning" role="alert">
-            <h3>{data[0]?.title}</h3></div> */}
+        <div className="alert alert-warning" role="alert">
+            <h3>{data[0]?.title}</h3></div>
 
         <div className="d-flex flex-column mb-3 bd-highlight flex-wrap justify-content-start align-content-stretch">
             {
                 data.map((lists, index) => {
-                    return lists.map(d => <div className='p-2' key={d.name}>
+                    return lists.map(d => <div className='p-2  animate__animated  animate__zoomInLeft' key={d.name}>
                         <div className="card">
                             <div className="card-header">
                                 {d.name}

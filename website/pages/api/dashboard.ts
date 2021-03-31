@@ -3,12 +3,7 @@
 import { getApiUrl } from "../../helpers/common_helper"
 
 export default async (req, res) => {
-  //dashboard
-  //group
-  //org
-  console.log(req.query)
   const url = `${getApiUrl(req.query['serviceName'])}/api/dashboard`;
-  console.log(url)
   const reqData = await fetch(url)
   const resData = await reqData.json()
   for (const item of resData.items) {
