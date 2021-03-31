@@ -39,9 +39,15 @@ export default function Index() {
             {
                 data.map((lists, index) => {
                     return lists.map(d => <div className='p-2  animate__animated  animate__zoomInLeft' key={d.name}>
-                        <div className="card">
+                        <div className="card" onClick={() => {
+                                    console.log(d.url)
+                                }}>
                             <div className="card-header">
-                                {d.name}
+                            <div className="d-flex justify-content-between">
+                                <div>{d.name}</div>
+                                <div style={{ flex: "1 1 auto;" }}></div>
+                                <span className="material-icons" style={{ cursor: 'pointer' }} >open_in_new</span>
+                                </div>
                             </div>
                             <div className="card-body">
                                 <p className="card-text">{d.content}</p>
