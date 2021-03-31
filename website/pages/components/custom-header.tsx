@@ -20,7 +20,7 @@ export default function CustomHeader(props) {
             </Head>
             <nav className="navbar navbar-light bg-light">
                 <div className="container-fluid">
-                    <a className="navbar-brand" href="/">
+                    <a className="navbar-brand" href="javascript:void(0)">
                     {
                             props.goBack=='true'&& <img src="/back.svg" alt="" width="30" height="27" className="d-inline-block align-text-top" onClick={()=>{
                                 router.back();

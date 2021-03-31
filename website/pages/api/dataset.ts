@@ -8,6 +8,6 @@ export default async (req, res) => {
   console.log(url)
   const reqData=await fetch(url)
   const resData=await reqData.json()
-  res.status(200).json(resData)
+  res.status(200).json(resData['data'])
   }
   
