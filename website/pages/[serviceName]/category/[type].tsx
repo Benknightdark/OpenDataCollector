@@ -2,7 +2,8 @@ import CustomHeader from '../../components/custom-header'
 import { useRouter } from "next/router"
 import { useSWRInfinite } from 'swr'
 import Spinner from '../../components/spinner'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import Layout from '../../components/layout'
 
 export default function Type() {
     const router = useRouter()
@@ -34,8 +35,7 @@ export default function Type() {
     if (!data) return <Spinner showLoading='true'></Spinner>
     return (
 
-        <div>
-            <CustomHeader goBack='true' />
+        <Layout goBack='true'>
             <div className="container-fluid px-1">
                 <div className="d-flex mb-3 p-2 bd-highlight flex-wrap justify-content-md-start justify-content-lg-start justify-content-sm-center justify-content-xs-center">
                     {
@@ -76,6 +76,6 @@ export default function Type() {
                 </div>
             </div>
             <Spinner showLoading={showLoading}></Spinner>
-        </div>
+        </Layout>
     )
 }

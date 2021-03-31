@@ -2,6 +2,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import useSWR from "swr"
 import CustomHeader from "../../../components/custom-header"
+import Layout from "../../../components/layout"
 import Spinner from "../../../components/spinner"
 const detailData = (serviceName: string | string[], pageUrl: string | string[]) => {
     const { data, error, isValidating, mutate } = useSWR(
@@ -19,8 +20,8 @@ export default function Index() {
     const fetchDetailData = detailData(serviceName, queryUrl)
     console.log(fetchDetailData.data)
     if (!fetchDetailData.data) return <Spinner showLoading='true'></Spinner>
-    return <div>
-        <CustomHeader goBack='true' />
+    return <Layout goBack='true'>
+
         <div className="container-fluid px-1">
 
             <div className="d-flex flex-column  p-3 mb-3 bd-highlight flex-wrap justify-content-center">
@@ -49,7 +50,7 @@ export default function Index() {
 
                 <div className="list-group">
                     {
-                        fetchDetailData.data.resources.map(r => <div className="list-group-item" style={{borderBottom:'5px solid red'}}>
+                        fetchDetailData.data.resources.map(r => <div className="list-group-item" style={{ borderBottom: '5px solid red' }}>
                             <div className="d-flex justify-content-between">
 
                                 <div>{r.name}</div>
@@ -77,7 +78,7 @@ export default function Index() {
                                         document.body.removeChild(link);
                                     }
                                 }>下載</button>
-                                <button className="btn btn-primary m-lg-2" type="button" onClick={()=>{
+                                <button className="btn btn-primary m-lg-2" type="button" onClick={() => {
                                     window.open(r.detail);
 
                                 }}>明細</button>
@@ -93,5 +94,5 @@ export default function Index() {
 
             </div>
         </div>
-    </div>
+    </Layout>
 }

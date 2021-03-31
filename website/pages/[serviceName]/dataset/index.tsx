@@ -3,7 +3,8 @@ import CustomHeader from '../../components/custom-header'
 import Spinner from '../../components/spinner'
 
 import { useSWRInfinite } from "swr"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
+import Layout from "../../components/layout"
 export default function Index() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
@@ -30,8 +31,8 @@ export default function Index() {
         };
     })
     if (!data) return <Spinner showLoading='true'></Spinner>
-    return (<div>
-        <CustomHeader goBack='true' />
+    return (        <Layout goBack='true'>
+
         {/* <div className="alert alert-warning" role="alert">
             <h3>{data[0]?.title}</h3></div> */}
 
@@ -79,6 +80,6 @@ export default function Index() {
 
 
         <Spinner showLoading={showLoading}></Spinner>
-    </div>)
+    </Layout>)
 
 }
