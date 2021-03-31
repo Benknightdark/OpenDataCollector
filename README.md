@@ -1,11 +1,10 @@
 # OpenDataCollector
 ``` Bash
-# docker compose Usage
+# 啟動系統
 docker compose up 
+開啟 http://localhost:3333
 
-curl http://localhost:3333/api/python-service1
-curl http://localhost:3333/api/python-service2
-
+# 其他指令
 net stop winnat
 net start winnat
 
@@ -13,6 +12,7 @@ net start winnat
 # Reference
 - integrate docker compose 
     - https://docs.microsoft.com/zh-tw/dotnet/architecture/dapr-for-net-developers/getting-started
-    - https://github.com/Benknightdark/you-get/tree/develop/src/you_get
     - https://opendata.taichung.gov.tw/
+- auth 
+    - https://blog.logrocket.com/using-authentication-in-next-js/
     
