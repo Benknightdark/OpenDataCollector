@@ -1,7 +1,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router';
 export default function CustomHeader(props) {
-    const router =useRouter();
+    const router = useRouter();
+    
     return (
         <div>
             <Head>
@@ -21,15 +22,23 @@ export default function CustomHeader(props) {
             <nav className="navbar navbar-light bg-light">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="javascript:void(0)">
-                    {
-                            props.goBack=='true'&& <img src="/back.svg" alt="" width="30" height="27" className="d-inline-block align-text-top" onClick={()=>{
+                        {
+                            props.goBack == 'true' && <img src="/back.svg" alt="" width="30" height="27" className="d-inline-block align-text-top" onClick={() => {
                                 router.back();
-                            }}/>
-                    }
+                            }} />
+                        }
                         <div className="d-inline-block p-2"><h3>OpenData Collector</h3></div>
                     </a>
                 </div>
             </nav>
+            <span className="material-icons  scroll-btn" style={{fontSize: '60px'}} onClick={()=>{
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }}>
+                keyboard_arrow_up
+            </span>
+
         </div>
+
     )
 }

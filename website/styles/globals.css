@@ -174,5 +174,22 @@ blockquote {
   }
 .quote-text{
 	border-left: 5px solid #ec96be;
-
 }   
+
+/*Floating Back-To-Top Button*/
+.scroll-btn {
+	position: fixed;
+    bottom: 20px;
+    right: 20px; 
+	cursor: pointer;
+	background-color: coral;
+	z-index: 1000;
+	opacity: 0.3;
+
+
+}
+/*On Hover Color Change*/
+.scroll-btn:hover {
+	opacity: 1;
+
+}
