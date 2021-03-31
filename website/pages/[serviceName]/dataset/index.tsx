@@ -17,6 +17,7 @@ export default function Index() {
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
     useEffect(() => {
         window.onscroll = async () => {
+            if (showLoading) return;
             console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0)
             if ((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0) {
                 setShowLoading(true)

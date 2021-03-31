@@ -19,6 +19,8 @@ export default function Type() {
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher,)
     useEffect(() => {
         window.onscroll = async () => {
+            if (showLoading) return;
+
             if ((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0) {
                 setShowLoading(true)
                 setSize(size + 1).then(c => {
