@@ -32,8 +32,8 @@ export default function Index() {
     if (!data) return <Spinner showLoading='true'></Spinner>
     return (<div>
         <CustomHeader goBack='true' />
-        <div className="alert alert-warning" role="alert">
-            <h3>{data[0]?.title}</h3></div>
+        {/* <div className="alert alert-warning" role="alert">
+            <h3>{data[0]?.title}</h3></div> */}
 
         <div className="d-flex flex-column mb-3 bd-highlight flex-wrap justify-content-start align-content-stretch">
             {
