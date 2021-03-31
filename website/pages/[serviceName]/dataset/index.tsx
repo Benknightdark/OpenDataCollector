@@ -41,6 +41,10 @@ export default function Index() {
                     return lists.map(d => <div className='p-2  animate__animated  animate__zoomInLeft' key={d.name}>
                         <div className="card" onClick={() => {
                                     console.log(d.url)
+                                    router.push({
+                                        pathname: `/${serviceName}/dataset/detail`,
+                                        query: { queryUrl: d.url },
+                                    })
                                 }}>
                             <div className="card-header">
                             <div className="d-flex justify-content-between">
