@@ -13,7 +13,6 @@ export default function Index() {
     const getKey = (pageIndex, previousPageData) => {
         if (previousPageData && !previousPageData.length) return null
         const url = `/api/dataset?serviceName=${serviceName}&pageUrl=${queryUrl}&page=${pageIndex + 1}`;
-        console.log(url)
         return url
     }
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
