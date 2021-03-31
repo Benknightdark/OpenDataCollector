@@ -36,4 +36,5 @@ net start winnat
     - https://opendata.taichung.gov.tw/
 - auth 
     - https://blog.logrocket.com/using-authentication-in-next-js/
+    - https://next-auth.js.org/providers/credentials
     
