@@ -11,7 +11,7 @@ net start winnat
 ```
 # 系統畫面
 - 各縣市Open Data統計資料
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/1.png?raw=true" width="50%" height="50%" />
+<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/1.png?raw=true" />
 </center>
 
 # Reference
