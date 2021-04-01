@@ -1,20 +1,21 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { signIn, useSession, signOut } from "next-auth/client";
+import {  signOut } from "next-auth/client";
 import { useEffect, useState } from "react";
 export default function CustomHeader(props) {
   const router = useRouter();
-  const [session, loading] = useSession();
-  const [displayName, setDisplayname] = useState("");
- 
-  useEffect(()=>{ 
-    if (session) {
-      console.log(session);
-      const userData = JSON.parse(session.user.name);
-      console.log(userData)
-      setDisplayname(userData.displayName);
-    }       
-})
+  const [displayName, setDisplayName] = useState();
+  useEffect(() => {
+    (async () => {
+      const req = await fetch("/api/auth/session");
+      const res = await req.json();
+      if (res?.user!=null) {
+        const dis = JSON.parse(res?.user?.name).displayName;
+        setDisplayName(dis);
+      }
+    })();
+  });
+
   return (
     <div>
       <Head>
@@ -71,13 +72,13 @@ export default function CustomHeader(props) {
             style={{ display: "flex" }}
           >
             <div>
-              {session ? (
+              {displayName ? (
                 <button
                   className="btn"
                   type="button"
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
-                    console.log(req);
+                    setDisplayName(null)
                   }}
                 >
                   hi~ {displayName} 登出
