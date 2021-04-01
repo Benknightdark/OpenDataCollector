@@ -30,6 +30,9 @@ net start winnat
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/5.png?raw=true" />
 </center>
 
+# Prepare to do 
+- 調整Open Data明細收合頁面
+- 加入帳號相關頁面
 # Reference
 - integrate docker compose 
     - https://docs.microsoft.com/zh-tw/dotnet/architecture/dapr-for-net-developers/getting-started
