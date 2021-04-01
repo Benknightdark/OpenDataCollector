@@ -18,12 +18,16 @@ export default NextAuth({
             // Add logic here to look up the user from the credentials supplied
             const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
       
-            if (!user) {
+            if (user) {
               // Any object returned will be saved in `user` property of the JWT
               return user
             } else {
               // If you return null or false then the credentials will be rejected
-              return null
+              
+            //  return null
+
+              throw new Error('fucking error ')
+
               // You can also Reject this callback with an Error or with a URL:
               // throw new Error('error message') // Redirect to error page
               // throw '/path/to/redirect'        // Redirect to a URL
@@ -49,37 +53,25 @@ export default NextAuth({
       },
       callbacks: {
         async signIn(user, account, profile) {
-          console.log('ssssss')
+
           return true
         },
         async redirect(url, baseUrl) {
-          console.log(baseUrl)
           return baseUrl
         },
         async session(session) {
-          console.log('session')
-
           return session
         },
         async jwt(token, user, account, profile, isNewUser) {
-          console.log('token')
-
           return token
         }
     },
-    events: {
-      async signIn(message) {console.log(message) /* on successful sign in */ },
-      async signOut(message) { /* on signout */ },
-      async createUser(message) { /* user created */ },
-      async linkAccount(message) { /* account linked to a user */ },
-      async session(message) { /* session is active */ },
-      async error(message) { /* error in authentication flow */ }
-    },
-    // pages: {
-    //   signIn: '/auth/signin',
-    //   signOut: '/auth/signout',
-    //    error: '/auth/error', // Error code passed in query string as ?error=
-    //   // verifyRequest: '/auth/verify-request', // (used for check email message)
-    //   newUser: null // If set, new users will be directed here on first sign in
-    // }
+   
+    pages: {
+      signIn: '/auth/signin',
+      signOut: '/auth/signout',
+      //  error: '/auth/error', // Error code passed in query string as ?error=
+      // verifyRequest: '/auth/verify-request', // (used for check email message)
+      newUser: null // If set, new users will be directed here on first sign in
+    }
 })
