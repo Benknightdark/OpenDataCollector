@@ -1,13 +1,16 @@
 import CustomHeader from "./custom-header";
+import { useSession } from "next-auth/client";
 
+export default function Layout({ goBack = "false", children }) {
+  const [session, loading] = useSession();
 
-export default function Layout ({goBack="false",children}) {
+  if (session) {
+    console.log(session);
+  }
   return (
     <>
-      <CustomHeader  goBack={goBack}/>
-      <main>
-        {children}
-      </main>
+      <CustomHeader goBack={goBack} />
+      <main>{children}</main>
     </>
-  )
+  );
 }

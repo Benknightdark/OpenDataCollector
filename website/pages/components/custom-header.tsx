@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router';
+import { signIn} from 'next-auth/client'
 export default function CustomHeader(props) {
     const router = useRouter();
     
@@ -28,6 +29,10 @@ export default function CustomHeader(props) {
                             }} />
                         }
                         <div className="d-inline-block p-2"><h3>OpenData Collector</h3></div>
+                        <button className="btn btn-info" onClick={()=>{
+                            signIn('credentials', { username: 'jsmith', password: '1234' })
+
+                        }}> click</button>
                     </a>
                 </div>
             </nav>
