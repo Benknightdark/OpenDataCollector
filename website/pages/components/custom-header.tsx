@@ -1,13 +1,20 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { signIn, useSession, signOut } from "next-auth/client";
+import { useEffect, useState } from "react";
 export default function CustomHeader(props) {
   const router = useRouter();
   const [session, loading] = useSession();
-
-  if (session) {
-    console.log(session);
-  }
+  const [displayName, setDisplayname] = useState("");
+ 
+  useEffect(()=>{ 
+    if (session) {
+      console.log(session);
+      const userData = JSON.parse(session.user.name);
+      console.log(userData)
+      setDisplayname(userData.displayName);
+    }       
+})
   return (
     <div>
       <Head>
@@ -42,53 +49,52 @@ export default function CustomHeader(props) {
       <nav className="navbar navbar-light bg-light">
         <div className="container-fluid">
           <div className="navbar-brand">
-              {props.goBack == "true" && (
-                <img
-                  src="/back.svg"
-                  alt=""
-                  width="30"
-                  height="27"
-                  className="d-inline-block align-text-top"
-                  style={{cursor:'pointer'}}
-                  onClick={() => {
-                    router.back();
-                  }}
-                />
-              )}
+            {props.goBack == "true" && (
+              <img
+                src="/back.svg"
+                alt=""
+                width="30"
+                height="27"
+                className="d-inline-block align-text-top"
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  router.back();
+                }}
+              />
+            )}
             <div className="d-inline-block">
               <h3>OpenData Collector</h3>
             </div>
-           
           </div>
           <div
-              className="d-flex justify-content-end"
-              style={{ display: "flex" }}
-            >
-              <div>
-                {session ? (
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={async () => {
-                      const req = await signOut({ redirect: false });
-                      console.log(req);
-                    }}
-                  >
-                    登出
-                  </button>
-                ) : (
-                  <button
-                    className="btn"
-                    type="button"
-                    onClick={async () => {
-                      router.push("/auth/signin");
-                    }}
-                  >
-                    登入
-                  </button>
-                )}
-              </div>
+            className="d-flex justify-content-end"
+            style={{ display: "flex" }}
+          >
+            <div>
+              {session ? (
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={async () => {
+                    const req = await signOut({ redirect: false });
+                    console.log(req);
+                  }}
+                >
+                  hi~ {displayName} 登出
+                </button>
+              ) : (
+                <button
+                  className="btn"
+                  type="button"
+                  onClick={async () => {
+                    router.push("/auth/signin");
+                  }}
+                >
+                  登入
+                </button>
+              )}
             </div>
+          </div>
         </div>
       </nav>
       <span
