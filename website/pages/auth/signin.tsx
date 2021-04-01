@@ -29,37 +29,48 @@ export default function SignIn({ csrfToken }) {
   console.log(errors);
   return (
     <Layout goBack="true">
-      <form method="post" onSubmit={handleSubmit(onSubmit)}>
-        <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-        <div className="mb-3">
-          <label htmlFor="userName" className="form-label">
-            userName
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="userName"
-            name="userName"
-            ref={register({ required: true })}
-          />
-          <p>{errors.userName?.message}</p>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="password" className="form-label">
-            password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            name="password"
-            ref={register({ required: true })}
-          />
-          <p>{errors.password?.message}</p>
-        </div>
+      <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
+      <div className="card" style={{width: "1000px"}}>
+        <div className="card-header">登入</div>
+        <div className="card-body">
+          <form method="post" onSubmit={handleSubmit(onSubmit)}>
+            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+            <div className="mb-3">
+              <label htmlFor="userName" className="form-label">
+                帳號
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                id="userName"
+                name="userName"
+                ref={register({ required: true })}
+              />
+              <p>{errors.userName?.message}</p>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
+                密碼
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                ref={register({ required: true })}
+              />
+              <p>{errors.password?.message}</p>
+            </div>
 
-        <input type="submit" className="btn btn-primary" value="Submit"></input>
-      </form>
+            <input
+              type="submit"
+              className="btn btn-primary"
+              value="送出"
+            ></input>
+          </form>
+        </div>
+      </div>
+      </div>
     </Layout>
   );
 }

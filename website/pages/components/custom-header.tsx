@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { signIn, useSession ,signOut} from "next-auth/client";
+import { signIn, useSession, signOut } from "next-auth/client";
 export default function CustomHeader(props) {
   const router = useRouter();
   const [session, loading] = useSession();
@@ -41,32 +41,54 @@ export default function CustomHeader(props) {
       </Head>
       <nav className="navbar navbar-light bg-light">
         <div className="container-fluid">
-          <a className="navbar-brand" href="javascript:void(0)">
-            {props.goBack == "true" && (
-              <img
-                src="/back.svg"
-                alt=""
-                width="30"
-                height="27"
-                className="d-inline-block align-text-top"
-                onClick={() => {
-                  router.back();
-                }}
-              />
-            )}
-            <div className="d-inline-block p-2">
+          <div className="navbar-brand">
+              {props.goBack == "true" && (
+                <img
+                  src="/back.svg"
+                  alt=""
+                  width="30"
+                  height="27"
+                  className="d-inline-block align-text-top"
+                  style={{cursor:'pointer'}}
+                  onClick={() => {
+                    router.back();
+                  }}
+                />
+              )}
+            <div className="d-inline-block">
               <h3>OpenData Collector</h3>
             </div>
-           {
-             session?<button type='button' onClick={async ()=>{
-              const req=await signOut({redirect:false});
-              console.log(req);
-
-             }}>登出</button>:<button type='button' onClick={async ()=>{
-              router.push('/auth/signin')
-             }}>登入</button>
-           }
-          </a>
+           
+          </div>
+          <div
+              className="d-flex justify-content-end"
+              style={{ display: "flex" }}
+            >
+              <div>
+                {session ? (
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={async () => {
+                      const req = await signOut({ redirect: false });
+                      console.log(req);
+                    }}
+                  >
+                    登出
+                  </button>
+                ) : (
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={async () => {
+                      router.push("/auth/signin");
+                    }}
+                  >
+                    登入
+                  </button>
+                )}
+              </div>
+            </div>
         </div>
       </nav>
       <span
