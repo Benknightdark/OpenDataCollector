@@ -47,9 +47,9 @@ export default function Index() {
             ))}
           </div>
           <hr></hr>
-          <div className="accordion" id="infomation">
+          <div className="accordion border border-danger" id="infomation">
             <div className="accordion-item">
-              <h2 className="accordion-header" id="headingOne">
+              <h2 className="accordion-header" id="headingInfomation">
                 <button
                   className="accordion-button"
                   type="button"
@@ -64,7 +64,7 @@ export default function Index() {
               <div
                 id="collapseInfomation"
                 className="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
+                aria-labelledby="headingInfomation"
                 data-bs-parent="#infomation"
               >
                 <div className="accordion-body">
@@ -93,7 +93,7 @@ export default function Index() {
             </div>
           </div>
           <hr></hr>
-          <div className="accordion" id="fileList">
+          <div className="accordion border border-danger" id="fileList">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
