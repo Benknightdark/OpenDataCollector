@@ -56,7 +56,7 @@ export default NextAuth({
           console.log(baseUrl)
           return baseUrl
         },
-        async session(session, user) {
+        async session(session) {
           console.log('session')
 
           return session
