@@ -1,18 +1,34 @@
-import { csrfToken,getCsrfToken } from 'next-auth/client'
-
+import { csrfToken,getCsrfToken, signIn } from 'next-auth/client'
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 export default function SignIn({ csrfToken }) {
+  const schema = yup.object().shape({
+    account: yup.string().required("不能為空值"),
+    password: yup.string().required("不能為空值"),
+  });
+  const { register, handleSubmit, errors } = useForm({
+    resolver: yupResolver(schema)
+  });
+  const onSubmit = data => {
+     signIn("credentials", {
+                    username: "jsmith",
+                    password: "1234",
+                    redirect: false,
+                  }).then((r)=>{
+                      console.log(r)
+                  })
+  };
+  console.log(errors);
   return (
-    <form method='post' action='/api/auth/callback/credentials'>
+    <form method='post'  onSubmit={handleSubmit(onSubmit)}>
       <input name='csrfToken' type='hidden' defaultValue={csrfToken}/>
-      <label>
-        Username11
-        <input name='username' type='text'/>
-      </label>
-      <label>
-        Password111
-        <input name='password' type='text'/>
-      </label>
-      <button type='submit'>Sign in</button>
+      <input type="text" placeholder="account" name="account" ref={register({required: true})} />
+      <p>{errors.account?.message}</p>
+      <input type="text" placeholder="password" name="password" ref={register({required: true})} />
+      <p>{errors.password?.message}</p>
+      <input type="submit" />
+      {/* <button type='submit'>Sign in</button> */}
     </form>
   )
 }

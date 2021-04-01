@@ -58,16 +58,16 @@ export default function CustomHeader(props) {
               className="btn btn-info"
               onClick={async function (event) {
                 {
-                  event.preventDefault();
-                  signIn("credentials", {
-                    username: "jsmith",
-                    password: "1234",
-                    redirect: false,
-                  }).then((r)=>{
-                      console.log(r)
-                  })
+                  // event.preventDefault();
+                  // signIn("credentials", {
+                  //   username: "jsmith",
+                  //   password: "1234",
+                  //   redirect: false,
+                  // }).then((r)=>{
+                  //     console.log(r)
+                  // })
                   
-                  // router.push('/auth/signin');
+                   router.push('/auth/signin');
                 }
               }}
             >
