@@ -14,7 +14,7 @@ export default NextAuth({
             password: {  label: "Password", type: "password" }
           },
           async authorize(credentials) {
-              console.log(credentials)
+              // console.log(credentials)
             // Add logic here to look up the user from the credentials supplied
             const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
       
@@ -23,7 +23,7 @@ export default NextAuth({
               return user
             } else {
               // If you return null or false then the credentials will be rejected
-              return null
+             return null
               // You can also Reject this callback with an Error or with a URL:
               // throw new Error('error message') // Redirect to error page
               // throw '/path/to/redirect'        // Redirect to a URL
@@ -47,4 +47,24 @@ export default NextAuth({
         // Note: This option is ignored if using JSON Web Tokens
         // updateAge: 24 * 60 * 60, // 24 hours
       },
+      callbacks: {
+        async signIn(user, account, profile) {
+          console.log('ssssss')
+          return true
+        },
+        async redirect(url, baseUrl) {
+          console.log(baseUrl)
+          return baseUrl
+        },
+        async session(session, user) {
+          console.log('session')
+
+          return session
+        },
+        async jwt(token, user, account, profile, isNewUser) {
+          console.log('token')
+
+          return token
+        }
+    }
 })
