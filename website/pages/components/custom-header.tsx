@@ -58,11 +58,13 @@ export default function CustomHeader(props) {
               <h3>OpenData Collector</h3>
             </div>
            {
-             session&&<button type='button' onClick={async ()=>{
+             session?<button type='button' onClick={async ()=>{
               const req=await signOut({redirect:false});
               console.log(req);
 
-             }}>登出</button>
+             }}>登出</button>:<button type='button' onClick={async ()=>{
+              router.push('/auth/signin')
+             }}>登入</button>
            }
           </a>
         </div>
