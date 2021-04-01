@@ -1,9 +1,13 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/client";
+import { signIn, useSession ,signOut} from "next-auth/client";
 export default function CustomHeader(props) {
   const router = useRouter();
+  const [session, loading] = useSession();
 
+  if (session) {
+    console.log(session);
+  }
   return (
     <div>
       <Head>
@@ -53,27 +57,13 @@ export default function CustomHeader(props) {
             <div className="d-inline-block p-2">
               <h3>OpenData Collector</h3>
             </div>
-            <button
-              type="button"
-              className="btn btn-info"
-              onClick={async function (event) {
-                {
-                  // event.preventDefault();
-                  // signIn("credentials", {
-                  //   username: "jsmith",
-                  //   password: "1234",
-                  //   redirect: false,
-                  // }).then((r)=>{
-                  //     console.log(r)
-                  // })
-                  
-                   router.push('/auth/signin');
-                }
-              }}
-            >
-              {" "}
-              click
-            </button>
+           {
+             session&&<button type='button' onClick={async ()=>{
+              const req=await signOut({redirect:false});
+              console.log(req);
+
+             }}>登出</button>
+           }
           </a>
         </div>
       </nav>

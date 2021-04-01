@@ -1,10 +1,9 @@
-from typing import List, Optional
 from fastapi import FastAPI,HTTPException
 from pydantic import BaseModel
 import os 
 class Login(BaseModel):
     userName: str
-    password: float
+    password: str
 
 if os.getenv("ENVIRONMENT")=='Production':
 
