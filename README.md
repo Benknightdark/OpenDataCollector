@@ -40,4 +40,7 @@ net start winnat
 - auth 
     - https://blog.logrocket.com/using-authentication-in-next-js/
     - https://next-auth.js.org/providers/credentials
+- form
+  - https://react-hook-form.com/get-started/
+  - https://github.com/formium/formik/
     

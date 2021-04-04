@@ -1,6 +1,5 @@
 
 import React from 'react'
-import CustomHeader from './components/custom-header'
 import Dashboard from './components/dahsboard'
 import Layout from './components/layout'
 

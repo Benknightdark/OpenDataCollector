@@ -74,7 +74,33 @@ services:
       - "./components/:/components"
     depends_on:
       - tainan-service
-    network_mode: "service:tainan-service"     
+    network_mode: "service:tainan-service"  
+############################
+  # Auth Service
+  ############################
+  auth-service:
+    build: ./api-service/auth-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50008:50002"  
+      - "8300:8000"       
+    networks:
+      - open-data
+  auth-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "auth-service",
+    "-app-port", "8000",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50008",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - auth-service
+    network_mode: "service:auth-service"        
   ############################
   # Dapr placement service
   ############################
