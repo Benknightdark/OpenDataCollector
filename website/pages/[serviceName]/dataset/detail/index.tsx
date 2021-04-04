@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import React from "react";
 import useSWR from "swr";
-import CustomHeader from "../../../components/custom-header";
 import Layout from "../../../components/layout";
 import Spinner from "../../../components/spinner";
+import { useEffect } from "react";
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -23,6 +23,9 @@ export default function Index() {
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
+  useEffect(() => {
+    
+  });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
     <Layout goBack="true">
@@ -68,7 +71,7 @@ export default function Index() {
                 data-bs-parent="#infomation"
               >
                 <div className="accordion-body">
-                  <div className='p-3'>
+                  <div className="p-3">
                     <div className="table-responsive">
                       <table className="table table-bordered border-primary table-hover">
                         <thead className="table-warning">
@@ -101,7 +104,7 @@ export default function Index() {
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target="#collapseFileList"
-                  aria-expanded="true"
+                  // aria-expanded="true"
                   aria-controls="collapseFileList"
                 >
                   檔案下載
