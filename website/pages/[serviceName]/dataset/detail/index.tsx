@@ -3,7 +3,7 @@ import React from "react";
 import useSWR from "swr";
 import Layout from "../../../components/layout";
 import Spinner from "../../../components/spinner";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -20,6 +20,9 @@ const detailData = (
 const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function Index() {
   const router = useRouter();
+  const [showInfo,setShowInfo]=useState(true)
+  const [showFile,setShowFile]=useState(true)
+
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
@@ -54,21 +57,15 @@ export default function Index() {
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingInfomation">
                 <button
-                  className="accordion-button"
+                  className={showInfo?'accordion-button':'accordion-button collapsed'}
                   type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseInfomation"
-                  aria-expanded="true"
-                  aria-controls="collapseInfomation"
+                  onClick={()=>{setShowInfo(!showInfo)}}
                 >
                   欄位資訊
                 </button>
               </h2>
               <div
-                id="collapseInfomation"
-                className="accordion-collapse collapse show"
-                aria-labelledby="headingInfomation"
-                data-bs-parent="#infomation"
+                className={showInfo?'accordion-collapse collapse show':'accordion-collapse collapse collapsed'}
               >
                 <div className="accordion-body">
                   <div className="p-3">
@@ -100,21 +97,15 @@ export default function Index() {
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
-                  className="accordion-button"
+                  className={showFile?'accordion-button':'accordion-button collapsed'}
                   type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseFileList"
-                  // aria-expanded="true"
-                  aria-controls="collapseFileList"
+                  onClick={()=>{setShowFile(!showFile)}}
                 >
                   檔案下載
                 </button>
               </h2>
               <div
-                id="collapseFileList"
-                className="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
-                data-bs-parent="#fileList"
+               className={showFile?'accordion-collapse collapse show':'accordion-collapse collapse collapsed'}
               >
                 <div className="accordion-body">
                   <div className="list-group">
