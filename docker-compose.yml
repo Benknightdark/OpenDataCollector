@@ -89,6 +89,8 @@ services:
       - "8300:8000"       
     networks:
       - open-data
+    environment:
+        ENVIRONMENT: production
   auth-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
