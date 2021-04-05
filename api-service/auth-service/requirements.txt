@@ -7,3 +7,4 @@ requests
 gunicorn
 uvloop
 httptools
+pymongo

@@ -83,6 +83,7 @@ services:
     depends_on:
       - redis
       - placement
+      - mongo
     ports:
       - "50008:50002"  
       - "8300:8000"       
@@ -120,5 +121,33 @@ services:
       - "6380:6379"
     networks:
       - open-data
+#-----------資料庫服務 (MongoDB)----------------- #
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+            - 1769:27017
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+            - auth-db-data:/data/db
+    networks:
+            - open-data        
+  #------------MongoDB網頁版管理系統--------------------- #
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+    - 5469:8081
+    environment:
+        ME_CONFIG_MONGODB_ADMINUSERNAME: root
+        ME_CONFIG_MONGODB_ADMINPASSWORD: example
+    depends_on:
+            - mongo   
+    networks:
+            - open-data                       
 networks:
     open-data:
+volumes:
+    auth-db-data:      
