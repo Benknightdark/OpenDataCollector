@@ -59,4 +59,10 @@ def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optio
     'ctl00$hdSiteLanguageSN': '1'
     }
     response = requests.post('https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx', headers=headers, params=params,  data=data)    
-    return response.text
+    return {
+        'website_content':response.text,
+        'page':page
+
+    }
+    
+    

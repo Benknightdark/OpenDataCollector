@@ -9,25 +9,29 @@ from internal.data_service import get_pthg_data
 
 # Function to validate URL
 # using regular expression
+
+
 def isValidURL(str):
- 
+
     # Regex to check valid URL
     regex = ("^(http|https)://")
-     
+
     # Compile the ReGex
     p = re.compile(regex)
- 
+
     # If the string is empty
     # return false
     if (str == None):
         return False
- 
+
     # Return if the string
     # matched the ReGex
     if(re.search(p, str)):
         return True
     else:
         return False
+
+
 class DashboardItems(BaseModel):
     url: str
     count: int
@@ -56,8 +60,8 @@ def read_root():
 
 # response_model=Dashboard,
 @app.get("/api/dashboard",  response_model=Dashboard, summary='取得屏東縣OpenData Dashboard資料')
-def dashboard(website_content: str = Depends(get_pthg_data)):
-    root = BeautifulSoup(website_content, 'html.parser')
+def dashboard(data: str = Depends(get_pthg_data)):
+    root = BeautifulSoup(data['website_content'], 'html.parser')
     title = '屏東縣政府資料開放 統計資訊'
     all_type = root.find('a', attrs={'title': '所有分類'})
     unit_type = root.find('a', attrs={'title': '所有單位'})
@@ -77,9 +81,9 @@ def dashboard(website_content: str = Depends(get_pthg_data)):
 
 
 @app.get("/api/org", summary="組織列表")
-def org(website_content: str = Depends(get_pthg_data)):
+def org(data=Depends(get_pthg_data)):
     res_data = []
-    root = BeautifulSoup(website_content, 'html.parser')
+    root = BeautifulSoup(data['website_content'], 'html.parser')
     li_data = root.find_all('div', attrs={'class': 'directory'})[
         1].ul.find_all('li')
     for li in li_data:
@@ -94,9 +98,9 @@ def org(website_content: str = Depends(get_pthg_data)):
 
 
 @app.get("/api/group", summary="群組列表")
-def group(website_content: str = Depends(get_pthg_data)):
+def group(data: str = Depends(get_pthg_data)):
     res_data = []
-    root = BeautifulSoup(website_content, 'html.parser')
+    root = BeautifulSoup(data['website_content'], 'html.parser')
     li_data = root.find('div', attrs={'class': 'directory'}).ul.find_all('li')
     for li in li_data:
         res_data.append({
@@ -109,16 +113,24 @@ def group(website_content: str = Depends(get_pthg_data)):
 
 
 @app.get("/api/dataset", summary="資料集列表")
-def data_set(website_content: str = Depends(get_pthg_data)):
+def data_set(data: str = Depends(get_pthg_data)):
     '''
     ?page=1&target=ctl00$ContentPlaceHolder1$ctl34&org=屏東縣政府
     '''
     res_data = {}
     res_data['data'] = []
-    root = BeautifulSoup(website_content, 'html.parser')
-    data_count=root.find('span',id='ContentPlaceHolder1_lblTotalCount').text
+    
+    root = BeautifulSoup(data['website_content'], 'html.parser')
+    data_count = root.find('span', id='ContentPlaceHolder1_lblTotalCount').text
     title = f"共找到{data_count}筆"
     res_data['title'] = title
+    page_count_select = root.find(
+        'select', id='ContentPlaceHolder1_ddlPager').find_all('option')
+    max_page = page_count_select[len(page_count_select)-1]['value']
+    print(max_page)
+    if int(data['page'])>int(max_page):
+        return res_data
+
     li_data = root.find_all('div', attrs={'class': 'directory_list'})
     for li in li_data:
         res_data['data'].append({
@@ -143,22 +155,22 @@ def data_set_detail(q: str):
     res_data['infomation'] = []
     external_infomation = root.find_all('tr')
     for ei in external_infomation:
-        th_text=re.sub("\n|\r|\s+|-", '', ei.th.text)
-        td_text=re.sub("\n|\r|\s+|-", '', ei.td.text) 
+        th_text = re.sub("\n|\r|\s+|-", '', ei.th.text)
+        td_text = re.sub("\n|\r|\s+|-", '', ei.td.text)
         if re.sub("\n|\r|\s+|-", '', ei.th.text) != '資料資源：':
             res_data['infomation'].append({
-                'name':th_text ,
-                'value':td_text
+                'name': th_text,
+                'value': td_text
             })
         else:
             resources = ei.find_all('a')
-          
+
             for resrouce in resources:
-                download_link=''
+                download_link = ''
                 if isValidURL(resrouce['href']) == True:
-                    download_link=resrouce['href']
+                    download_link = resrouce['href']
                 else:
-                    download_link=f"https://www.pthg.gov.tw{resrouce['href']}"                  
+                    download_link = f"https://www.pthg.gov.tw{resrouce['href']}"
                 res_data['resources'].append({
                     'detail': resrouce['title'],
                     'name': td_text,
