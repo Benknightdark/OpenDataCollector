@@ -7,7 +7,27 @@ from pydantic import BaseModel
 import os
 from internal.data_service import get_pthg_data
 
-
+# Function to validate URL
+# using regular expression
+def isValidURL(str):
+ 
+    # Regex to check valid URL
+    regex = ("^(http|https)://")
+     
+    # Compile the ReGex
+    p = re.compile(regex)
+ 
+    # If the string is empty
+    # return false
+    if (str == None):
+        return False
+ 
+    # Return if the string
+    # matched the ReGex
+    if(re.search(p, str)):
+        return True
+    else:
+        return False
 class DashboardItems(BaseModel):
     url: str
     count: int
@@ -122,21 +142,29 @@ def data_set_detail(q: str):
     res_data['statics'] = []
     res_data['resources'] = []
     res_data['infomation'] = []
-    external_infomation = root.find('table').tbody.find_all('tr')
+    external_infomation = root.find_all('tr')
     for ei in external_infomation:
-        if ei.th.text != '資料資源：':
+        th_text=re.sub("\n|\r|\s+|-", '', ei.th.text)
+        td_text=re.sub("\n|\r|\s+|-", '', ei.td.text) 
+        if re.sub("\n|\r|\s+|-", '', ei.th.text) != '資料資源：':
             res_data['infomation'].append({
-                'name': ei.th.text,
-                'value': ei.td.text
+                'name':th_text ,
+                'value':td_text
             })
         else:
             resources = ei.find_all('a')
+          
             for resrouce in resources:
+                download_link=''
+                if isValidURL(resrouce['href']) == True:
+                    download_link=resrouce['href']
+                else:
+                    download_link=f"https://www.pthg.gov.tw{resrouce['href']}"                  
                 res_data['resources'].append({
                     'detail': resrouce['title'],
-                    'name': resrouce['title'],
+                    'name': td_text,
                     'type': resrouce['title'].split('.')[1],
                     "description": resrouce['title'],
-                    'downloadLink': resrouce['href']
+                    'downloadLink': download_link
                 })
     return res_data
