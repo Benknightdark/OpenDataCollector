@@ -2,7 +2,7 @@ from typing import Optional
 import requests
 from bs4 import BeautifulSoup
 
-def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1):
+def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optional[str] = '',group: Optional[str] = ''):
     n_query='481C53E05C1D2D97'
     sms_query='354B0B57F2762613'
     root_url = f"https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n={n_query}&sms={sms_query}"
@@ -42,8 +42,8 @@ def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1):
     '__VIEWSTATE': view_state_value,
     
     'ctl00$uscSiteMap1$hdNodeID': n_query,
-    'ctl00$ContentPlaceHolder1$ddlCategory_Main': '',
-    'ctl00$ContentPlaceHolder1$ddlContactUnit': '',
+    'ctl00$ContentPlaceHolder1$ddlCategory_Main': group,
+    'ctl00$ContentPlaceHolder1$ddlContactUnit': org,
     'ctl00$ContentPlaceHolder1$txtKeyword': '',
 
     'ctl00$ContentPlaceHolder1$ddlPager': str(page),

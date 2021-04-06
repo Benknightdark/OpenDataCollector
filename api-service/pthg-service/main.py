@@ -46,11 +46,11 @@ def dashboard(website_content: str = Depends(get_pthg_data)):
         'items': [{
             'name': '主題',
             'count': int(all_type.parent.parent.span.text),
-            'url': all_type['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+            'url': all_type['href'].replace("javascript:__doPostBack('", '').replace("','')", '')
         }, {
             'name': '組織',
             'count': int(unit_type.parent.parent.span.text),
-            'url': unit_type['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+            'url': unit_type['href'].replace("javascript:__doPostBack('", '').replace("','')", '')
         }]
     }
     return dashboard_data
@@ -60,13 +60,14 @@ def dashboard(website_content: str = Depends(get_pthg_data)):
 def org(website_content: str = Depends(get_pthg_data)):
     res_data = []
     root = BeautifulSoup(website_content, 'html.parser')
-    li_data=root.find_all('div',attrs={'class':'directory'})[1].ul.find_all('li')
+    li_data = root.find_all('div', attrs={'class': 'directory'})[
+        1].ul.find_all('li')
     for li in li_data:
         res_data.append({
-            'image':'',
-            'title':li.p.a['title'],
-            'count':int(li.span.text),
-            'url': li.p.a['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+            'image': '',
+            'title': li.p.a['title'],
+            'count': int(li.span.text),
+            'url': li.p.a['href'].replace("javascript:__doPostBack('", '').replace("','')", '')
 
         })
     return res_data
@@ -76,51 +77,40 @@ def org(website_content: str = Depends(get_pthg_data)):
 def group(website_content: str = Depends(get_pthg_data)):
     res_data = []
     root = BeautifulSoup(website_content, 'html.parser')
-    li_data=root.find('div',attrs={'class':'directory'}).ul.find_all('li')
+    li_data = root.find('div', attrs={'class': 'directory'}).ul.find_all('li')
     for li in li_data:
         res_data.append({
-            'image':'',
-            'title':li.p.a['title'],
-            'count':int(li.span.text),
-            'url': li.p.a['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+            'image': '',
+            'title': li.p.a['title'],
+            'count': int(li.span.text),
+            'url': li.p.a['href'].replace("javascript:__doPostBack('", '').replace("','')", '')
 
         })
     return res_data
 
 
 @app.get("/api/dataset", summary="資料集列表")
-def data_set(q: str):
-    ''' 
-    參數q的範例: 
-    - https://data.kcg.gov.tw/dataset 
-    - https://data.kcg.gov.tw/dataset?page=2 
-    - https://data.kcg.gov.tw/dataset?q=%E9%87%91%E9%A1%8D 
-    '''
+def data_set(website_content: str = Depends(get_pthg_data)):
     res_data = {}
-    r = requests.get(q)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    search_form = soup.find('form', attrs={'class': 'search-form'})
-    search_result = re.sub("\n|\r|\s+|-", '', search_form.h2.text)
-    res_data['title'] = search_result
     res_data['data'] = []
-    search_list = soup.find_all(attrs={'class': 'dataset-item'})
-    for sl in search_list:
-        content = sl.find(attrs={'class': 'dataset-content'})
-        sl_data = {'name': sl.h3.a.text,
-                   'url': f"{root_url}{sl.h3.a['href']}", 'content': content.div.text, 'data_type': []}
-        data_type = sl.find('ul').find_all('li')
-        for dt in data_type:
-            sl_data['data_type'].append(dt.a.text)
-        res_data['data'].append(sl_data)
+    root = BeautifulSoup(website_content, 'html.parser')
+    title = f"共找到{root.find('span',id='ContentPlaceHolder1_lblTotalCount').text}筆"
+    res_data['title'] = title
+
+    li_data = root.find_all('div', attrs={'class': 'directory_list'})
+    for li in li_data:
+        res_data['data'].append({
+            'name': li.div.a['title'],
+            'url': li.div.a['href'],
+            'content': re.sub("\n|\r|\s+|-", '', li.p.text),
+            'data_type': []
+        })
+
     return res_data
 
 
 @app.get("/api/dataset/detail", summary="資料集明細")
 def data_set_detail(q: str):
-    ''' 
-    參數q的範例: 
-    - https://data.kcg.gov.tw/dataset/estimate-committee-propose 
-    '''
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
