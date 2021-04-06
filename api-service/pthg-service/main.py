@@ -1,10 +1,12 @@
 from typing import List, Optional
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
-import os 
+import os
+from internal.data_service import get_pthg_data
+
 
 class DashboardItems(BaseModel):
     url: str
@@ -16,12 +18,13 @@ class Dashboard(BaseModel):
     title: str
     items: Optional[List[DashboardItems]] = []
 
-if os.getenv("ENVIRONMENT")=='Production':
+
+if os.getenv("ENVIRONMENT") == 'Production':
 
     app = FastAPI(docs_url=None, redoc_url=None)
 else:
     app = FastAPI()
-  
+
 # app = FastAPI(docs_url=None, redoc_url=None)
 root_url = "https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D97&sms=354B0B57F2762613"
 
@@ -30,49 +33,57 @@ root_url = "https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D9
 def read_root():
     return {"Hello": "PTHG Service"}
 
-@app.get("/api/dashboard",  summary='取得屏東OpenData Dashboard資料')#response_model=Dashboard,
-def dashboard():
-    dashboard_res_data = {}
-    r = requests.get(root_url)
-    soup = BeautifulSoup(r.text, 'html.parser')
-    view_state_value=soup.find('input',id='__VIEWSTATE')['value']
-    event_validation_value=soup.find('input',id='__EVENTVALIDATION')['value']
-    view_state_generator_value=soup.find('input',id='__VIEWSTATEGENERATOR')['value']
-    print(event_validation_value)
-    return {
-        'view_state_value':view_state_value,
-                'event_validation_value':event_validation_value,
-        'event_validation_value':event_validation_value,
 
+# response_model=Dashboard,
+@app.get("/api/dashboard",  response_model=Dashboard, summary='取得屏東縣OpenData Dashboard資料')
+def dashboard(website_content: str = Depends(get_pthg_data)):
+    root = BeautifulSoup(website_content, 'html.parser')
+    title = '屏東縣政府資料開放 統計資訊'
+    all_type = root.find('a', attrs={'title': '所有分類'})
+    unit_type = root.find('a', attrs={'title': '所有單位'})
+    dashboard_data = {
+        'title': title,
+        'items': [{
+            'name': '主題',
+            'count': int(all_type.parent.parent.span.text),
+            'url': all_type['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+        }, {
+            'name': '組織',
+            'count': int(unit_type.parent.parent.span.text),
+            'url': unit_type['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+        }]
     }
+    return dashboard_data
+
 
 @app.get("/api/org", summary="組織列表")
-def org( page: Optional[int] = None):
+def org(page: Optional[int] = None):
     res_data = []
-    page_str=''
-    if(page!=None):
-        page_str=f'?page={page}'
+    page_str = ''
+    if(page != None):
+        page_str = f'?page={page}'
     r = requests.get(f'{root_url}/organization{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
     print(list_data)
     for l in list_data:
         zero_count = l.find('span', attrs={'class': "count"})
-        data_count=0
+        data_count = 0
         if zero_count == None:
-            data_count=(l.strong.text.split('個資料集')[0])
+            data_count = (l.strong.text.split('個資料集')[0])
         res_data.append({
             'image': l.img['src'],
             'title': l.h3.text,
-            'count':int(data_count) ,
-            'url':f"{root_url}/{l.a['href']}"})
+            'count': int(data_count),
+            'url': f"{root_url}/{l.a['href']}"})
     return res_data
+
 
 @app.get("/api/group", summary="群組列表")
 def group(page: Optional[int] = None):
-    page_str=''
-    if(page!=None):
-        page_str=f'?page={page}'    
+    page_str = ''
+    if(page != None):
+        page_str = f'?page={page}'
     res_data = []
     r = requests.get(f'{root_url}/group{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
@@ -82,8 +93,9 @@ def group(page: Optional[int] = None):
         res_data.append({
             'image': l.img['src'],
             'title': l.h3.text,
-            'url':f"{root_url}/{l.a['href']}"})
+            'url': f"{root_url}/{l.a['href']}"})
     return res_data
+
 
 @app.get("/api/dataset", summary="資料集列表")
 def data_set(q: str):
@@ -96,7 +108,7 @@ def data_set(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    search_form = soup.find('form',attrs={'class':'search-form'})
+    search_form = soup.find('form', attrs={'class': 'search-form'})
     search_result = re.sub("\n|\r|\s+|-", '', search_form.h2.text)
     res_data['title'] = search_result
     res_data['data'] = []
@@ -111,6 +123,7 @@ def data_set(q: str):
         res_data['data'].append(sl_data)
     return res_data
 
+
 @app.get("/api/dataset/detail", summary="資料集明細")
 def data_set_detail(q: str):
     ''' 
@@ -120,24 +133,24 @@ def data_set_detail(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    context_module=soup.find('div','context-info')
-    res_data['title']=context_module.div.h1.text
-    res_data['statics']=[]
-    res_data['resources']=[]
-    static_data=context_module.div.div.find_all('dl')
+    context_module = soup.find('div', 'context-info')
+    res_data['title'] = context_module.div.h1.text
+    res_data['statics'] = []
+    res_data['resources'] = []
+    static_data = context_module.div.div.find_all('dl')
     for sd in static_data:
         res_data['statics'].append({
-            'name':sd.dt.text,
-            'value':sd.dd.text
+            'name': sd.dt.text,
+            'value': sd.dd.text
         })
-    resource_list=soup.find_all('li',attrs={'class':'resource-item'})
+    resource_list = soup.find_all('li', attrs={'class': 'resource-item'})
     for rl in resource_list:
         res_data['resources'].append({
-            'detail' : f"{root_url}{rl.a['href']}",
-            'name':rl.a['title'],
-            'type':rl.a.span.text,
-            "description":re.sub("\n|\r|\s+|-", '', rl.p.text),
-            'downloadLink':rl.div.ul.find_all('li')[1].a['href']
+            'detail': f"{root_url}{rl.a['href']}",
+            'name': rl.a['title'],
+            'type': rl.a.span.text,
+            "description": re.sub("\n|\r|\s+|-", '', rl.p.text),
+            'downloadLink': rl.div.ul.find_all('li')[1].a['href']
 
         })
     return res_data
