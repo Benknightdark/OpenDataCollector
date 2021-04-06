@@ -148,7 +148,7 @@ def data_set_detail(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    root = soup.find('div', 'page_directory')
+    root = soup.find('div',attrs={'class':'page_directory'})
     res_data['title'] = root.div.text
     res_data['statics'] = []
     res_data['resources'] = []
