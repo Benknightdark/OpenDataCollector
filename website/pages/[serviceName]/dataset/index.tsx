@@ -8,10 +8,11 @@ export default function Index() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
     const [showLoading, setShowLoading] = useState(false);
-    const { serviceName, queryUrl } = router.query
+    const { serviceName, queryUrl,target,org,group } = router.query
     const getKey = (pageIndex, previousPageData) => {
         if (previousPageData && !previousPageData.length) return null
-        const url = `/api/dataset?serviceName=${serviceName}&pageUrl=${queryUrl}&page=${pageIndex + 1}`;
+        let otherQueryString=target===null?'':`&target=${target}&org=${org}&group=${group}`
+        const url = `/api/dataset?serviceName=${serviceName}&pageUrl=${queryUrl}&page=${pageIndex + 1}${otherQueryString}`;
         return url
     }
     const { data, size, setSize } = useSWRInfinite(getKey, fetcher)

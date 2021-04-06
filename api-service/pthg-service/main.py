@@ -116,9 +116,9 @@ def data_set(website_content: str = Depends(get_pthg_data)):
     res_data = {}
     res_data['data'] = []
     root = BeautifulSoup(website_content, 'html.parser')
-    title = f"共找到{root.find('span',id='ContentPlaceHolder1_lblTotalCount').text}筆"
+    data_count=root.find('span',id='ContentPlaceHolder1_lblTotalCount').text
+    title = f"共找到{data_count}筆"
     res_data['title'] = title
-
     li_data = root.find_all('div', attrs={'class': 'directory_list'})
     for li in li_data:
         res_data['data'].append({

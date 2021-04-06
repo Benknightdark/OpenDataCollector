@@ -73,10 +73,25 @@ export default function Type() {
                     <button
                       className="btn btn-warning"
                       onClick={() => {
-                        router.push({
-                          pathname: `/${serviceName}/dataset`,
-                          query: { queryUrl: d.url },
-                        });
+                        if(serviceName!=='pthg-service'){
+                          router.push({
+                            pathname: `/${serviceName}/dataset`,
+                            query: { queryUrl: d.url },
+                          });
+                        }else{
+                          const queryData={ target: d.url ,org:'',group:''}
+                          if(type=='group'){
+                            queryData.group=d.title
+                          }else{
+                            queryData.org=d.title
+
+                          }
+                          router.push({
+                            pathname: `/${serviceName}/dataset`,
+                            query: queryData,
+                          });
+                        }
+                        
                       }}
                     >
                       看更多
