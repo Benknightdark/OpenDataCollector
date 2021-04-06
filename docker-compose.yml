@@ -75,7 +75,33 @@ services:
     depends_on:
       - tainan-service
     network_mode: "service:tainan-service"  
-############################
+  ############################
+  # pthg Service
+  ############################
+  pthg-service:
+    build: ./api-service/pthg-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50009:50002"  
+      - "8400:8000"       
+    networks:
+      - open-data
+  pthg-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "pthg-service",
+    "-app-port", "8000",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50009",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - pthg-service
+    network_mode: "service:pthg-service"    
+  ############################
   # Auth Service
   ############################
   auth-service:
@@ -123,7 +149,7 @@ services:
       - "6380:6379"
     networks:
       - open-data
-#-----------資料庫服務 (MongoDB)----------------- #
+  #-----------資料庫服務 (MongoDB)----------------- #
   mongo:
     image: mongo
     restart: always
