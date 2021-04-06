@@ -23,37 +23,28 @@ else:
     app = FastAPI()
   
 # app = FastAPI(docs_url=None, redoc_url=None)
-root_url = "https://data.kcg.gov.tw"
+root_url = "https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D97&sms=354B0B57F2762613"
 
 
 @app.get("/")
 def read_root():
-    return {"Hello": "Kao Service"}
+    return {"Hello": "PTHG Service"}
 
-@app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')
+@app.get("/api/dashboard",  summary='取得屏東OpenData Dashboard資料')#response_model=Dashboard,
 def dashboard():
     dashboard_res_data = {}
     r = requests.get(root_url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    dashboard_root = soup.find_all(attrs={"class", "box stats"})[1]
-    dashboard_title = dashboard_root.div.h3.text
-    dashboard_res_data['title'] = dashboard_title
-    dashboard_res_data['items'] = []
-    dashboard_ul = dashboard_root.find_all('ul')
-    for ul in dashboard_ul:
-        li_list = ul.find_all('li')
-        for li in li_list:
-            item_list = list(filter(lambda x: x != '', re.sub(
-                "\n|\r|\s+", '-', li.a.text.strip()).split('-')))
-            item_count = item_list[0]
-            item_name = item_list[1]
-            item_url = f"{root_url}{li.a['href']}"
-            dashboard_res_data['items'].append({
-                'url': item_url,
-                'count': item_count,
-                'name': item_name,
-            })
-    return dashboard_res_data
+    view_state_value=soup.find('input',id='__VIEWSTATE')['value']
+    event_validation_value=soup.find('input',id='__EVENTVALIDATION')['value']
+    view_state_generator_value=soup.find('input',id='__VIEWSTATEGENERATOR')['value']
+    print(event_validation_value)
+    return {
+        'view_state_value':view_state_value,
+                'event_validation_value':event_validation_value,
+        'event_validation_value':event_validation_value,
+
+    }
 
 @app.get("/api/org", summary="組織列表")
 def org( page: Optional[int] = None):
