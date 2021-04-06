@@ -23,14 +23,14 @@ else:
     app = FastAPI()
   
 # app = FastAPI(docs_url=None, redoc_url=None)
-root_url = "https://data.kcg.gov.tw"
+root_url = "https://opendata.taichung.gov.tw/"
 
 
 @app.get("/")
 def read_root():
-    return {"Hello": "Kao Service"}
+    return {"Hello": "Taichung Service"}
 
-@app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')
+@app.get("/api/dashboard", response_model=Dashboard, summary='取得台中OpenData Dashboard資料')
 def dashboard():
     dashboard_res_data = {}
     r = requests.get(root_url)
