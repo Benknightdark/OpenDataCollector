@@ -21,7 +21,9 @@ export default function Type() {
   };
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
   useEffect(() => {
+    if(serviceName.toString().toLowerCase()!=='pthg-service')
     window.onscroll = async () => {
+
       if (showLoading) return;
 
       if (

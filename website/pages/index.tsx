@@ -8,7 +8,7 @@ export default function Home() {
 
     <Layout>
       <div className="container-fluid px-1">
-        <div className='d-flex p-1 bd-highlight flex-wrap justify-content-evenly'>
+        <div className='row  bd-highlight'>
           <Dashboard serviceName='kao-service' />
           <Dashboard serviceName='tainan-service' />
           <Dashboard serviceName='pthg-service' />

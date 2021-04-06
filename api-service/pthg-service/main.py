@@ -104,7 +104,6 @@ def group(website_content: str = Depends(get_pthg_data)):
             'title': li.p.a['title'],
             'count': int(li.span.text),
             'url': li.p.a['href'].replace("javascript:__doPostBack('", '').replace("','')", '')
-
         })
     return res_data
 
