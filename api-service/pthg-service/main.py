@@ -104,7 +104,7 @@ def data_set(website_content: str = Depends(get_pthg_data)):
     for li in li_data:
         res_data['data'].append({
             'name': li.div.a['title'],
-            'url': li.div.a['href'],
+            'url': f"https://www.pthg.gov.tw/{li.div.a['href']}",
             'content': re.sub("\n|\r|\s+|-", '', li.p.text),
             'data_type': []
         })
@@ -117,24 +117,26 @@ def data_set_detail(q: str):
     res_data = {}
     r = requests.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
-    context_module = soup.find('div', 'context-info')
-    res_data['title'] = context_module.div.h1.text
+    root = soup.find('div', 'page_directory')
+    res_data['title'] = root.div.text
     res_data['statics'] = []
     res_data['resources'] = []
-    static_data = context_module.div.div.find_all('dl')
-    for sd in static_data:
-        res_data['statics'].append({
-            'name': sd.dt.text,
-            'value': sd.dd.text
-        })
-    resource_list = soup.find_all('li', attrs={'class': 'resource-item'})
-    for rl in resource_list:
-        res_data['resources'].append({
-            'detail': f"{root_url}{rl.a['href']}",
-            'name': rl.a['title'],
-            'type': rl.a.span.text,
-            "description": re.sub("\n|\r|\s+|-", '', rl.p.text),
-            'downloadLink': rl.div.ul.find_all('li')[1].a['href']
-
-        })
+    res_data['infomation'] = []
+    external_infomation = root.find('table').tbody.find_all('tr')
+    for ei in external_infomation:
+        if ei.th.text != '資料資源：':
+            res_data['infomation'].append({
+                'name': ei.th.text,
+                'value': ei.td.text
+            })
+        else:
+            resources = ei.find_all('a')
+            for resrouce in resources:
+                res_data['resources'].append({
+                    'detail': resrouce['title'],
+                    'name': resrouce['title'],
+                    'type': resrouce['title'].split('.')[1],
+                    "description": resrouce['title'],
+                    'downloadLink': resrouce['href']
+                })
     return res_data
