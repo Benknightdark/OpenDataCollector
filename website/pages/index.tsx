@@ -11,6 +11,7 @@ export default function Home() {
         <div className='d-flex p-1 bd-highlight flex-wrap justify-content-evenly'>
           <Dashboard serviceName='kao-service' />
           <Dashboard serviceName='tainan-service' />
+          <Dashboard serviceName='pthg-service' />
         </div>
       </div>
     </Layout>
