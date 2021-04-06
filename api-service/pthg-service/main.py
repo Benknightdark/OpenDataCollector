@@ -91,6 +91,9 @@ def group(website_content: str = Depends(get_pthg_data)):
 
 @app.get("/api/dataset", summary="資料集列表")
 def data_set(website_content: str = Depends(get_pthg_data)):
+    '''
+    ?page=1&target=ctl00$ContentPlaceHolder1$ctl34&org=屏東縣政府
+    '''
     res_data = {}
     res_data['data'] = []
     root = BeautifulSoup(website_content, 'html.parser')

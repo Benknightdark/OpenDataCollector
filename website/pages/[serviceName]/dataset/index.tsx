@@ -1,5 +1,4 @@
 import { useRouter } from "next/router"
-import CustomHeader from '../../components/custom-header'
 import Spinner from '../../components/spinner'
 
 import { useSWRInfinite } from "swr"
