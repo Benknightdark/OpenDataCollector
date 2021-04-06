@@ -57,43 +57,34 @@ def dashboard(website_content: str = Depends(get_pthg_data)):
 
 
 @app.get("/api/org", summary="組織列表")
-def org(page: Optional[int] = None):
+def org(website_content: str = Depends(get_pthg_data)):
     res_data = []
-    page_str = ''
-    if(page != None):
-        page_str = f'?page={page}'
-    r = requests.get(f'{root_url}/organization{page_str}')
-    soup = BeautifulSoup(r.text, 'html.parser')
-    list_data = soup.find_all('li', attrs={'class': 'media-item'})
-    print(list_data)
-    for l in list_data:
-        zero_count = l.find('span', attrs={'class': "count"})
-        data_count = 0
-        if zero_count == None:
-            data_count = (l.strong.text.split('個資料集')[0])
+    root = BeautifulSoup(website_content, 'html.parser')
+    li_data=root.find_all('div',attrs={'class':'directory'})[1].ul.find_all('li')
+    for li in li_data:
         res_data.append({
-            'image': l.img['src'],
-            'title': l.h3.text,
-            'count': int(data_count),
-            'url': f"{root_url}/{l.a['href']}"})
+            'image':'',
+            'title':li.p.a['title'],
+            'count':int(li.span.text),
+            'url': li.p.a['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+
+        })
     return res_data
 
 
 @app.get("/api/group", summary="群組列表")
-def group(page: Optional[int] = None):
-    page_str = ''
-    if(page != None):
-        page_str = f'?page={page}'
+def group(website_content: str = Depends(get_pthg_data)):
     res_data = []
-    r = requests.get(f'{root_url}/group{page_str}')
-    soup = BeautifulSoup(r.text, 'html.parser')
-    list_data = soup.find_all('li', attrs={'class': 'media-item'})
-    print(list_data)
-    for l in list_data:
+    root = BeautifulSoup(website_content, 'html.parser')
+    li_data=root.find('div',attrs={'class':'directory'}).ul.find_all('li')
+    for li in li_data:
         res_data.append({
-            'image': l.img['src'],
-            'title': l.h3.text,
-            'url': f"{root_url}/{l.a['href']}"})
+            'image':'',
+            'title':li.p.a['title'],
+            'count':int(li.span.text),
+            'url': li.p.a['href'].replace("javascript:__doPostBack('",'').replace("','')",'')
+
+        })
     return res_data
 
 
