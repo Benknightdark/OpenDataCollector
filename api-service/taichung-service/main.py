@@ -144,12 +144,19 @@ def data_set_detail(q: str):
     res_data['title']=context_module.div.h1.text
     res_data['statics']=[]
     res_data['resources']=[]
+    res_data['infomation']=[]
     static_data=context_module.div.div.find_all('dl')
     for sd in static_data:
         res_data['statics'].append({
             'name':sd.dt.text,
             'value':sd.dd.text
         })
+    external_infomation=soup.find('section',attrs={'class':'additional-info'}).table.tbody.find_all('tr') 
+    for ei in external_infomation:
+        res_data['infomation'].append({
+            'name':ei.th.text,
+            'value':ei.td.text
+        })    
     resource_list=soup.find_all('li',attrs={'class':'resource-item'})
     for rl in resource_list:
         res_data['resources'].append({
