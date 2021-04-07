@@ -5,7 +5,25 @@ from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
 import os 
+def isValidURL(str):
 
+    # Regex to check valid URL
+    regex = ("^(http|https)://")
+
+    # Compile the ReGex
+    p = re.compile(regex)
+
+    # If the string is empty
+    # return false
+    if (str == None):
+        return False
+
+    # Return if the string
+    # matched the ReGex
+    if(re.search(p, str)):
+        return True
+    else:
+        return False
 class DashboardItems(BaseModel):
     url: str
     count: int
@@ -23,7 +41,7 @@ else:
     app = FastAPI()
   
 # app = FastAPI(docs_url=None, redoc_url=None)
-root_url = "https://opendata.taichung.gov.tw/"
+root_url = "https://opendata.taichung.gov.tw"
 
 
 @app.get("/")
@@ -35,24 +53,21 @@ def dashboard():
     dashboard_res_data = {}
     r = requests.get(root_url)
     soup = BeautifulSoup(r.text, 'html.parser')
-    dashboard_root = soup.find_all(attrs={"class", "box stats"})[1]
-    dashboard_title = dashboard_root.div.h3.text
-    dashboard_res_data['title'] = dashboard_title
+    dashboard_root = soup.find_all('div',attrs={"class", "media-body"})
+    dashboard_res_data['title'] = '台中市政府資料開放 統計資訊'
     dashboard_res_data['items'] = []
-    dashboard_ul = dashboard_root.find_all('ul')
-    for ul in dashboard_ul:
-        li_list = ul.find_all('li')
-        for li in li_list:
-            item_list = list(filter(lambda x: x != '', re.sub(
-                "\n|\r|\s+", '-', li.a.text.strip()).split('-')))
-            item_count = item_list[0]
-            item_name = item_list[1]
-            item_url = f"{root_url}{li.a['href']}"
+    for data in dashboard_root:
+        p_data=data.find_all('p')
+        url=''
+        if p_data[1].text!='API服務':
+            url=f"{root_url}/{data.parent.parent['href']}"
             dashboard_res_data['items'].append({
-                'url': item_url,
-                'count': item_count,
-                'name': item_name,
-            })
+                    'url':url,
+                    'count': p_data[0].text,
+                    'name': p_data[1].text.replace('筆',''),
+                })   
+
+
     return dashboard_res_data
 
 @app.get("/api/org", summary="組織列表")
@@ -64,17 +79,20 @@ def org( page: Optional[int] = None):
     r = requests.get(f'{root_url}/organization{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
-    print(list_data)
     for l in list_data:
         zero_count = l.find('span', attrs={'class': "count"})
         data_count=0
         if zero_count == None:
             data_count=(l.strong.text.split('個資料集')[0])
+        img_url=l.img['src']
+        if isValidURL(img_url)==False:
+            img_url=f"{root_url}{img_url}"
+
         res_data.append({
-            'image': l.img['src'],
+            'image': img_url,
             'title': l.h3.text,
             'count':int(data_count) ,
-            'url':f"{root_url}/{l.a['href']}"})
+            'url':f"{root_url}{l.a['href']}"})
     return res_data
 
 @app.get("/api/group", summary="群組列表")
@@ -86,21 +104,16 @@ def group(page: Optional[int] = None):
     r = requests.get(f'{root_url}/group{page_str}')
     soup = BeautifulSoup(r.text, 'html.parser')
     list_data = soup.find_all('li', attrs={'class': 'media-item'})
-    print(list_data)
     for l in list_data:
         res_data.append({
             'image': l.img['src'],
             'title': l.h3.text,
-            'url':f"{root_url}/{l.a['href']}"})
+            'url':f"{root_url}{l.a['href']}"})
     return res_data
 
 @app.get("/api/dataset", summary="資料集列表")
 def data_set(q: str):
     ''' 
-    參數q的範例: 
-    - https://data.kcg.gov.tw/dataset 
-    - https://data.kcg.gov.tw/dataset?page=2 
-    - https://data.kcg.gov.tw/dataset?q=%E9%87%91%E9%A1%8D 
     '''
     res_data = {}
     r = requests.get(q)
@@ -113,7 +126,7 @@ def data_set(q: str):
     for sl in search_list:
         content = sl.find(attrs={'class': 'dataset-content'})
         sl_data = {'name': sl.h3.a.text,
-                   'url': f"{root_url}{sl.h3.a['href']}", 'content': content.div.text, 'data_type': []}
+                   'url': f"{root_url}{sl.h3.a['href']}", 'content': content.text, 'data_type': []}
         data_type = sl.find('ul').find_all('li')
         for dt in data_type:
             sl_data['data_type'].append(dt.a.text)
@@ -123,8 +136,6 @@ def data_set(q: str):
 @app.get("/api/dataset/detail", summary="資料集明細")
 def data_set_detail(q: str):
     ''' 
-    參數q的範例: 
-    - https://data.kcg.gov.tw/dataset/estimate-committee-propose 
     '''
     res_data = {}
     r = requests.get(q)
@@ -147,6 +158,5 @@ def data_set_detail(q: str):
             'type':rl.a.span.text,
             "description":re.sub("\n|\r|\s+|-", '', rl.p.text),
             'downloadLink':rl.div.ul.find_all('li')[1].a['href']
-
         })
     return res_data

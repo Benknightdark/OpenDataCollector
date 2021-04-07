@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   ############################
-  # node app + Dapr sidecar
+  # Website Service
   ############################
   nodeapp:
     build: ./website
@@ -24,7 +24,7 @@ services:
       - nodeapp
     network_mode: "service:nodeapp"
   ############################
-  # kao service
+  # Kao Api Service
   ############################
   kao-service:
     build: ./api-service/kao-service
@@ -50,7 +50,7 @@ services:
       - kao-service
     network_mode: "service:kao-service" 
   ############################
-  # Tainan Service
+  # Tainan Api Service
   ############################
   tainan-service:
     build: ./api-service/tainan-service
@@ -76,7 +76,7 @@ services:
       - tainan-service
     network_mode: "service:tainan-service"  
   ############################
-  # pthg Service
+  # PTHG Api Service
   ############################
   pthg-service:
     build: ./api-service/pthg-service
@@ -102,7 +102,7 @@ services:
       - pthg-service
     network_mode: "service:pthg-service"    
   ############################
-  # Auth Service
+  # Auth Api Service
   ############################
   auth-service:
     build: ./api-service/auth-service
@@ -149,7 +149,9 @@ services:
       - "6380:6379"
     networks:
       - open-data
-  #-----------資料庫服務 (MongoDB)----------------- #
+  ############################
+  # MongoDB
+  ############################
   mongo:
     image: mongo
     restart: always
@@ -162,7 +164,9 @@ services:
             - auth-db-data:/data/db
     networks:
             - open-data        
-  #------------MongoDB網頁版管理系統--------------------- #
+  ############################
+  # MongoDB網頁版管理系統
+  ############################  
   mongo-express:
     image: mongo-express
     restart: always
