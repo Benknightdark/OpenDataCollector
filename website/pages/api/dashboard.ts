@@ -13,10 +13,12 @@ export default async (req, res) => {
         item['route'] = `dataset?queryUrl=${item['url']}`
         break;
       case '組織':
+      case '機關':
         item['route'] = 'category/org'
         break;
       case '主題':
       case '群組':
+      case '服務分類':
         item['route'] = 'category/group'
         break;
       default:

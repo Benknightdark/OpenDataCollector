@@ -100,7 +100,33 @@ services:
       - "./components/:/components"
     depends_on:
       - pthg-service
-    network_mode: "service:pthg-service"    
+    network_mode: "service:pthg-service"  
+ ############################
+  # Taichung Api Service
+  ############################
+  taichung-service:
+    build: ./api-service/taichung-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50010:50002"  
+      - "8600:8000"       
+    networks:
+      - open-data
+  taichung-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "taichung-service",
+    "-app-port", "8000",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50010",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - taichung-service
+    network_mode: "service:taichung-service"      
   ############################
   # Auth Api Service
   ############################
