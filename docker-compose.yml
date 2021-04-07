@@ -156,7 +156,9 @@ services:
     depends_on:
       - auth-service
     network_mode: "service:auth-service" 
-
+  ############################
+  # Api Gateway Service
+  ############################
   api-gateway-service:
       image: envoyproxy/envoy:v1.14.2
       volumes:
