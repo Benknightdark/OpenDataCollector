@@ -3,7 +3,7 @@ import React from "react";
 import useSWR from "swr";
 import Layout from "../../../components/layout";
 import Spinner from "../../../components/spinner";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -20,15 +20,13 @@ const detailData = (
 const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function Index() {
   const router = useRouter();
-  const [showInfo,setShowInfo]=useState(true)
-  const [showFile,setShowFile]=useState(true)
+  const [showInfo, setShowInfo] = useState(true);
+  const [showFile, setShowFile] = useState(true);
 
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
-  useEffect(() => {
-    
-  });
+  useEffect(() => {});
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
     <Layout goBack="true">
@@ -41,31 +39,43 @@ export default function Index() {
           </div>
           <hr></hr>
 
-          <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
-            {fetchDetailData.data.statics.map((s) => (
-              <div className="card  border-info bg-light p-3 m-3">
-                <div className="card-body">
-                  <h3 className="quote-text"> {s.name}</h3>
-                  <hr></hr>
-                  <h2 className="text-center"> {s.value}</h2>
-                </div>
+          {fetchDetailData.data.statics.length > 0 && (
+            <div>
+              <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
+                {fetchDetailData.data.statics.map((s) => (
+                  <div className="card  border-info bg-light p-3 m-3">
+                    <div className="card-body">
+                      <h3 className="quote-text"> {s.name}</h3>
+                      <hr></hr>
+                      <h2 className="text-center"> {s.value}</h2>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <hr></hr>
+              <hr></hr>
+            </div>
+          )}
           <div className="accordion border border-danger" id="infomation">
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingInfomation">
                 <button
-                  className={showInfo?'accordion-button':'accordion-button collapsed'}
+                  className={
+                    showInfo ? "accordion-button" : "accordion-button collapsed"
+                  }
                   type="button"
-                  onClick={()=>{setShowInfo(!showInfo)}}
+                  onClick={() => {
+                    setShowInfo(!showInfo);
+                  }}
                 >
                   欄位資訊
                 </button>
               </h2>
               <div
-                className={showInfo?'accordion-collapse collapse show':'accordion-collapse collapse collapsed'}
+                className={
+                  showInfo
+                    ? "accordion-collapse collapse show"
+                    : "accordion-collapse collapse collapsed"
+                }
               >
                 <div className="accordion-body">
                   <div className="p-3">
@@ -97,15 +107,23 @@ export default function Index() {
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
-                  className={showFile?'accordion-button':'accordion-button collapsed'}
+                  className={
+                    showFile ? "accordion-button" : "accordion-button collapsed"
+                  }
                   type="button"
-                  onClick={()=>{setShowFile(!showFile)}}
+                  onClick={() => {
+                    setShowFile(!showFile);
+                  }}
                 >
                   檔案下載
                 </button>
               </h2>
               <div
-               className={showFile?'accordion-collapse collapse show':'accordion-collapse collapse collapsed'}
+                className={
+                  showFile
+                    ? "accordion-collapse collapse show"
+                    : "accordion-collapse collapse collapsed"
+                }
               >
                 <div className="accordion-body">
                   <div className="list-group">
