@@ -155,7 +155,32 @@ services:
       - "./components/:/components"
     depends_on:
       - auth-service
-    network_mode: "service:auth-service"        
+    network_mode: "service:auth-service" 
+
+  api-gateway-service:
+      image: envoyproxy/envoy:v1.14.2
+      volumes:
+        - ./api-service/api-gateway-service:/etc/envoy
+      ports:
+        - "5202:80"
+        - "15202:8001"
+        - "50011:50001"
+      depends_on:
+        - redis
+        - placement   
+      networks:
+        - open-data            
+  api-gateway-service-dapr:
+      image: "daprio/daprd:edge"
+      command: ["./daprd",
+      "-app-id", "api-gateway-service",
+      "-app-port", "80",
+       "-components-path", "/components"]
+      volumes:
+        - "./components/:/components"      
+      network_mode: "service:api-gateway-service"
+      depends_on:
+        - api-gateway-service           
   ############################
   # Dapr placement service
   ############################
