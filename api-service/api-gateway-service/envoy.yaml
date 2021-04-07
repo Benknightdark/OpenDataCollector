@@ -17,96 +17,27 @@ static_resources:
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
-            name: eshop_backend_route
+            name: open_data_service_route
             virtual_hosts:
-            - name: eshop_backend
+            - name: open_data_service
               domains:
-              - "*"
-              cors:
-                allow_origin_string_match:
-                - safe_regex:
-                    google_re2: {}
-                    regex: \*
-                allow_methods: "GET, POST, PUT"
-                allow_headers: "authorization, content-type, x-requestid, x-requested-with"
-                allow_credentials: true
-              routes:
-              - name: "pics"
-                match:
-                  safe_regex:
-                    google_re2: {}
-                    regex: "\/c\/api\/v1\/catalog\/items\/(\\d+)\/pic\/"
-                route:
-                  auto_host_rewrite: true
-                  regex_rewrite:
-                    pattern:
-                      google_re2: {}
-                      regex: "\/c\/api\/v1\/catalog\/items\/(\\d+)\/pic\/"
-                    substitution: "/catalog-api/api/v1/catalog/items/\\1/pic/"
-                  cluster: catalog
+              # - "*"
+              # cors:
+              #   allow_origin_string_match:
+              #   - safe_regex:
+              #       google_re2: {}
+              #       regex: \*
+              #   allow_methods: "GET, POST, PUT"
+              #   allow_headers: "authorization, content-type, x-requestid, x-requested-with"
+              #   allow_credentials: true
+              routes:          
               - name: "k-short"
                 match:
                   prefix: "/k/"
                 route:
                   auto_host_rewrite: true
                   prefix_rewrite: "/v1.0/invoke/kao-service/method/"
-                  cluster: dapr                  
-              - name: "c-short"
-                match:
-                  prefix: "/c/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/catalog-api/method/"
-                  cluster: dapr
-              - name: "c-long"
-                match:
-                  prefix: "/catalog-api/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/catalog-api/method/"
-                  cluster: dapr
-              - name: "o-short"
-                match:
-                  prefix: "/o/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/ordering-api/method/"
-                  cluster: dapr
-              - name: "o-long"
-                match:
-                  prefix: "/ordering-api/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/ordering-api/method/"
-                  cluster: dapr
-              - name: "h-long"
-                match:
-                  prefix: "/hub/notificationhub"
-                route:
-                  auto_host_rewrite: true
-                  cluster: ordering-api
-                  timeout: 300s
-              - name: "b-short"
-                match:
-                  prefix: "/b/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/basket-api/method/"
-                  cluster: dapr
-              - name: "b-long"
-                match:
-                  prefix: "/basket-api/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/basket-api/method/"
-                  cluster: dapr
-              - name: "agg"
-                match:
-                  prefix: "/"
-                route:
-                  auto_host_rewrite: true
-                  prefix_rewrite: "/v1.0/invoke/webshoppingagg/method/"
-                  cluster: dapr
+                  cluster: dapr                                                                            
           http_filters:
           - name: envoy.cors
           - name: envoy.router
@@ -137,19 +68,19 @@ static_resources:
     - socket_address:
         address: 127.0.0.1
         port_value: 3500
-  - name: catalog
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    hosts:
-    - socket_address:
-        address: catalog-api
-        port_value: 80
-  - name: ordering-api
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    hosts:
-    - socket_address:
-        address: ordering-api
-        port_value: 80
+  # - name: catalog
+  #   connect_timeout: 0.25s
+  #   type: strict_dns
+  #   lb_policy: round_robin
+  #   hosts:
+  #   - socket_address:
+  #       address: catalog-api
+  #       port_value: 80
+  # - name: ordering-api
+  #   connect_timeout: 0.25s
+  #   type: strict_dns
+  #   lb_policy: round_robin
+  #   hosts:
+  #   - socket_address:
+  #       address: ordering-api
+  #       port_value: 80
