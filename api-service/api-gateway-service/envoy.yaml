@@ -73,7 +73,7 @@ static_resources:
                     config:
                       providers:
                         jwt_provider:
-                          issuer: http://localhost:5000
+                          issuer: http://identity-service
                           # forward: true
                           # forward_payload_header: x-jwt-payload
                           remote_jwks:

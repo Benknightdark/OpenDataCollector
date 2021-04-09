@@ -136,6 +136,7 @@ services:
       - redis
       - placement
       - mongo
+      - identity-service       
     ports:
       - "50008:50002"  
       - "8300:8000"       
@@ -160,7 +161,10 @@ services:
   # Api Gateway Service
   ############################
   api-gateway-service:
-      image: envoyproxy/envoy:v1.14.2
+      image: envoyproxy/envoy:v1.16-latest
+        #v1.17-latest
+        #v1.16-latest
+        #v1.14.2
       volumes:
         - ./api-service/api-gateway-service:/etc/envoy
       ports:

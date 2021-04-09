@@ -5,7 +5,7 @@ from internal import db_service
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
 import datetime
-
+import requests
 
 class Login(BaseModel):
     userName: str
@@ -17,6 +17,18 @@ if os.getenv("ENVIRONMENT") == 'Production':
     app = FastAPI(docs_url=None, redoc_url=None)
 else:
     app = FastAPI()
+@app.get("/")
+def get_token():
+    url = "http://identity-service/connect/token"
+
+    payload='client_id=client&client_secret=secret&scope=api1&grant_type=client_credentials'
+    headers = {
+    'Content-Type': 'application/x-www-form-urlencoded'
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    return(response.json())
 
 
 @app.post("/api/login")
