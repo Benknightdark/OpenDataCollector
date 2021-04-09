@@ -172,17 +172,14 @@ services:
   api-gateway-service-dapr:
       image: "daprio/daprd:edge"
       command: ["./daprd",
-      "-app-id", "api-gateway-service",
-      "-app-port", "80",
-    #   "-placement-host-address", "placement:50006",
-    # "-dapr-grpc-port", "50011",
-     "-components-path", "/components"
-      ]
+          "-app-id", "api-gateway-service",
+          "-app-port", "80",
+           "-components-path", "/components"]
       volumes:
-        - "./components/:/components"      
+            - "./components/:/components"      
       network_mode: "service:api-gateway-service"
       depends_on:
-        - api-gateway-service           
+            - api-gateway-service         
   ############################
   # Dapr placement service
   ############################
