@@ -160,10 +160,13 @@ services:
   # Api Gateway Service
   ############################
   api-gateway-service:
-      build: ./api-service/api-gateway-service
+      image: envoyproxy/envoy:v1.14.2
+      volumes:
+        - ./api-service/api-gateway-service:/etc/envoy
       ports:
         - "5202:80"
-        - "50011:50002"
+        - "15202:8001"
+        - "50011:50001"
       depends_on:
         - redis
         - placement   
@@ -172,14 +175,14 @@ services:
   api-gateway-service-dapr:
       image: "daprio/daprd:edge"
       command: ["./daprd",
-          "-app-id", "api-gateway-service",
-          "-app-port", "80",
-           "-components-path", "/components"]
+      "-app-id", "api-gateway-service",
+      "-app-port", "80",
+       "-components-path", "/components"]
       volumes:
-            - "./components/:/components"      
+        - "./components/:/components"      
       network_mode: "service:api-gateway-service"
       depends_on:
-            - api-gateway-service         
+        - api-gateway-service           
   ############################
   # Dapr placement service
   ############################
