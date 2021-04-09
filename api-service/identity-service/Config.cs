@@ -25,9 +25,8 @@ namespace identity_service
                     {
                         new Secret("secret".Sha256())
                     },
-
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1","user" }
                 }
             };
     }

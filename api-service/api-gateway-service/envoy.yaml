@@ -69,40 +69,28 @@ static_resources:
                 http_filters:
                   - name: envoy.cors
 
-                  # - name: envoy.filters.http.jwt_authn
-                  #   config:
-                  #     providers:
-                  #       jwt_provider:
-                  #         issuer: user
-                  #         local_jwks:
-                  #           inline_string: |
-                  #               {
-                  #                   "keys": [
-                  #                       {
-                  #                           "p": "vc-xH1RK8JLuW9G6Wf54WufrgMN4wXI93UeXTBWTvqMD7SHe051mamyXSfHAXSmLLsEwhRUoSqfZ-aGgVsN5QKHP1HXRXaQXdiqUvTnifPBkWtKVtAa_QdF4ptu97izw3ilLUjawf4LuAuwAglEc6hRstED68fF4TVyGifzpEA8",
-                  #                           "kty": "RSA",
-                  #                           "q": "tJKQp1Ubaoepzy_MupXCLF-8Jym0eKyRf7On_9gzR3OX35go6U4WYl-n-9gyWMo587AgdB2HOwsuCv7NwRhOrz846umAA9Arxw22pEz85muZ29UtE001XAViMHLDSLGdeekZpzCR414p3vazV043_vhF0VfwL7AgKRWc_HQoj-8",
-                  #                           "d": "LfYPbhvvFMeaPSJ_zzpqno8wHCyF-4FmKAo8RYPi40nIZYhZ66181MMDXtGZQHRmBuHLQlvw3M850Hw4IRTpJDLul24f9GA9SfX6V3pPGRAm3F_UMiWnydONm5iCvtylWQq65kcEpKCJjiXc0juDxGnvpCP52WLqHxRcbTizh47-473w17ZUCQkYYq8-Q4pfF0AuWXA254flPjFZBzdCD7fH2yjAqThLI9u2SvMx7cGTtXOafxrTKJAkivoXww2ouKE1LtaFEFyUIHVzo6yUY31bm4TXGc6PflrtuPE1VmmF3yWk6DvPbuH1cjbwN8hV-u_WRulI1e1hLCqSHzH9iQ",
-                  #                           "e": "AQAB",
-                  #                           "use": "enc",
-                  #                           "kid": "kObpNGkB2nK1VwXL4EF7gRSfARoFGS8sUGlWcLTV57I",
-                  #                           "qi": "jV9XgITO8Uf012QuSc_mSoR19Zr9h5--i07W4bi_MQ4gjcJHutpdAKfO0uqJgf9JwMOp90jRGg6k4kpeU7xOTK1d9Ua4r668X0_SyvmmIalr_Dk5Dt-9g6ucbDAPfYTPwbnIiI0NRusVX6riiUSlHzdQQfJn_rbq2zcX60zX_zI",
-                  #                           "dp": "i5TqCcHxAgzq3_bQ9VEerKsUEjKs4ITkXY9CAZ90cKJsRru7ox6CrAyDDMuMzHW6dn128sbmRFA_CUYEJQnGZvMXZIPnnNcIscsKakTg-0PEaM2nbSXxC7PA5-N8PmQqFRWE4EZ7cKmV4ewvS6Xef3zZm4yVfco2z50VCvBDa50",
-                  #                           "alg": "RSA1_5",
-                  #                           "dq": "rYb7xBKhmiptIVIKKHSqeQI3Sltlt2H_IP2BQPh_rvaCyLjs9-e20yqhv__vwiv0rR5g0bVes3r28FIVYK7_TqIvDHEAOKngqBWhoxrpHnXhEcU24AmecaQqy-w9hqpJb1J2-JhQWnOvQTlK92ePoFLupVMg2nMjNNg0WNc387k",
-                  #                           "n": "heK0PfBbOHJSqfZFP4qu1bbXjXIQETKb5-GlGngHLpenJYknWSJ7yAO71tHfBl4-nuQxHNMizgxRpqGhncpFmvUKMxN_CdsyeoS5w5Ay1VItP4Bhyf6cbgCtIUXeoVgkehKRy-gu7A4WycMWyAr97aGaKSQvNvfetKHkTJ1mY6rErwFD0w88q3WR4_YaRv8jalREhFyW5m0Dhbvc2wF0_0Hs2StlpO1XHsDJp1-dopxkc4npjICH5l1NpU6yNqU6qeodHH-OADHnRr2gCC8Ega07VKHsecZXqlK0wln18AssLhuPFBx9t-Uo0qmur-H7XHXo1DJtkHYoIcGOm-ZfAQ"
-                  #                       }
-                  #                   ]
-                  #               }
-                  #         forward: true
-                  #         forward_payload_header: "plain-authorization"
-                      # rules:
-                      #   - match:
-                      #       prefix: "/kao-service/"
-                      #     requires:
-                      #       provider_and_audiences:
-                      #         provider_name: jwt_provider
-                      #         # audiences: http://www.service.com
+                  - name: envoy.filters.http.jwt_authn
+                    config:
+                      providers:
+                        jwt_provider:
+                          issuer: http://localhost:5000
+                          forward: true
+                          forward_payload_header: x-jwt-payload
+                          remote_jwks:
+                            http_uri:
+                              uri: http://identity-service/.well-known/openid-configuration/jwks
+                              cluster: identity_server
+                              timeout: 5s
+                            cache_duration:
+                              seconds: 300
+
+                      rules:
+                        - match:
+                            prefix: "/kao-service/"
+                          requires:
+                            provider_and_audiences:
+                              provider_name: jwt_provider
+                              # audiences: http://www.service.com
                   - name: envoy.router                              
                 access_log:
                   - name: envoy.file_access_log
@@ -131,3 +119,11 @@ static_resources:
         - socket_address:
             address: 127.0.0.1
             port_value: 3500
+    - name: identity_server
+      connect_timeout: 0.25s
+      type: strict_dns
+      lb_policy: round_robin     
+      hosts: 
+        - socket_address:
+            address: identity-service
+            port_value: 80            

@@ -169,7 +169,8 @@ services:
         - "50011:50001"
       depends_on:
         - redis
-        - placement   
+        - placement
+        - identity-service   
       networks:
         - open-data            
   api-gateway-service-dapr:
@@ -182,7 +183,14 @@ services:
         - "./components/:/components"      
       network_mode: "service:api-gateway-service"
       depends_on:
-        - api-gateway-service           
+        - api-gateway-service
+  ############################
+  # Identity Service
+  ############################
+  identity-service:
+    build: ./api-service/identity-service   
+    networks:
+      - open-data                   
   ############################
   # Dapr placement service
   ############################
