@@ -83,14 +83,12 @@ static_resources:
                               timeout: 5s
                             cache_duration:
                               seconds: 300
-
-                      rules:
-                        - match:
-                            prefix: "/kao-service/"
-                          requires:
-                            provider_and_audiences:
-                              provider_name: jwt_provider
-                              # audiences: http://www.service.com
+                      # rules:
+                      #   - match:
+                      #       prefix: "/kao-service/"
+                      #     requires:
+                      #       provider_and_audiences:
+                      #         provider_name: jwt_provider
                   - name: envoy.router                              
                 access_log:
                   - name: envoy.file_access_log
