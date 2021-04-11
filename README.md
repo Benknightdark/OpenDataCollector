@@ -44,6 +44,7 @@ curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: applica
 - form
   - https://react-hook-form.com/get-started/
   - https://github.com/formium/formik/
+- https://stackoverflow.com/questions/54312304/identity-server-add-custom-parameters-to-the-json-response-from-the-token-endp
   
 
 
