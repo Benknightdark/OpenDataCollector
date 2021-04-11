@@ -128,10 +128,10 @@ services:
       - taichung-service
     network_mode: "service:taichung-service"      
   ############################
-  # Auth Api Service
+  # Account Api Service
   ############################
-  auth-service:
-    build: ./api-service/auth-service
+  account-service:
+    build: ./api-service/account-service
     depends_on:
       - redis
       - placement
@@ -144,10 +144,10 @@ services:
       - open-data
     environment:
         ENVIRONMENT: production
-  auth-service-dapr:
+  account-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
-    "-app-id", "auth-service",
+    "-app-id", "account-service",
     "-app-port", "8000",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50008",
@@ -155,8 +155,8 @@ services:
     volumes:
       - "./components/:/components"
     depends_on:
-      - auth-service
-    network_mode: "service:auth-service" 
+      - account-service
+    network_mode: "service:account-service" 
   ############################
   # Api Gateway Service
   ############################

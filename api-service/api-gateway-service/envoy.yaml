@@ -59,12 +59,12 @@ static_resources:
                             auto_host_rewrite: true
                             prefix_rewrite: "/v1.0/invoke/taichung-service/method/"
                             cluster: dapr
-                        - name: "auth-service"
+                        - name: "account-service"
                           match:
-                            prefix: "/auth-service/"
+                            prefix: "/account-service/"
                           route:
                             auto_host_rewrite: true
-                            prefix_rewrite: "/v1.0/invoke/auth-service/method/"
+                            prefix_rewrite: "/v1.0/invoke/account-service/method/"
                             cluster: dapr
                 http_filters:
                   - name: envoy.cors
@@ -83,12 +83,12 @@ static_resources:
                               timeout: 5s
                             cache_duration:
                               seconds: 300
-                      # rules:
-                      #   - match:
-                      #       prefix: "/kao-service/"
-                      #     requires:
-                      #       provider_and_audiences:
-                      #         provider_name: jwt_provider
+                      rules:
+                        - match:
+                            prefix: "/personal-service/"
+                          requires:
+                            provider_and_audiences:
+                              provider_name: jwt_provider
                   - name: envoy.router                              
                 access_log:
                   - name: envoy.file_access_log
