@@ -21,5 +21,10 @@ def user_create(data):
     '''
     新增使用者資料
     '''
-    create_data=db('auth')['user'].insert_one(data)
+    create_data=db('account')['user'].insert_one(data)
     return create_data    
+def user_query(data):
+    '''
+    查詢使用者資料
+    '''
+    return convert_collection(db('account')['user'].find_one(data))    

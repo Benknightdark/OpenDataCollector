@@ -3,39 +3,38 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import Layout from "../components/layout";
-export default function SignIn({ csrfToken }) {
+export default function Register({ csrfToken }) {
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),
     password: yup.string().required("不能為空值"),
+    email:yup.string().required("不能為空值"),
+    displayName:yup.string().required("不能為空值"),
+
   });
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
-  const [customError,setCustomError]=useState("");
   const onSubmit = (data) => {
-    setCustomError("") 
-    signIn("credentials", {
-      username: data.userName,
-      password: data.password,
-      redirect: false,
-    }).then((r) => {
-      console.log(r)
-      if (r.error === null) {
-        router.push("/");
-      }else{
-       setCustomError(r['error']) 
-      }
-      
-    });
+    (async()=>{
+      signIn("credentials", {
+        username: data.userName,
+        password: data.password,
+        redirect: false,
+      }).then((r) => {
+        if (r.error === null) {
+          router.push("/");
+        }
+      });
+    })()
   };
   return (
     <Layout goBack="true">
       <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
       <div className="card" style={{width: "1000px"}}>
-        <div className="card-header">登入</div>
+        <div className="card-header">註冊</div>
         <div className="card-body">
           <form method="post" onSubmit={handleSubmit(onSubmit)}>
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
@@ -65,15 +64,37 @@ export default function SignIn({ csrfToken }) {
               />
               <p>{errors.password?.message}</p>
             </div>
-
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                name="email"
+                ref={register({ required: true })}
+              />
+              <p>{errors.email?.message}</p>
+            </div>
+            <div className="mb-3">
+              <label htmlFor="displayName" className="form-label">
+                顯示名稱
+              </label>
+              <input
+                type="displayName"
+                className="form-control"
+                id="displayName"
+                name="displayName"
+                ref={register({ required: true })}
+              />
+              <p>{errors.displayName?.message}</p>
+            </div>
             <input
               type="submit"
               className="btn btn-primary"
               value="送出"
             ></input>
-            {
-              customError&&<div className="animate__animated animate__wobble p-3 m-2 bg-danger text-white">{customError}</div>
-            }
           </form>
         </div>
       </div>

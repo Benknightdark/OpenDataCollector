@@ -33,7 +33,7 @@ services:
       - placement
     ports:
       - "50003:50002"
-      - "8100:8000"     
+      # - "8100:8000"     
     networks:
       - open-data     
   kao-service-dapr:
@@ -59,7 +59,7 @@ services:
       - placement
     ports:
       - "50007:50002"  
-      - "8200:8000"       
+      # - "8200:8000"       
     networks:
       - open-data
   tainan-service-dapr:
@@ -85,7 +85,7 @@ services:
       - placement
     ports:
       - "50009:50002"  
-      - "8400:8000"       
+      # - "8400:8000"       
     networks:
       - open-data
   pthg-service-dapr:
@@ -111,7 +111,7 @@ services:
       - placement
     ports:
       - "50010:50002"  
-      - "8600:8000"       
+      # - "8600:8000"       
     networks:
       - open-data
   taichung-service-dapr:
@@ -139,7 +139,7 @@ services:
       - identity-service       
     ports:
       - "50008:50002"  
-      - "8300:8000"       
+      # - "8300:8000"       
     networks:
       - open-data
     environment:
@@ -192,7 +192,9 @@ services:
   # Identity Service
   ############################
   identity-service:
-    build: ./api-service/identity-service   
+    build: ./api-service/identity-service  
+    ports:
+      - "9414:80"   
     networks:
       - open-data                   
   ############################
