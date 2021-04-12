@@ -54,19 +54,7 @@ curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: applica
 - Open Data明細
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/5.png?raw=true" />
 </center>
-# Reference
-- integrate docker compose 
-    - https://docs.microsoft.com/zh-tw/dotnet/architecture/dapr-for-net-developers/getting-started
-    - https://opendata.taichung.gov.tw/
-    - https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n=481C53E05C1D2D97&sms=354B0B57F2762613
-- auth 
-    - https://blog.logrocket.com/using-authentication-in-next-js/
-    - https://next-auth.js.org/providers/credentials
-- form
-  - https://react-hook-form.com/get-started/
-  - https://github.com/formium/formik/
-- https://stackoverflow.com/questions/54312304/identity-server-add-custom-parameters-to-the-json-response-from-the-token-endp
-  
+
 
 
 
