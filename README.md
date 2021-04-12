@@ -58,3 +58,4 @@ curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: applica
 
 
 
+- https://andrewlock.net/running-async-tasks-on-app-startup-in-asp-net-core-part-2/
