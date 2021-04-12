@@ -12,27 +12,27 @@ net start winnat
 curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
 ```
 # 系統說明
-| 服務名稱                 | 類型              | 用途                                          | 相依服務 |
-| ------------------------ | :---------------- | :-------------------------------------------- | :------- |
-| nodeapp                  | 網站              | OpenDataCollector網站                         |          |
-| nodeapp-dapr             | dapr side-car服務 | 處理nodeapp與dapr的http和grpc連線             | 200      |
-| kao-service              | Api               | 高雄市OpenData Api                            | 800      |
-| kao-service-dapr         | dapr side-car服務 | 處理kao-service與dapr的http和grpc連線         | 800      |
-| tainan-service           | Api               | 台南市OpenData Api                            | 800      |
-| tainan-service-dapr      | dapr side-car服務 | 處理tainan-service與dapr的http和grpc連線      | 800      |
-| pthg-service             | Api               | 屏東縣OpenData Api                            | 800      |
-| pthg-service-dapr        | dapr side-car服務 | 處理pthg-service與dapr的http和grpc連線        | 800      |
-| taichung-service         | Api               | 台中市OpenData Api                            | 800      |
-| taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線    | 800      |
-| account-service          | Api               | 帳號相關Api                                   | 800      |
-| account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線     | 800      |
-| api-gateway-service      | Api               | 統一Api的連線網址，並透供Api的jwt授權驗證     | 800      |
-| api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線 | 800      |
-| identity-service         | Api               | 授權管理Api                                   | 800      |
-| placement                | dapr服務          | dapr 放置服務                                 | 800      |
-| redis                    | redis資料庫       | 提供dpar狀態管理和執行pub/sub功能             | 800      |
-| mongo                    | 資料庫            | 儲存與系統相關的資料，例如：使用者帳號資料    | 800      |
-| mongo-express            | 網站              | 管理mongoDB的網站                             | 800      |
+| 服務名稱                 | 類型              | 用途                                          |
+| ------------------------ | :---------------- | :-------------------------------------------- |
+| nodeapp                  | 網站              | OpenDataCollector網站                         |
+| nodeapp-dapr             | dapr side-car服務 | 處理nodeapp與dapr的http和grpc連線             |
+| kao-service              | Api               | 高雄市OpenData Api                            |
+| kao-service-dapr         | dapr side-car服務 | 處理kao-service與dapr的http和grpc連線         |
+| tainan-service           | Api               | 台南市OpenData Api                            |
+| tainan-service-dapr      | dapr side-car服務 | 處理tainan-service與dapr的http和grpc連線      |
+| pthg-service             | Api               | 屏東縣OpenData Api                            |
+| pthg-service-dapr        | dapr side-car服務 | 處理pthg-service與dapr的http和grpc連線        |
+| taichung-service         | Api               | 台中市OpenData Api                            |
+| taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線    |
+| account-service          | Api               | 帳號相關Api                                   |
+| account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線     |
+| api-gateway-service      | Api               | 統一Api的連線網址，並透供Api的jwt授權驗證     |
+| api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線 |
+| identity-service         | Api               | 授權管理Api                                   |
+| placement                | dapr服務          | dapr 放置服務                                 |
+| redis                    | redis資料庫       | 提供dpar狀態管理和執行pub/sub功能             |
+| mongo                    | 資料庫            | 儲存與系統相關的資料，例如：使用者帳號資料    |
+| mongo-express            | 網站              | 管理mongoDB的網站                             |
 
 # 系統畫面
 - 各縣市Open Data統計資料
