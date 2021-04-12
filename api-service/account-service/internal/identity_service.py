@@ -1,7 +1,8 @@
 import requests
 import os 
-
+from internal import secret_service
 def token_endpoint(user_name,user_id):
+    print(secret_service.get_jwt_config())
     if os.getenv('ENVIRONMENT') == 'production':
         url =('http://localhost:3500/v1.0/invoke/identity-service/method')
     else:
