@@ -11,7 +11,7 @@ export default function SignIn({ csrfToken }) {
     userName: yup.string().required("不能為空值"),
     password: yup.string().required("不能為空值"),
   });
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, formState:{ errors } } = useForm({
     resolver: yupResolver(schema),
   });
   const [customError,setCustomError]=useState("");
@@ -48,7 +48,8 @@ export default function SignIn({ csrfToken }) {
                 className="form-control"
                 id="userName"
                 name="userName"
-                ref={register({ required: true })}
+                {...register("userName")}
+                
               />
               <p>{errors.userName?.message}</p>
             </div>
@@ -61,7 +62,7 @@ export default function SignIn({ csrfToken }) {
                 className="form-control"
                 id="password"
                 name="password"
-                ref={register({ required: true })}
+                {...register("password")}
               />
               <p>{errors.password?.message}</p>
             </div>

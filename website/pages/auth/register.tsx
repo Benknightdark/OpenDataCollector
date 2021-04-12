@@ -13,7 +13,7 @@ export default function Register({ csrfToken }) {
     email: yup.string().required("不能為空值"),
     displayName: yup.string().required("不能為空值"),
   });
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit, formState:{ errors } } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
@@ -52,7 +52,7 @@ export default function Register({ csrfToken }) {
                   className="form-control"
                   id="userName"
                   name="userName"
-                  ref={register({ required: true })}
+                  {...register("userName")}
                 />
                 <p>{errors.userName?.message}</p>
               </div>
@@ -65,7 +65,7 @@ export default function Register({ csrfToken }) {
                   className="form-control"
                   id="password"
                   name="password"
-                  ref={register({ required: true })}
+                  {...register("password")}
                 />
                 <p>{errors.password?.message}</p>
               </div>
@@ -78,7 +78,7 @@ export default function Register({ csrfToken }) {
                   className="form-control"
                   id="email"
                   name="email"
-                  ref={register({ required: true })}
+                  {...register("email")}
                 />
                 <p>{errors.email?.message}</p>
               </div>
@@ -91,7 +91,7 @@ export default function Register({ csrfToken }) {
                   className="form-control"
                   id="displayName"
                   name="displayName"
-                  ref={register({ required: true })}
+                  {...register("displayName")}
                 />
                 <p>{errors.displayName?.message}</p>
               </div>
