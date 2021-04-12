@@ -5,25 +5,19 @@ using IdentityServer4.Validation;
 
 namespace identity_service.Middlewares
 {
-    public class CustomTokenRequestValidator: ICustomTokenRequestValidator
-{
-    public Task ValidateAsync(CustomTokenRequestValidationContext context)
+    public class CustomTokenRequestValidator : ICustomTokenRequestValidator
     {
-          context.Result.ValidatedRequest.Client.AlwaysSendClientClaims = true;
-          var reqParamsDict = context.Result.ValidatedRequest.Raw["user_id"].ToString();
+        public Task ValidateAsync(CustomTokenRequestValidationContext context)
+        {
+            context.Result.ValidatedRequest.Client.AlwaysSendClientClaims = true;
+            var reqParamsDict = context.Result.ValidatedRequest.Raw["user_id"].ToString();
+            context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id", reqParamsDict));
+            return Task.CompletedTask;
+        }
 
-        context.Result.ValidatedRequest.ClientClaims.Add(new Claim("testtoken","testbody"));
-        context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id",reqParamsDict));
+        public CustomTokenRequestValidator()
+        {
 
-
-        // context.Result.CustomResponse =
-        //   new Dictionary<string, object> {{ "patient", "alice"}};
-        return Task.CompletedTask;
+        }
     }
-
-    public CustomTokenRequestValidator()
-    {
-        
-    }
-}
 }
