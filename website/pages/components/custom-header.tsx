@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-import {  signOut } from "next-auth/client";
+import { signOut } from "next-auth/client";
 import { useEffect, useState } from "react";
 export default function CustomHeader(props) {
   const router = useRouter();
@@ -9,7 +9,7 @@ export default function CustomHeader(props) {
     (async () => {
       const req = await fetch("/api/auth/session");
       const res = await req.json();
-      if (res?.user!=null) {
+      if (res?.user != null) {
         const dis = JSON.parse(res?.user?.name).displayName;
         setDisplayName(dis);
       }
@@ -64,7 +64,9 @@ export default function CustomHeader(props) {
               />
             )}
             <div className="d-inline-block">
-              <h3>OpenData Collector</h3>
+              <h3 style={{cursor:"pointer"}} onClick={() => {
+                  router.push('/')
+                }}>OpenData Collector</h3>
             </div>
           </div>
           <div
@@ -84,15 +86,30 @@ export default function CustomHeader(props) {
                   hi~ {displayName} 登出
                 </button>
               ) : (
-                <button
-                  className="btn"
-                  type="button"
-                  onClick={async () => {
-                    router.push("/auth/signin");
-                  }}
-                >
-                  登入
+                <div>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={async () => {
+                      router.push("/auth/register");
+                    }}
+                  >
+                    註冊
                 </button>
+                  <div className="material-icons" style={{ fontSize: "20px" }}>
+                    more_vert
+                  </div>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={async () => {
+                      router.push("/auth/signin");
+                    }}
+                  >
+                    登入
+                </button>
+                </div>
+
               )}
             </div>
           </div>
