@@ -4,9 +4,9 @@ import { getApiUrl } from "../../../helpers/common_helper";
 
 
 export default async (req, res) => {
-  
-  const url =`${getApiUrl(req.query['serviceName'])}/api/${req.query['dataType']}${req.query['page']==null?'':'?page='+req.query['page']}`;
-  const reqData = await fetch(url)
+  console.log(req.body)
+  const url =`${getApiUrl("account-service")}/api/register`
+  const reqData = await fetch(url, { method: "POST", body: JSON.stringify(req.body), headers: { 'content-type': "application/json" } });
   const resData = await reqData.json()
   res.status(200).json(resData)
 }

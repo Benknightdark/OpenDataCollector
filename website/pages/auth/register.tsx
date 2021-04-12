@@ -10,94 +10,99 @@ export default function Register({ csrfToken }) {
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),
     password: yup.string().required("不能為空值"),
-    email:yup.string().required("不能為空值"),
-    displayName:yup.string().required("不能為空值"),
-
+    email: yup.string().required("不能為空值"),
+    displayName: yup.string().required("不能為空值"),
   });
   const { register, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema),
   });
   const onSubmit = (data) => {
-    (async()=>{
-      signIn("credentials", {
-        username: data.userName,
-        password: data.password,
-        redirect: false,
-      }).then((r) => {
-        if (r.error === null) {
-          router.push("/");
-        }
-      });
+    (async () => {
+      const req = await fetch("/api/auth/register", { method: "POST", body: JSON.stringify(data), headers: { 'content-type': "application/json" } });
+      const res = await req.json();
+      if (res?.token) {
+        signIn("credentials", {
+          username: data.userName,
+          password: data.password,
+          redirect: false,
+        }).then((r) => {
+          if (r.error === null) {
+            router.push("/");
+          } else {
+            alert(r['error'])
+          }
+        });
+      }
     })()
   };
   return (
     <Layout goBack="true">
       <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
-      <div className="card" style={{width: "1000px"}}>
-        <div className="card-header">註冊</div>
-        <div className="card-body">
-          <form method="post" onSubmit={handleSubmit(onSubmit)}>
-            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-            <div className="mb-3">
-              <label htmlFor="userName" className="form-label">
-                帳號
+        <div className="card" style={{ width: "1000px" }}>
+          <div className="card-header">註冊</div>
+          <div className="card-body">
+            <form method="post" onSubmit={handleSubmit(onSubmit)}>
+              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
+              <div className="mb-3">
+                <label htmlFor="userName" className="form-label">
+                  帳號
               </label>
-              <input
-                type="text"
-                className="form-control"
-                id="userName"
-                name="userName"
-                ref={register({ required: true })}
-              />
-              <p>{errors.userName?.message}</p>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                密碼
+                <input
+                  type="text"
+                  className="form-control"
+                  id="userName"
+                  name="userName"
+                  ref={register({ required: true })}
+                />
+                <p>{errors.userName?.message}</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">
+                  密碼
               </label>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                name="password"
-                ref={register({ required: true })}
-              />
-              <p>{errors.password?.message}</p>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  name="password"
+                  ref={register({ required: true })}
+                />
+                <p>{errors.password?.message}</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email
               </label>
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                name="email"
-                ref={register({ required: true })}
-              />
-              <p>{errors.email?.message}</p>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="displayName" className="form-label">
-                顯示名稱
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  name="email"
+                  ref={register({ required: true })}
+                />
+                <p>{errors.email?.message}</p>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="displayName" className="form-label">
+                  顯示名稱
               </label>
+                <input
+                  type="displayName"
+                  className="form-control"
+                  id="displayName"
+                  name="displayName"
+                  ref={register({ required: true })}
+                />
+                <p>{errors.displayName?.message}</p>
+              </div>
               <input
-                type="displayName"
-                className="form-control"
-                id="displayName"
-                name="displayName"
-                ref={register({ required: true })}
-              />
-              <p>{errors.displayName?.message}</p>
-            </div>
-            <input
-              type="submit"
-              className="btn btn-primary"
-              value="送出"
-            ></input>
-          </form>
+                type="submit"
+                className="btn btn-primary"
+                value="送出"
+              ></input>
+            </form>
+          </div>
         </div>
-      </div>
       </div>
     </Layout>
   );
