@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using identity_service.Middlewares;
 using Microsoft.AspNetCore.Builder;
@@ -27,22 +28,23 @@ namespace identity_service
         public void ConfigureServices(IServiceCollection services)
         {
 
-            // services.AddControllers();
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "identity_service", Version = "v1" });
-            // });
-             var builder = services.AddIdentityServer()
-                .AddInMemoryApiScopes(Config.ApiScopes)
-                .AddInMemoryClients(Config.Clients);
+            // var client = new HttpClient();
+            // var response =  client.GetAsync("http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig").ConfigureAwait(true);
+            // // response.EnsureSuccessStatusCode();
+            // string secret =  response.GetAwaiter().GetResult().Content.ToString();
+            //             System.Console.WriteLine(secret);
+
+            var builder = services.AddIdentityServer()
+               .AddInMemoryApiScopes(Config.ApiScopes)
+               .AddInMemoryClients(Config.Clients);
             builder.AddDeveloperSigningCredential();
-            builder.AddCustomTokenRequestValidator<CustomTokenRequestValidator>() ;
+            builder.AddCustomTokenRequestValidator<CustomTokenRequestValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-             app.UseDeveloperExceptionPage();
+            app.UseDeveloperExceptionPage();
 
             // uncomment if you want to add MVC
             //app.UseStaticFiles();
