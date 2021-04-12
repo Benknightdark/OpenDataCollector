@@ -3,7 +3,7 @@ import os
 
 def token_endpoint(user_name,user_id):
     if os.getenv('ENVIRONMENT') == 'production':
-        url =('http://identity-service')
+        url =('http://localhost:3500/v1.0/invoke/identity-service/method')
     else:
         url ='htt://localhost:9414'    
     url = f"{url}/connect/token"
