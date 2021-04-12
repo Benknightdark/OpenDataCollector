@@ -67,7 +67,7 @@ export default function Index() {
                     setShowInfo(!showInfo);
                   }}
                 >
-                  欄位資訊
+                  資料說明
                 </button>
               </h2>
               <div
