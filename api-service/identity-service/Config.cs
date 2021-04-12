@@ -2,7 +2,7 @@ using IdentityServer4.Models;
 using System.Collections.Generic;
 namespace identity_service
 {
-   public static class Config
+    public static class Config
     {
         public static IEnumerable<ApiScope> ApiScopes =>
             new List<ApiScope>
