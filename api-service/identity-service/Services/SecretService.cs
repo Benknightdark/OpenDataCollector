@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace identity_service.Services
@@ -26,6 +27,8 @@ namespace identity_service.Services
             _context=context;
         }
         public async Task GetClientData(){
+                    _context.Database.Migrate();
+
             string clientString = string.Empty;
                 string scope = string.Empty;
                 string secret = string.Empty;
