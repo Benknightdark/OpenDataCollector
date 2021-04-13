@@ -49,7 +49,7 @@ namespace identity_service
             //        }
             //    });
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-
+            System.Console.WriteLine(Configuration.GetConnectionString("db"));
             services.AddIdentityServer()
             // .AddInMemoryApiScopes(Config.ApiScopes)
             // .AddInMemoryClients(Config.Clients)
@@ -68,10 +68,26 @@ namespace identity_service
 
 
         }
-        private void InitializeDatabase(IApplicationBuilder app)
+        private async Task InitializeDatabase(IApplicationBuilder app)
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
+                try
+                {
+                    HttpClient client = new HttpClient();
+                    var response = await client.GetAsync("http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig");
+                    // response.EnsureSuccessStatusCode();
+                    string secret = await response.Content.ReadAsStringAsync();
+                    System.Console.WriteLine("===============================");
+                    System.Console.WriteLine(secret);
+                    System.Console.WriteLine("===============================");
+                }
+                catch (System.Exception e)
+                {
+                    System.Console.WriteLine("===============================");
+                    System.Console.WriteLine(e.Message);
+                    System.Console.WriteLine("===============================");
+                }
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
@@ -107,9 +123,13 @@ namespace identity_service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            InitializeDatabase(app);
+
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
+            Task.Run(async () =>
+            {
+                await InitializeDatabase(app);
+            });
         }
     }
 }

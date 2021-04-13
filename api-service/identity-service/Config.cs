@@ -16,7 +16,7 @@ namespace identity_service
                 new Client
                 {
                     ClientId = "client",
-    RequireRequestObject = true,
+                    RequireRequestObject = true,
 
                     // no interactive user, use the clientid/secret for authentication
                     AllowedGrantTypes = GrantTypes.ClientCredentials,

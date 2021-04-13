@@ -192,15 +192,17 @@ services:
   # Identity Service
   ############################
   identity-service:
-    restart: always
+    # restart: always
     build: ./api-service/identity-service  
     ports:
       - "9414:80" 
       - "50014:50002"  
+    depends_on:
+      - redis
+      - placement      
+      - identity-server-db       
     networks:
       - open-data
-    depends_on:
-      - identity-server-db  
   identity-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
@@ -280,11 +282,8 @@ services:
         - identity-server-db-data:/var/opt/mssql      
     ports:
       - 8734:1433
-    healthcheck:
-        test: ["CMD-SHELL", 'identity-server-db ping']
-        interval: 10s
-        timeout: 2s
-        retries: 10                                               
+    networks:
+      - open-data                                                    
 networks:
     open-data:
 volumes:
