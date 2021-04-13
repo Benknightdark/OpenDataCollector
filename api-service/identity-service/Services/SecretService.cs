@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -41,10 +42,11 @@ namespace identity_service.Services
                 // _logger.LogInformation(b);
                 // var c =JsonDocument.Parse(clientString).RootElement.GetProperty("secret").GetString();
                // _logger.LogInformation(c);
-                _logger.LogInformation(clientString);
-                _logger.LogInformation(scope);
-                _logger.LogInformation(secret);
+                _logger.LogInformation(clientString.Replace("{\"jwtConfig:client\":\"","").Replace("\"}",""));
+                _logger.LogInformation(scope.Replace("{\"jwtConfig:secret\":\"","").Replace("\"}",""));
+                _logger.LogInformation(secret.Replace("{\"jwtConfig:scope\":\"","").Replace("\"}",""));
                 _logger.LogInformation("===============================");
+               
                 var NewClients = new Client
                 {
                     ClientId = clientString.Replace("{\"jwtConfig:client\":\"","").Replace("\"}",""),//client
@@ -59,7 +61,10 @@ namespace identity_service.Services
                     AllowedScopes = { scope.Replace("{\"jwtConfig:scope\":\"","").Replace("\"}","") }
                 }.ToEntity();
                 _context.Clients.Add(NewClients);
+                if( !_context.ApiScopes.Any()){
                 _context.ApiScopes.Add(new ApiScope("api1", "My API").ToEntity());
+
+                }
                 _context.SaveChanges();
         }
     }
