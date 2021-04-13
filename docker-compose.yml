@@ -197,7 +197,9 @@ services:
       - "9414:80" 
       - "50014:50002"  
     networks:
-      - open-data 
+      - open-data
+    depends_on:
+      - identity-server-db   
   identity-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
@@ -259,8 +261,21 @@ services:
     depends_on:
             - mongo   
     networks:
-            - open-data                       
+            - open-data
+  ############################
+  # identity server資料庫
+  ############################             
+  identity-server-db:
+    build: ./db/identity-server-db
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    # volumes:
+    #     - identity-server-db-data:/var/opt/mssql/data      
+    ports:
+      - 8734:1433                                         
 networks:
     open-data:
 volumes:
-    auth-db-data:      
+    auth-db-data:
+    identity-server-db-data:        
