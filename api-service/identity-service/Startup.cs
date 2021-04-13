@@ -54,31 +54,8 @@ namespace identity_service
             {
 
                 var SecretServiceInvoke = serviceScope.ServiceProvider.GetRequiredService<SecretService>();
-             await SecretServiceInvoke.GetClientData();
-                // System.Console.WriteLine("---------------------------------------------");
-                // System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(SecretData));
-                //                 System.Console.WriteLine("---------------------------------------------");
+                await SecretServiceInvoke.GetClientData();
 
-                // serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-                // var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                // context.Database.Migrate();
-                // var NewClients = new Client
-                // {
-                //     ClientId = SecretData.client,//client
-                //     RequireRequestObject = true,
-
-                //     AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                //     ClientSecrets =
-                //     {
-                //         new Secret(SecretData.secret.ToString().Sha256())
-                //     },
-                //     AllowedScopes = { SecretData.scope }
-                // }.ToEntity();
-                // context.Clients.Add(NewClients);
-                // context.ApiScopes.Add(new ApiScope("api1", "My API").ToEntity());
-                // context.SaveChanges();
-                // }
             }
 
 
