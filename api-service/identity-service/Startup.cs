@@ -4,8 +4,10 @@ using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 using identity_service.Middlewares;
+using identity_service.Services;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
+using IdentityServer4.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,10 +45,10 @@ namespace identity_service
                 })
             .AddDeveloperSigningCredential()
             .AddCustomTokenRequestValidator<CustomTokenRequestValidator>();
-
+            services.AddHttpClient<SecretService>();
 
         }
-        private void InitializeDatabase(IApplicationBuilder app)
+        private async Task InitializeDatabase(IApplicationBuilder app)
         {
 
 
@@ -54,7 +56,8 @@ namespace identity_service
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
 
-
+                var SecretServiceInvoke = serviceScope.ServiceProvider.GetRequiredService<SecretService>();
+                var SecretData = await SecretServiceInvoke.GetClientData();
                 serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
@@ -65,6 +68,23 @@ namespace identity_service
                     {
                         context.Clients.Add(client.ToEntity());
                     }
+                    var NewClients = new Client
+                    {
+                        ClientId = SecretData.client,//client
+                        RequireRequestObject = true,
+
+                        // no interactive user, use the clientid/secret for authentication
+                        AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                        // secret for authentication
+                        ClientSecrets =
+                    {
+                        new Secret(SecretData.secret.ToString().Sha256())
+                    },
+                        // scopes that client has access to
+                        AllowedScopes = { SecretData.scope }
+                    }.ToEntity();
+                    context.Clients.Add(NewClients);
                     context.SaveChanges();
                 }
 
@@ -93,27 +113,14 @@ namespace identity_service
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
+
             Task.Run(async () =>
             {
-                HttpClient DaprClient = new HttpClient();
-                string clientString = string.Empty;
-                string scope = string.Empty;
-                string secret = string.Empty;
-                string url = "http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig:";
-                var response = await DaprClient.GetAsync($"http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig:client");
-                clientString = await response.Content.ReadAsStringAsync();
-                // var response2 = await DaprClient.GetAsync($"http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig:scope");
-                // scope = await response2.Content.ReadAsStringAsync();
-                // var response3 = await DaprClient.GetAsync($"http://localhost:3500/v1.0/secrets/my-secrets-store/jwtConfig:secret");
-                // secret = await response3.Content.ReadAsStringAsync();
-                System.Console.WriteLine("===============================");
-                System.Console.WriteLine(clientString);
-                System.Console.WriteLine(scope);
-                System.Console.WriteLine(secret);
-                System.Console.WriteLine("===============================");
-                InitializeDatabase(app);
-
+                await InitializeDatabase(app);
             });
+
+
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
 

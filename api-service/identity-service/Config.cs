@@ -24,7 +24,7 @@ namespace identity_service
                     // secret for authentication
                     ClientSecrets =
                     {
-                        new Secret("secret11".Sha256())
+                        new Secret("fsdfsdfsdf".Sha256())
                     },
                     // scopes that client has access to
                     AllowedScopes = { "api111","user11" }

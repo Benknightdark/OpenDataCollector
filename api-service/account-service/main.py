@@ -32,7 +32,8 @@ def read_root(data: Login):
     query_data=db_service.user_query(data_dict)
     print(query_data)
     if query_data !=None:
-        token=identity_service.token_endpoint(query_data['userName'],str(query_data['_id']['$oid']))      
+        token=identity_service.token_endpoint(query_data['userName'],str(query_data['_id']['$oid']))  
+        print(token)    
         return {"displayName": query_data['displayName'], "token": token['access_token']}
     else:
         raise HTTPException(status_code=404, detail="不存在此使用者")
