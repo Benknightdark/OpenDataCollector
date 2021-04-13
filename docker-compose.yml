@@ -192,7 +192,7 @@ services:
   # Identity Service
   ############################
   identity-service:
-    # restart: always
+    restart: always
     build: ./api-service/identity-service  
     ports:
       - "9414:80" 
@@ -288,4 +288,4 @@ networks:
     open-data:
 volumes:
     auth-db-data:
-    identity-server-db-data:        
+    identity-server-db-data:

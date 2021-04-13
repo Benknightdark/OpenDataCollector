@@ -15,7 +15,7 @@ namespace identity_service
             {
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "client11",//client
                     RequireRequestObject = true,
 
                     // no interactive user, use the clientid/secret for authentication
@@ -24,10 +24,10 @@ namespace identity_service
                     // secret for authentication
                     ClientSecrets =
                     {
-                        new Secret("secret".Sha256())
+                        new Secret("secret11".Sha256())
                     },
                     // scopes that client has access to
-                    AllowedScopes = { "api1","user" }
+                    AllowedScopes = { "api111","user11" }
                 }
             };
     }
