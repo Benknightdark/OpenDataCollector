@@ -12,6 +12,10 @@ net start winnat
 curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
 dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+delete from [dbo].[ClientSecrets]
+delete from [dbo].[ClientScopes]
+delete from [dbo].[Clients]
+delete from [dbo].[ApiScopes]
 ```
 # 系統說明
 | 服務名稱                 | 類型              | 用途                                                       |

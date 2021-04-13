@@ -50,61 +50,35 @@ namespace identity_service
         }
         private async Task InitializeDatabase(IApplicationBuilder app)
         {
-
-
-
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
 
                 var SecretServiceInvoke = serviceScope.ServiceProvider.GetRequiredService<SecretService>();
-                var SecretData = await SecretServiceInvoke.GetClientData();
-                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+             await SecretServiceInvoke.GetClientData();
+                // System.Console.WriteLine("---------------------------------------------");
+                // System.Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(SecretData));
+                //                 System.Console.WriteLine("---------------------------------------------");
 
-                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-                context.Database.Migrate();
-                if (!context.Clients.Any())
-                {
-                    foreach (var client in Config.Clients)
-                    {
-                        context.Clients.Add(client.ToEntity());
-                    }
-                    var NewClients = new Client
-                    {
-                        ClientId = SecretData.client,//client
-                        RequireRequestObject = true,
-
-                        // no interactive user, use the clientid/secret for authentication
-                        AllowedGrantTypes = GrantTypes.ClientCredentials,
-
-                        // secret for authentication
-                        ClientSecrets =
-                    {
-                        new Secret(SecretData.secret.ToString().Sha256())
-                    },
-                        // scopes that client has access to
-                        AllowedScopes = { SecretData.scope }
-                    }.ToEntity();
-                    context.Clients.Add(NewClients);
-                    context.SaveChanges();
-                }
-
-                // if (!context.IdentityResources.Any())
+                // serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
+                // var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                // context.Database.Migrate();
+                // var NewClients = new Client
                 // {
-                //     foreach (var resource in Config.IdentityResources)
-                //     {
-                //         context.IdentityResources.Add(resource.ToEntity());
-                //     }
-                //     context.SaveChanges();
-                // }
+                //     ClientId = SecretData.client,//client
+                //     RequireRequestObject = true,
 
-                if (!context.ApiScopes.Any())
-                {
-                    foreach (var resource in Config.ApiScopes)
-                    {
-                        context.ApiScopes.Add(resource.ToEntity());
-                    }
-                    context.SaveChanges();
-                }
+                //     AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                //     ClientSecrets =
+                //     {
+                //         new Secret(SecretData.secret.ToString().Sha256())
+                //     },
+                //     AllowedScopes = { SecretData.scope }
+                // }.ToEntity();
+                // context.Clients.Add(NewClients);
+                // context.ApiScopes.Add(new ApiScope("api1", "My API").ToEntity());
+                // context.SaveChanges();
+                // }
             }
 
 
@@ -114,15 +88,16 @@ namespace identity_service
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-
             Task.Run(async () =>
-            {
-                await InitializeDatabase(app);
-            });
+          {
+              await InitializeDatabase(app);
+          });
+
 
 
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
+
 
         }
     }
