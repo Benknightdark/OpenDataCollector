@@ -68,47 +68,46 @@ namespace identity_service
 
 
         }
-private void InitializeDatabase(IApplicationBuilder app)
-{
-    using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-    {
-        serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-
-        var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
-        context.Database.Migrate();
-        if (!context.Clients.Any())
+        private void InitializeDatabase(IApplicationBuilder app)
         {
-            foreach (var client in Config.Clients)
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-                context.Clients.Add(client.ToEntity());
-            }
-            context.SaveChanges();
-        }
+                serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
 
-        // if (!context.IdentityResources.Any())
-        // {
-        //     foreach (var resource in Config.IdentityResources)
-        //     {
-        //         context.IdentityResources.Add(resource.ToEntity());
-        //     }
-        //     context.SaveChanges();
-        // }
+                var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
+                context.Database.Migrate();
+                if (!context.Clients.Any())
+                {
+                    foreach (var client in Config.Clients)
+                    {
+                        context.Clients.Add(client.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
 
-        if (!context.ApiScopes.Any())
-        {
-            foreach (var resource in Config.ApiScopes)
-            {
-                context.ApiScopes.Add(resource.ToEntity());
+                // if (!context.IdentityResources.Any())
+                // {
+                //     foreach (var resource in Config.IdentityResources)
+                //     {
+                //         context.IdentityResources.Add(resource.ToEntity());
+                //     }
+                //     context.SaveChanges();
+                // }
+
+                if (!context.ApiScopes.Any())
+                {
+                    foreach (var resource in Config.ApiScopes)
+                    {
+                        context.ApiScopes.Add(resource.ToEntity());
+                    }
+                    context.SaveChanges();
+                }
             }
-            context.SaveChanges();
         }
-    }
-}
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-                InitializeDatabase(app);
-
+            InitializeDatabase(app);
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
         }
