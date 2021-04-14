@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-04-14T01:15:40.670Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36" etag="_KQMiPH0uXX7vOcJMHge" version="14.6.0" type="github">
+<mxfile host="app.diagrams.net" modified="2021-04-14T01:16:36.713Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36" etag="I4RsZxEl2wu0ZGF2T4U-" version="14.6.0" type="github">
   <diagram id="8w8wabQFdg4WhhDFVWYx" name="Page-1">
-    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1422" dy="706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -18,6 +18,12 @@
         </mxCell>
         <mxCell id="OhrNE6VcvfpsGNgGxQ-j-7" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://dapr.io/images/dapr.svg;fontSize=16;" vertex="1" parent="OhrNE6VcvfpsGNgGxQ-j-8">
           <mxGeometry x="18" y="7" width="63.89" height="47" as="geometry" />
+        </mxCell>
+        <mxCell id="OhrNE6VcvfpsGNgGxQ-j-10" value="api-gateway-service" style="swimlane;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="10" y="140" width="170" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="OhrNE6VcvfpsGNgGxQ-j-11" value="Envoy Api Gateway" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fontSize=16;" vertex="1" parent="OhrNE6VcvfpsGNgGxQ-j-10">
+          <mxGeometry x="5" y="34" width="150" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
