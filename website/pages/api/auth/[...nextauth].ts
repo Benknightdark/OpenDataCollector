@@ -71,12 +71,14 @@ export default NextAuth({
       return baseUrl
     },
     async session(session) {
-     
-
+      const displayName = JSON.parse(session.user.name).displayName
+      const token=JSON.parse(session.user.name).token;
+      console.log(JSON.parse(session.user.name).token)
+     session.user.name=displayName;
+     session.user.token=token;
       return (session)
     },
     async jwt(token, user, account, profile, isNewUser) {
-      console.log(token, user, account, profile, isNewUser)
       return token
     }
   },

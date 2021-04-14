@@ -10,8 +10,8 @@ export default function CustomHeader(props) {
       const req = await fetch("/api/auth/session");
       const res = await req.json();
       if (res?.user != null) {
-        const dis = JSON.parse(res?.user?.name).displayName;
-        setDisplayName(dis);
+        // const dis = JSON.parse(res?.user?.name).displayName;
+        setDisplayName(res?.user?.name);
       }
     })();
   });

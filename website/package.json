@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^2.2.0",
+    "cookies": "^0.8.0",
     "env-cmd": "^10.1.0",
     "highcharts": "^9.0.1",
     "highcharts-react-official": "^3.0.0",
