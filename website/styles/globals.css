@@ -210,10 +210,6 @@ body {
   
   .wave {
 	background: url(/wave.svg) repeat-x; 
-	/* position: absolute;
-	top: -198px;
-	
- */
 	position: fixed;
   left: 0;
   bottom: 0;
@@ -246,3 +242,12 @@ body {
 	  transform: translate3d(0,5px,0);
 	}
   }
+
+
+.custom-nav-bar {
+	opacity: 0.8;
+}
+.custom-nav-bar:hover {
+	opacity: 1;
+
+}

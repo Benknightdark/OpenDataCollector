@@ -52,7 +52,7 @@ export default function CustomHeader(props) {
         />
       </Head>
 
-      <nav className="navbar navbar-light bg-light">
+      <nav className="navbar navbar-light bg-light custom-nav-bar">
         <div className="container-fluid">
           <div className="navbar-brand">
 
