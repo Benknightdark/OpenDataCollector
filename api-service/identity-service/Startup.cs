@@ -1,10 +1,14 @@
 
+using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using identity_service.Extensions;
 using identity_service.Middlewares;
 using identity_service.Services;
+using IdentityServer4.Configuration;
 using IdentityServer4.EntityFramework.DbContexts;
 using IdentityServer4.EntityFramework.Mappers;
 using IdentityServer4.Models;
@@ -13,7 +17,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace identity_service
 {
@@ -26,13 +31,15 @@ namespace identity_service
 
         public IConfiguration Configuration { get; }
 
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
+
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddIdentityServer()
-            // .AddInMemoryApiScopes(Config.ApiScopes)
-            // .AddInMemoryClients(Config.Clients)
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(Configuration.GetConnectionString("db"),
@@ -42,10 +49,13 @@ namespace identity_service
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(Configuration.GetConnectionString("db"),
                         sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
-            .AddDeveloperSigningCredential()
+                }).AddCustomCredential()
+            //.AddDeveloperSigningCredential()
             .AddCustomTokenRequestValidator<CustomTokenRequestValidator>();
             services.AddHttpClient<SecretService>();
+
+
+
 
         }
         private async Task InitializeDatabase(IApplicationBuilder app)
