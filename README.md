@@ -18,28 +18,29 @@ delete from [dbo].[Clients]
 delete from [dbo].[ApiScopes]
 ```
 # 系統說明
-| 服務名稱                 | 類型              | 用途                                                       |
-| ------------------------ | :---------------- | :--------------------------------------------------------- |
-| nodeapp                  | 網站              | OpenDataCollector網站                                      |
-| nodeapp-dapr             | dapr side-car服務 | 處理nodeapp與dapr的http和grpc連線                          |
-| kao-service              | Api               | 高雄市OpenData Api                                         |
-| kao-service-dapr         | dapr side-car服務 | 處理kao-service與dapr的http和grpc連線                      |
-| tainan-service           | Api               | 台南市OpenData Api                                         |
-| tainan-service-dapr      | dapr side-car服務 | 處理tainan-service與dapr的http和grpc連線                   |
-| pthg-service             | Api               | 屏東縣OpenData Api                                         |
-| pthg-service-dapr        | dapr side-car服務 | 處理pthg-service與dapr的http和grpc連線                     |
-| taichung-service         | Api               | 台中市OpenData Api                                         |
-| taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線                 |
-| account-service          | Api               | 帳號相關Api                                                |
-| account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線                  |
-| api-gateway-service      | Api               | 統一Api的連線網址，並提供Api的jwt授權驗證                  |
-| api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線              |
-| identity-service         | Api               | 授權管理Api                                                |
-| placement                | dapr服務          | dapr放置服務，產生HashTable儲存dapr side-car服務的連線名稱 |
-| redis                    | redis資料庫       | 提供dpar狀態管理和執行pub/sub功能                          |
-| mongo                    | mongodb資料庫     | 儲存與系統相關的資料，例如：使用者帳號資料                 |
-| mongo-express            | 網站              | 管理mongoDB的網站                                          |
-
+| 服務名稱                 | 類型              | 用途                                                        |
+| ------------------------ | :---------------- | :---------------------------------------------------------- |
+| nodeapp                  | 網站              | OpenDataCollector網站                                       |
+| nodeapp-dapr             | dapr side-car服務 | 處理nodeapp與dapr的http和grpc連線                           |
+| kao-service              | Api               | 高雄市OpenData Api                                          |
+| kao-service-dapr         | dapr side-car服務 | 處理kao-service與dapr的http和grpc連線                       |
+| tainan-service           | Api               | 台南市OpenData Api                                          |
+| tainan-service-dapr      | dapr side-car服務 | 處理tainan-service與dapr的http和grpc連線                    |
+| pthg-service             | Api               | 屏東縣OpenData Api                                          |
+| pthg-service-dapr        | dapr side-car服務 | 處理pthg-service與dapr的http和grpc連線                      |
+| taichung-service         | Api               | 台中市OpenData Api                                          |
+| taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線                  |
+| account-service          | Api               | 帳號相關Api                                                 |
+| account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線                   |
+| api-gateway-service      | Api               | 統一Api的連線網址，並提供Api的jwt授權驗證                   |
+| api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線               |
+| identity-service         | Api               | IdentityServer4 服務                                        |
+| identity-service-dapr    | dapr side-car服務 | 處理identity-service與dapr的http和grpc連線Api               |
+| placement                | dapr服務          | dapr放置服務，產生HashTable儲存dapr side-car服務的連線名稱  |
+| redis                    | redis資料庫       | 提供dpar狀態管理和執行pub/sub功能                           |
+| mongo                    | mongodb資料庫     | 儲存與OpenDataCollector網站相關的資料，例如：使用者帳號資料 |
+| mongo-express            | 網站              | mongodb的網站式管理平台                                     |
+| identity-server-db       | sql server資料庫  | IdentityServer4的資料庫                                     |
 # 系統畫面
 - 各縣市Open Data統計資料
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/1.png?raw=true" />
