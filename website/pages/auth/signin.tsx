@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Layout from "../components/layout";
+import Spinner from "../components/spinner";
 export default function SignIn({ csrfToken }) {
   const router = useRouter();
   const schema = yup.object().shape({
@@ -14,15 +15,19 @@ export default function SignIn({ csrfToken }) {
   const { register, handleSubmit, formState:{ errors } } = useForm({
     resolver: yupResolver(schema),
   });
+  const [showLoading,setshowLoading]=useState(false);
   const [customError,setCustomError]=useState("");
   const onSubmit = (data) => {
     setCustomError("") 
+    setshowLoading(true)
     signIn("credentials", {
       username: data.userName,
       password: data.password,
       redirect: false,
     }).then((r) => {
       console.log(r)
+      setshowLoading(false)
+
       if (r.error === null) {
         router.push("/");
       }else{
@@ -79,6 +84,8 @@ export default function SignIn({ csrfToken }) {
         </div>
       </div>
       </div>
+      <Spinner showLoading={showLoading}></Spinner>
+
     </Layout>
   );
 }
