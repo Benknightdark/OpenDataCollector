@@ -158,6 +158,35 @@ services:
       - account-service
     network_mode: "service:account-service" 
   ############################
+  # Personal Api Service
+  ############################
+  personal-service:
+    build: ./api-service/personal-service
+    depends_on:
+      - redis
+      - placement
+      - mongo
+    ports:
+      - "50016:50002"  
+      # - "8300:8000"       
+    networks:
+      - open-data
+    environment:
+        ENVIRONMENT: production
+  personal-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "personal-service",
+    "-app-port", "8000",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50016",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - personal-service
+    network_mode: "service:personal-service"    
+  ############################
   # Api Gateway Service
   ############################
   api-gateway-service:

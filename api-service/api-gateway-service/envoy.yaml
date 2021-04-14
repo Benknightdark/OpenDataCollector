@@ -66,6 +66,13 @@ static_resources:
                             auto_host_rewrite: true
                             prefix_rewrite: "/v1.0/invoke/account-service/method/"
                             cluster: dapr
+                        - name: "personal-service"
+                          match:
+                            prefix: "/personal-service/"
+                          route:
+                            auto_host_rewrite: true
+                            prefix_rewrite: "/v1.0/invoke/personal-service/method/"
+                            cluster: dapr                            
                 http_filters:
                   - name: envoy.cors
 
