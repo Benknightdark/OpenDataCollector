@@ -52,14 +52,10 @@ namespace identity_service
         {
             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
-
                 var SecretServiceInvoke = serviceScope.ServiceProvider.GetRequiredService<SecretService>();
-                await SecretServiceInvoke.GetClientData();
+                await SecretServiceInvoke.UpdateClientDataToDB();
 
             }
-
-
-
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -69,8 +65,6 @@ namespace identity_service
           {
               await InitializeDatabase(app);
           });
-
-
 
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
