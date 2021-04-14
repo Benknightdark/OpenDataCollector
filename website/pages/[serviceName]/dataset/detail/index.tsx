@@ -55,7 +55,7 @@ export default function Index() {
               <hr></hr>
             </div>
           )}
-          <div className="accordion border border-danger" id="infomation">
+          <div className="accordion border border-danger" id="infomation" style={{zIndex:100000}}>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingInfomation">
                 <button
@@ -103,7 +103,7 @@ export default function Index() {
             </div>
           </div>
           <hr></hr>
-          <div className="accordion border border-danger" id="fileList">
+          <div className="accordion border border-danger" id="fileList"  style={{zIndex:100000}}>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button

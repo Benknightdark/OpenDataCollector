@@ -18,6 +18,10 @@ export default function CustomHeader(props) {
 
   return (
     <div>
+      <div className="ocean">
+        <div className="wave"></div>
+        <div className="wave"></div>
+      </div>
       <Head>
         <title>OpenData Collector</title>
         <link rel="icon" href="/favicon.ico" />
@@ -47,9 +51,11 @@ export default function CustomHeader(props) {
           crossOrigin="anonymous"
         />
       </Head>
-      <nav className="navbar navbar-light bg-light">
+
+      <nav className="navbar navbar-light bg-light custom-nav-bar">
         <div className="container-fluid">
           <div className="navbar-brand">
+
             {props.goBack == "true" && (
               <img
                 src="/back.svg"
@@ -64,9 +70,9 @@ export default function CustomHeader(props) {
               />
             )}
             <div className="d-inline-block">
-              <h3 style={{cursor:"pointer"}} onClick={() => {
-                  router.push('/')
-                }}>OpenData Collector</h3>
+              <h3 style={{ cursor: "pointer" }} onClick={() => {
+                router.push('/')
+              }}>OpenData Collector</h3>
             </div>
           </div>
           <div
@@ -111,6 +117,7 @@ export default function CustomHeader(props) {
                 </div>
 
               )}
+
             </div>
           </div>
         </div>
