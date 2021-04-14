@@ -41,6 +41,11 @@ delete from [dbo].[ApiScopes]
 | mongo                    | mongodb資料庫     | 儲存與OpenDataCollector網站相關的資料，例如：使用者帳號資料 |
 | mongo-express            | 網站              | mongodb的網站式管理平台                                     |
 | identity-server-db       | sql server資料庫  | IdentityServer4的資料庫                                     |
+# 系統架構圖
+
+<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/System.png?raw=true" />
+</center>
+
 # 系統畫面
 - 各縣市Open Data統計資料
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/1.png?raw=true" />
