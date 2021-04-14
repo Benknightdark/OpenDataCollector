@@ -32,7 +32,7 @@ delete from [dbo].[ApiScopes]
 | taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線                  |
 | account-service          | Api               | 帳號相關Api                                                 |
 | account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線                   |
-| api-gateway-service      | Api               | 統一Api的連線網址                   |
+| api-gateway-service      | Api               | Envoy Api Gateway，統一Api的連線網址                   |
 | api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線               |
 | identity-service         | Api               | IdentityServer4 服務                                        |
 | identity-service-dapr    | dapr side-car服務 | 處理identity-service與dapr的http和grpc連線Api               |
