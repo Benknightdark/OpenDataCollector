@@ -85,7 +85,7 @@ static_resources:
                               seconds: 300
                       rules:
                         - match:
-                            prefix: "/kao-service/"
+                            prefix: "/personal-service/"
                           requires:
                             provider_and_audiences:
                               provider_name: jwt_provider

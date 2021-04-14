@@ -61,3 +61,7 @@ delete from [dbo].[ApiScopes]
 - Open Data明細
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/5.png?raw=true" />
 </center>
+
+# Prepare to do 
+- 持續化jwks，以避免identity server4重啟後，jwks也跟著重置
+- 新增Personal Service
