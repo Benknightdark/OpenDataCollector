@@ -1,22 +1,21 @@
 # OpenDataCollector
 
-
-``` Bash
-# 系統啟動指令
-docker compose up 
-開啟 http://localhost:3333
-
-# 其他指令
-net stop winnat
-net start winnat
-curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
-dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
-dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
-delete from [dbo].[ClientSecrets]
-delete from [dbo].[ClientScopes]
-delete from [dbo].[Clients]
-delete from [dbo].[ApiScopes]
+# 系統啟動方式
+1. 系統啟動指令
+```Bash
+docker compose up -d --build
 ```
+1. ***第一次啟動服務***，需要執行下列指令以建立IdentityServer4的資料庫
+```Bash
+cd api-service/identity-service
+dotnet ef database update --context PersistedGrantDbContext
+dotnet ef database update --context ConfigurationDbContext
+cd ..
+docker-compose  down
+docker compose up -d --build
+```
+3. 開啟 http://localhost:3333
+
 # 系統說明
 | 服務名稱                 | 類型              | 用途                                                        |
 | ------------------------ | :---------------- | :---------------------------------------------------------- |
@@ -32,7 +31,7 @@ delete from [dbo].[ApiScopes]
 | taichung-service-dapr    | dapr side-car服務 | 處理taichung-service與dapr的http和grpc連線                  |
 | account-service          | Api               | 帳號相關Api                                                 |
 | account-service-dapr     | dapr side-car服務 | 處理account-service與dapr的http和grpc連線                   |
-| api-gateway-service      | Api               | Envoy Api Gateway，統一Api的連線網址                   |
+| api-gateway-service      | Api               | Envoy Api Gateway，統一Api的連線網址                        |
 | api-gateway-service-dapr | dapr side-car服務 | 處理api-gateway-service與dapr的http和grpc連線               |
 | identity-service         | Api               | IdentityServer4 服務                                        |
 | identity-service-dapr    | dapr side-car服務 | 處理identity-service與dapr的http和grpc連線Api               |
@@ -67,5 +66,19 @@ delete from [dbo].[ApiScopes]
 <center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/5.png?raw=true" />
 </center>
 
+# 其他指令
+``` Bash
+net stop winnat
+net start winnat
+curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
+dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
+delete from [dbo].[ClientSecrets]
+delete from [dbo].[ClientScopes]
+delete from [dbo].[Clients]
+delete from [dbo].[ApiScopes]
+```
 # Reference 
 - https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/index.html
+- 加入取得個人資料api
+- 搜尋opendata api

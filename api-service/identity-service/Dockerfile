@@ -1,20 +1,16 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["identity-service.csproj", "./"]
-RUN dotnet restore "identity-service.csproj"
 COPY . .
-WORKDIR "/src/."
-RUN dotnet build "identity-service.csproj" -c Release -o /app/build
+RUN dotnet build 
+# ENV PATH="${PATH}:/root/.dotnet/tools"
+# RUN dotnet tool install --global dotnet-ef --version 5.0.5
+# RUN dotnet ef database update --context PersistedGrantDbContext 
+# RUN dotnet ef database update --context ConfigurationDbContext 
+RUN dotnet publish -c Release  -o Publish
 
-FROM build AS publish
-RUN dotnet publish "identity-service.csproj" -c Release -o /app/publish
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
+EXPOSE 80
+EXPOSE 443
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /src/Publish/. .
 ENTRYPOINT ["dotnet", "identity-service.dll"]
