@@ -1,7 +1,11 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/client";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+
+import { toast } from "react-toastify";
+
+
 export default function CustomHeader(props) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
@@ -9,7 +13,6 @@ export default function CustomHeader(props) {
     (async () => {
       const req = await fetch("/api/personal");
       const res = await req.json();
-
       if (res?.message == null) {
         // const dis = JSON.parse(res?.user?.name).displayName;
         setDisplayName(res?.displayName);
@@ -88,6 +91,15 @@ export default function CustomHeader(props) {
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
                     setDisplayName(null)
+                    toast("已登出", {
+                      position: "top-right",
+                      autoClose: 5000,
+                      hideProgressBar: false,
+                      closeOnClick: true,
+                      pauseOnHover: true,
+                      draggable: true,
+                      progress: undefined,
+                      })
                   }}
                 >
                   hi~ {displayName} 登出
@@ -98,6 +110,7 @@ export default function CustomHeader(props) {
                     className="btn"
                     type="button"
                     onClick={async () => {
+
                       router.push("/auth/register");
                     }}
                   >
@@ -133,6 +146,7 @@ export default function CustomHeader(props) {
       >
         keyboard_arrow_up
       </span>
+
     </div>
   );
 }
