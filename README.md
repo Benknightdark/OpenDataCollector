@@ -1,7 +1,7 @@
 # OpenDataCollector
 
 # 系統啟動方式
-1. 系統啟動指令
+1. 在終端機界面執行以下指令
 ```Bash
 docker compose up -d --build
 ```
