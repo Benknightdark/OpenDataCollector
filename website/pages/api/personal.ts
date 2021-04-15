@@ -4,7 +4,7 @@ import { getSession } from "next-auth/client";
 import { getApiUrl } from "../../helpers/common_helper"
 
 export default async (req, res) => {
-    const url = `${getApiUrl("personal-service")}/`;
+    const url = `${getApiUrl("personal-service")}/api/user-info`;
     const session = await getSession({ req })
     if (session == null) {
         res.status(401).json({ "message": "Session過時" })
