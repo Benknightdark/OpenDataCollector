@@ -81,8 +81,8 @@ static_resources:
                       providers:
                         jwt_provider:
                           issuer: http://127.0.0.1:80
-                          # forward: true
-                          # forward_payload_header: x-jwt-payload
+                          forward: true
+                          forward_payload_header: x-jwt-payload
                           remote_jwks:
                             http_uri:
                               uri: http://localhost:3500/v1.0/invoke/identity-service/method/.well-known/openid-configuration/jwks
