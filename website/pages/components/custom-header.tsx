@@ -7,11 +7,12 @@ export default function CustomHeader(props) {
   const [displayName, setDisplayName] = useState();
   useEffect(() => {
     (async () => {
-      const req = await fetch("/api/auth/session");
+      const req = await fetch("/api/personal");
       const res = await req.json();
-      if (res?.user != null) {
+
+      if (res?.message == null) {
         // const dis = JSON.parse(res?.user?.name).displayName;
-        setDisplayName(res?.user?.name);
+        setDisplayName(res?.displayName);
       }
     })();
   });
