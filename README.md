@@ -5,16 +5,7 @@
 ```Bash
 docker compose up -d --build
 ```
-1. ***第一次啟動服務***，需要執行下列指令以建立IdentityServer4的資料庫
-```Bash
-cd api-service/identity-service
-dotnet ef database update --context PersistedGrantDbContext
-dotnet ef database update --context ConfigurationDbContext
-cd ..
-docker-compose  down
-docker compose up -d --build
-```
-3. 開啟 http://localhost:3333
+2. 開啟 http://localhost:3333
 
 # 系統說明
 | 服務名稱                 | 類型              | 用途                                                        |
@@ -71,12 +62,14 @@ docker compose up -d --build
 net stop winnat
 net start winnat
 curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
+
 dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+
 dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext -o Data/Migrations/IdentityServer/ConfigurationDb
-delete from [dbo].[ClientSecrets]
-delete from [dbo].[ClientScopes]
-delete from [dbo].[Clients]
-delete from [dbo].[ApiScopes]
+
+cd api-service/identity-service
+dotnet ef database update --context PersistedGrantDbContext
+dotnet ef database update --context ConfigurationDbContext
 ```
 # Reference 
 - https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/index.html

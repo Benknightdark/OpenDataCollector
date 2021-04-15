@@ -1,0 +1,1 @@
+FROM mcr.microsoft.com/mssql/server:2019-CU10-ubuntu-16.04

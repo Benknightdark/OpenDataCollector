@@ -302,7 +302,7 @@ services:
   ############################             
   identity-server-db:
     restart: always
-    image: mcr.microsoft.com/mssql/server:2019-CU10-ubuntu-16.04
+    build: ./db/identity-server-db  
     user: root
     environment:
       SA_PASSWORD: "YourStrong!Passw0rd"
