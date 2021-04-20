@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
 import os 
-
+import httpx
 class DashboardItems(BaseModel):
     url: str
     count: int
@@ -27,7 +27,11 @@ root_url = "https://data.kcg.gov.tw"
 
 
 @app.get("/")
-def read_root():
+async def read_root():
+    client = httpx.AsyncClient(http2=True)
+    response = await client.get(root_url)
+    print(response.http_version)  # "HTTP/1.0", "HTTP/1.1", or "HTTP/2".
+    await client.aclose()
     return {"Hello": "Kao Service"}
 
 @app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')

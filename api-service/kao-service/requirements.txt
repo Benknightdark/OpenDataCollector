@@ -10,3 +10,5 @@ requests
 gunicorn
 uvloop
 httptools
+httpx
+httpx[http2]
