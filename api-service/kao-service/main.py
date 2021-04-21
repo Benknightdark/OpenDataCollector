@@ -24,7 +24,6 @@ else:
   
 root_url = "https://data.kcg.gov.tw"
 
-
 @app.get("/")
 async def read_root():
     client = httpx.AsyncClient(http2=True)
