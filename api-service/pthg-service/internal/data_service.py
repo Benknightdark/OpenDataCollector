@@ -1,18 +1,29 @@
 from typing import Optional
 import requests
 from bs4 import BeautifulSoup
-
-def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optional[str] = '',group: Optional[str] = ''):
+import httpx
+async def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optional[str] = '',group: Optional[str] = ''):
     n_query='481C53E05C1D2D97'
     sms_query='354B0B57F2762613'
     root_url = f"https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx?n={n_query}&sms={sms_query}"
-    r1 = requests.get(root_url)
-    soup = BeautifulSoup(r1.text, 'html.parser')
+    client_first= httpx.AsyncClient(http2=True)
+
+    r = await client_first.get(root_url)
+    r1 = r.text
+    await client_first.aclose()
+    soup = BeautifulSoup(r1, 'html.parser')
     view_state_value = soup.find('input', id='__VIEWSTATE')['value']
     event_validation_value = soup.find(
         'input', id='__EVENTVALIDATION')['value']
     view_state_generator_value = soup.find(
         'input', id='__VIEWSTATEGENERATOR')['value']
+    print(event_validation_value)    
+    print(view_state_generator_value)
+    print(target)
+    if group=="所有分類":
+        group=""
+    if org=="所有單位":
+        org=""        
     headers = {
     'Connection': 'keep-alive',
     'Cache-Control': 'max-age=0',
@@ -58,9 +69,13 @@ def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optio
     
     'ctl00$hdSiteLanguageSN': '1'
     }
-    response = requests.post('https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx', headers=headers, params=params,  data=data)    
+    client= httpx.AsyncClient(http2=True)
+
+    response = await client.post('https://www.pthg.gov.tw/Cus_OpenData_Default1.aspx', headers=headers, params=params,  data=data)    
+    res_data=response.text
+    await client.aclose()
     return {
-        'website_content':response.text,
+        'website_content':res_data,
         'page':page
 
     }

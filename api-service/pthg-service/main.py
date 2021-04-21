@@ -119,7 +119,6 @@ def data_set(data: str = Depends(get_pthg_data)):
     '''
     res_data = {}
     res_data['data'] = []
-    
     root = BeautifulSoup(data['website_content'], 'html.parser')
     data_count = root.find('span', id='ContentPlaceHolder1_lblTotalCount').text
     title = f"共找到{data_count}筆"
