@@ -16,9 +16,31 @@ static_resources:
                 codec_type: AUTO
                 stat_prefix: ingress_http
                 http_filters:
-                  - name: envoy.filters.http.router                
+                  - name: envoy.filters.http.cors
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      '@type': type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        jwt_provider:
+                          issuer: http://127.0.0.1:80
+                          forward: true
+                          forward_payload_header: x-jwt-payload
+                          remote_jwks:
+                            http_uri:
+                              uri: http://localhost:3500/v1.0/invoke/identity-service/method/.well-known/openid-configuration/jwks
+                              cluster: dapr
+                              timeout: 5s
+                            cache_duration:
+                              seconds: 300
+                      rules:
+                        - match:
+                            prefix: "/personal-service/"
+                          requires:
+                            provider_and_audiences:
+                              provider_name: jwt_provider
+                  - name: envoy.filters.http.router
                 route_config:
-                  name: open_data_service_route                  
+                  name: open_data_service_route
                   virtual_hosts:
                     - name: open_data_service
                       domains: ["*"]
@@ -30,98 +52,66 @@ static_resources:
                         allow_methods: "GET, POST, PUT, DELETE"
                         allow_headers: "authorization, content-type, x-requestid, x-requested-with"
                         allow_credentials: true
-                      # routes:
-                      #   - match: { prefix: "/kao-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/kao-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                      routes:
+                        - match: { prefix: "/kao-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/kao-service/method/",
+                              cluster: dapr,
+                            }
 
-                      #   - match: { prefix: "/tainan-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/tainan-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                        - match: { prefix: "/tainan-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/tainan-service/method/",
+                              cluster: dapr,
+                            }
 
-                      #   - match: { prefix: "/pthg-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/pthg-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                        - match: { prefix: "/pthg-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/pthg-service/method/",
+                              cluster: dapr,
+                            }
 
-                      #   - match: { prefix: "/taichung-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/taichung-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                        - match: { prefix: "/taichung-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/taichung-service/method/",
+                              cluster: dapr,
+                            }
 
-                      #   - match: { prefix: "/account-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/account-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                        - match: { prefix: "/account-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/account-service/method/",
+                              cluster: dapr,
+                            }
 
-                      #   - match: { prefix: "/personal-service/" }
-                      #     route:
-                      #       {
-                      #         auto_host_rewrite: true,
-                      #         prefix_rewrite: "/v1.0/invoke/personal-service/method/",
-                      #         cluster: dapr,
-                      #       }
+                        - match: { prefix: "/personal-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/personal-service/method/",
+                              cluster: dapr,
+                            }
 
-  #       #           http_filters:
-  #       #             - name: envoy.filters.http.cors.v3.Cors
-  #       #             # - name: envoy.filters.http.jwt_authn
-  #       #             #   config:
-  #       #             #     providers:
-  #       #             #       jwt_provider:
-  #       #             #         issuer: http://127.0.0.1:80
-  #       #             #         forward: true
-  #       #             #         forward_payload_header: x-jwt-payload
-  #       #             #         remote_jwks:
-  #       #             #           http_uri:
-  #       #             #             uri: http://localhost:3500/v1.0/invoke/identity-service/method/.well-known/openid-configuration/jwks
-  #       #             #             cluster: dapr
-  #       #             #             timeout: 5s
-  #       #             #           cache_duration:
-  #       #             #             seconds: 300
-  #       #             #     rules:
-  #       #             #       - match:
-  #       #             #           prefix: "/personal-service/"
-  #       #             #         requires:
-  #       #             #           provider_and_audiences:
-  #       #             #             provider_name: jwt_provider
-
-  # clusters:
-  #   - name: dapr
-  #     connect_timeout: 1.25s
-  #     type: strict_dns
-  #     lb_policy: ROUND_ROBIN
-  #     hosts:
-  #       - socket_address:
-  #           address: 127.0.0.1
-  #           port_value: 3500
   clusters:
-  - name: dapr
-    connect_timeout: 1.25s
-    type: STRICT_DNS
-    lb_policy: ROUND_ROBIN
-    load_assignment:
-      cluster_name: dapr
-      endpoints:
-      - lb_endpoints:
-        - endpoint:
-            address:
-              socket_address:
-                address: 127.0.0.1
-                port_value: 3500
+    - name: dapr
+      connect_timeout: 1.25s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      load_assignment:
+        cluster_name: dapr
+        endpoints:
+          - lb_endpoints:
+              - endpoint:
+                  address:
+                    socket_address:
+                      address: 127.0.0.1
+                      port_value: 3500
