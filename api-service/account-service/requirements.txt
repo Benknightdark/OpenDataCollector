@@ -9,3 +9,5 @@ uvloop
 httptools
 pymongo
 python-jwt
+httpx
+httpx[http2]

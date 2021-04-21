@@ -19,8 +19,8 @@ def read_root():
     return {"Hello": "Personal Service"}
 
 @app.get("/api/user-info")
-def user_info(Authorization: Optional[str] = Header(None)):
-    res=identity_service.user_endpoint(Authorization)
+async def user_info(Authorization: Optional[str] = Header(None)):
+    res=await identity_service.user_endpoint(Authorization)
     user=db_service.user_query(res["client_user_id"])
     return user
     

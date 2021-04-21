@@ -10,3 +10,5 @@ httptools
 pyjwt
 cryptography
 pymongo
+httpx
+httpx[http2]

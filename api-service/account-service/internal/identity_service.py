@@ -1,8 +1,10 @@
 import requests
 import os 
 from internal import secret_service
-def token_endpoint(user_name,user_id):
-    secret_data=(secret_service.get_jwt_config())
+import httpx
+
+async def token_endpoint(user_name,user_id):
+    secret_data=await secret_service.get_jwt_config()
     if os.getenv('ENVIRONMENT') == 'production':
         url =('http://localhost:3500/v1.0/invoke/identity-service/method')
     else:
@@ -13,6 +15,8 @@ def token_endpoint(user_name,user_id):
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
-
-    response = requests.request("POST", url, headers=headers, data=payload)
-    return response.json()
+    client = httpx.AsyncClient(http2=True)    
+    res = await client.post(url, headers=headers, data=payload)
+    res_data = res.json()
+    await client.aclose()
+    return res_data
