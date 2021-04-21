@@ -191,6 +191,7 @@ services:
   ############################
   api-gateway-service:
       image: envoyproxy/envoy:v1.16-latest
+        #v1.18-latest      
         #v1.17-latest
         #v1.16-latest
         #v1.14.2

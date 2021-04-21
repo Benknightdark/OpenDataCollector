@@ -123,12 +123,4 @@ static_resources:
       hosts:
         - socket_address:
             address: 127.0.0.1
-            port_value: 3500
-    # - name: identity_server
-    #   connect_timeout: 0.25s
-    #   type: strict_dns
-    #   lb_policy: round_robin     
-    #   hosts: 
-    #     - socket_address:
-    #         address: identity-service
-    #         port_value: 80            
+            port_value: 3500         
