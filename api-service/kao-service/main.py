@@ -135,7 +135,7 @@ async def data_set_detail(q: str):
     參數q的範例: 
     - https://data.kcg.gov.tw/dataset/estimate-committee-propose 
     '''
-    client=httpx.AsyncClient(http2=True)
+    client=httpx.AsyncClient(http2=True,timeout=60)
 
     res_data = {}
     r = await client.get(q)
@@ -153,10 +153,14 @@ async def data_set_detail(q: str):
         })
     external_infomation=soup.find('section',attrs={'class':'additional-info'}).table.tbody.find_all('tr') 
     for ei in external_infomation:
-        res_data['infomation'].append({
-            'name':ei.th.text,
-            'value':ei.td.text
-        })
+        try:
+            res_data['infomation'].append({
+                'name':ei.th.text,
+                'value':ei.td.text
+            })
+        except:
+            print("An exception occurred")        
+
 
     resource_list=soup.find_all('li',attrs={'class':'resource-item'})
     for rl in resource_list:
