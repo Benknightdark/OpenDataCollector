@@ -71,7 +71,3 @@ cd api-service/identity-service
 dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
 ```
-# Reference 
-- https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/index.html
-- 加入取得個人資料api
-- 搜尋opendata api
