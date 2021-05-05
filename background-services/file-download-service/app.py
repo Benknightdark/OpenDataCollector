@@ -25,9 +25,9 @@ def csv_to_json(file):
     return new_data
 
 
-def xsl_to_json(file):
-    sheet = pe.get_sheet(file_content=file)
-    return sheet.get_book_dict()
+def xsl_to_json(url):
+    sheet = pe.get_sheet(url=url)
+    return sheet.array
 
 
 def download(url, data_type, file_name):
@@ -44,8 +44,7 @@ def download(url, data_type, file_name):
         data=httpx.get(url)
         origin_data=xml_to_json(data.text)
     if data_type == 'xlsx':
-        data=httpx.get(url)
-        origin_data=xsl_to_json(data.text)
+        origin_data=xsl_to_json(url)
     print(origin_data)
 # download('https://quality.data.gov.tw/dq_download_csv.php?nid=138059&md5_url=0fa70d3715abf50fba7c12c6507fe7b4',
 #  'csv', '宜蘭縣勞工一般、特殊、巡迴體格及健康檢查指定醫院')   

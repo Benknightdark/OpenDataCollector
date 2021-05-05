@@ -1,3 +1,5 @@
 schedule
 httpx
 xmltodict
+pyexcel
+pyexcel-xls
