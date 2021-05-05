@@ -48,7 +48,7 @@ def download(url, data_type, file_name):
     '''
     csv => json
     xml => json
-    xsl => json
+    xslx => json
     '''
     origin_data = None
     if data_type == 'csv':
@@ -67,16 +67,15 @@ def download(url, data_type, file_name):
 #  'csv', '宜蘭縣勞工一般、特殊、巡迴體格及健康檢查指定醫院')
 # download('https://data.tycg.gov.tw/opendata/datalist/datasetMeta/download?id=ead9c6e1-ab53-47b4-b539-5f05412d0ad3&rid=b999335c-827e-44a1-b554-29d1be3e59d1 ',
 #  'xml', '旅行時間偵測站設備資訊V2.0')
-download('https://www-ws.pthg.gov.tw/Upload/2015pthg/0/relfile/0/0/1240bd54-8fbd-4715-ab2b-9742a907b443.xls', 'xlsx', '關山鎮公告現值')
-# def job():
-#     print("I'm working...")
-#     print('-----------------------------')
-# def job2():
-#     print("I'm working2...")
-#     print('-----------------------------')
+# download('https://www-ws.pthg.gov.tw/Upload/2015pthg/0/relfile/0/0/1240bd54-8fbd-4715-ab2b-9742a907b443.xls', 'xlsx', '關山鎮公告現值')
 
+def job(index):
+    print(index)
+index_array=[1,2,3,4,5,6]
+for i in index_array:
+    schedule.every().day.at(f"17:0{i}").do(job,i)      
 # schedule.every(3).seconds.do(job)
 # schedule.every(3).seconds.do(job2)
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
+while True:
+    schedule.run_pending()
+    time.sleep(1)
