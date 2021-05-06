@@ -14,10 +14,8 @@ export default async (req, res) => {
                 'Authorization': 'Bearer ' + session.user.token,
             }),
         })
-        console.log(reqData.status)
         const resData = await reqData.json()
-        console.log(resData)
-        res.status(200).json(resData)
+        res.status(200).json({displayName:resData['displayName']})
     }
 
 }

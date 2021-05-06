@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+pydantic[email,typing_extensions,dotenv]
+python-multipart
+requests
+gunicorn
+uvloop
+httptools
+pyjwt
+cryptography
+pymongo
+httpx
+httpx[http2]

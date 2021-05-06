@@ -38,6 +38,11 @@ static_resources:
                           requires:
                             provider_and_audiences:
                               provider_name: jwt_provider
+                        - match:
+                            prefix: "/task-service/"
+                          requires:
+                            provider_and_audiences:
+                              provider_name: jwt_provider                              
                   - name: envoy.filters.http.router
                 route_config:
                   name: open_data_service_route
@@ -100,6 +105,13 @@ static_resources:
                               prefix_rewrite: "/v1.0/invoke/personal-service/method/",
                               cluster: dapr,
                             }
+                        - match: { prefix: "/task-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/task-service/method/",
+                              cluster: dapr,
+                            }                            
 
   clusters:
     - name: dapr
