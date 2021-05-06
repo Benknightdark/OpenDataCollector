@@ -132,10 +132,6 @@ def download(url, data_type, file_name, user_id, schedule_id):
     logging.info(f'----------------END: {file_name}------------------------')
 
 
-def job(index):
-    print(index)
-
-
 logging.info("執行下載檔案排程")
 schedule_list = schedule_query()
 for s in schedule_query():
