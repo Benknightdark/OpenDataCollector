@@ -28,4 +28,4 @@ def schedule_query():
     '''
     查詢所有使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'])    
+    return convert_collection(db('task')['schedule'].find())    
