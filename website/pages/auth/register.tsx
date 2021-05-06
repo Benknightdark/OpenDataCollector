@@ -3,9 +3,13 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../components/layout";
+import { checkIsLogin } from "../../helpers/common_helper";
 export default function Register({ csrfToken }) {
+  useEffect(()=>{
+    checkIsLogin();
+  });
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),

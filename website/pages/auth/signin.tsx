@@ -1,15 +1,19 @@
-import { csrfToken, getCsrfToken, signIn } from "next-auth/client";
+import { csrfToken, getCsrfToken, signIn, useSession } from "next-auth/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout";
 import Spinner from "../components/spinner";
 
 import { toast, ToastContainer } from "react-toastify";
+import { checkIsLogin } from "../../helpers/common_helper";
 
 export default function SignIn({ csrfToken }) {
+useEffect(()=>{
+  checkIsLogin();
+});
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),

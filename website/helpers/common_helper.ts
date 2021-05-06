@@ -5,3 +5,20 @@ export const getApiUrl=( apiName:string='')=>{
    // ${process.env.API_URL}/invoke/${apiName}/method`
    return  url
 }
+
+export const checkIsLogin=async ()=>{
+   const req = await fetch("/api/personal");
+   const resStatus=req.status;
+   console.log(resStatus)
+   if(resStatus==200)
+      window.history.back();
+}
+
+
+export const checkIsNotLogin=async ()=>{
+   const req = await fetch("/api/personal");
+   const resStatus=req.status;
+   console.log(resStatus)
+   if(resStatus!=200)
+      window.history.back();
+}
