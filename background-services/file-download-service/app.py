@@ -61,6 +61,7 @@ def download(url, data_type, file_name):
     if data_type == 'xlsx':
         origin_data = xsl_to_json(url)
     print(origin_data)
+    print('------------------------------------------------------')
 
 
 # download('https://quality.data.gov.tw/dq_download_csv.php?nid=138059&md5_url=0fa70d3715abf50fba7c12c6507fe7b4',

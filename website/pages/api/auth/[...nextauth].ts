@@ -17,7 +17,6 @@ export default NextAuth({
       async authorize(credentials) {
         // console.log(credentials)
         // Add logic here to look up the user from the credentials supplied
-        const user = { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         const url = `${getApiUrl('account-service')}/api/login`;
 
         const req = await fetch(url, {
@@ -72,8 +71,12 @@ export default NextAuth({
     async session(session) {
       const displayName = JSON.parse(session.user.name).displayName
       const token = JSON.parse(session.user.name).token;
+      const userId = JSON.parse(session.user.name).userId;
       session.user.name = displayName;
       session.user.token = token;
+      session.user.id=userId;
+      console.log(session)
+
       return (session)
     },
     async jwt(token, user, account, profile, isNewUser) {

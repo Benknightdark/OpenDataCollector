@@ -28,11 +28,8 @@ export default function SignIn({ csrfToken }) {
       password: data.password,
       redirect: false,
     }).then((r) => {
-      console.log(r)
       setshowLoading(false)
-
       if (r.error === null) {
-
         toast("已登入", {
           position: "top-right",
           autoClose: 5000,

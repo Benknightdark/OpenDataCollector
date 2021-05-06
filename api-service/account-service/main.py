@@ -27,13 +27,13 @@ else:
 @app.post("/api/login")
 async def read_root(data: Login):
     data_dict=data.dict()
-    print(data)
     query_data=db_service.user_query(data_dict)
-    print(query_data)
+
     if query_data !=None:
-        token=await identity_service.token_endpoint(query_data['userName'],str(query_data['_id']['$oid']))  
+        user_id=str(query_data['_id']['$oid'])
+        token=await identity_service.token_endpoint(query_data['userName'],user_id)  
         print(token)    
-        return {"displayName": query_data['displayName'], "token": token['access_token']}
+        return {"displayName": query_data['displayName'], "token": token['access_token'],"userId":user_id}
     else:
         raise HTTPException(status_code=404, detail="不存在此使用者")
 
