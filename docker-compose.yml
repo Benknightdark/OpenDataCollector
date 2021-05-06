@@ -279,30 +279,14 @@ services:
   # File Download Service
   ############################
   file-download-service:
-    # restart: always
-    build: ./background-services/file-download-service  
-    ports:
-      - "50028:50002"  
+    restart: always
+    build: ./background-services/file-download-service   
     depends_on:
-      - redis
-      - placement      
+      - mongo
     networks:
       - open-data
     environment:
-        ENVIRONMENT: production      
-  file-download-service-dapr:
-    image: "daprio/daprd:edge"
-    command: ["./daprd",
-    "-app-id", "file-download-service",
-    "-app-port", "8000",
-    "-placement-host-address", "placement:50006",
-    "-dapr-grpc-port", "50028",
-     "-components-path", "/components"]
-    volumes:
-      - "./components/:/components"
-    depends_on:
-      - file-download-service
-    network_mode: "service:file-download-service"                              
+        ENVIRONMENT: production                                 
   ############################
   # Dapr placement service
   ############################

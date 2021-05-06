@@ -101,8 +101,8 @@ def download(url, data_type, file_name, user_id, schedule_id):
     # logging.info(origin_data)
     history_data = db('task')['history'].find_one(
         {"userId": user_id, "scheduleId": schedule_id})
-    print(history_data)
     if history_data == None:
+        logging.info("新增")
         db('task')['history'].insert_one({
             "userId": user_id,
             "scheduleId": schedule_id,
@@ -114,6 +114,7 @@ def download(url, data_type, file_name, user_id, schedule_id):
             ]
         })
     else:
+        logging.info("修改")
         new_data = history_data
         new_data['data'].append({
             "createdTime": datetime.datetime.now(),
