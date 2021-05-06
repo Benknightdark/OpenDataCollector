@@ -3,8 +3,4 @@ httpx
 xmltodict
 pyexcel
 pyexcel-xls
-fastapi
-uvicorn
-gunicorn
-uvloop
-httptools
+pymongo
