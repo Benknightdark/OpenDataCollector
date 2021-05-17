@@ -7,13 +7,12 @@ import schedule
 import time
 import httpx
 import csv
-import re
 import xmltodict
 import json
 import pyexcel as pe
 import httpx
-import asyncio
 import logging
+
 logging.basicConfig(level="INFO")
 
 
