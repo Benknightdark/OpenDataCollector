@@ -153,7 +153,7 @@ class Config:
             ''')  
             JOBS.append({
                 'id':d['_id']['$oid'],
-                "func":'app:download',
+                "func":f'{__name__}:download',
                 'args':(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
                 "trigger": "cron",
                 'hour':f"{d['executeTime'].split(':')[0]}",
@@ -178,13 +178,14 @@ def job1(var_one, var_two):
     :param var_two:
     """
     print(str(var_one) + " " + str(var_two))
+logging.info(__name__)
 
+if __name__ == '__main__':
+    app = Flask(__name__)
+    app.config.from_object(Config())
 
-app = Flask(__name__)
-app.config.from_object(Config())
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
 
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
-
-app.run()
+    app.run()
