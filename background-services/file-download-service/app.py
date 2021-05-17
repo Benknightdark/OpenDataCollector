@@ -151,4 +151,5 @@ for s in schedule_query():
     logging.info('--------------------------')
 while True:
     schedule.run_pending()
+    print(schedule.jobs)
     time.sleep(1)
