@@ -351,8 +351,8 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
         - identity-server-db-data:/var/opt/mssql      
-    ports:
-      - 8734:1433
+    # ports:
+    #   - 8734:1433
     networks:
       - open-data                                                    
 networks:
