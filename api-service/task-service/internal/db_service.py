@@ -66,7 +66,6 @@ def update_schedule(data_id, data):
     data['_id'] = ObjectId(data_id)
     update_data = db('task')['schedule'].update_one(
         {'data': {'$elemMatch': {'_id': ObjectId(data_id)}}}, {'$set': {"data.$": data}})
-    print(update_data)    
     return update_data.raw_result
 
 
