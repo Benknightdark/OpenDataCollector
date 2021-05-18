@@ -38,8 +38,11 @@ const index = () => {
                                         <th>
                                             <div style={{ "display": "inline-block" }}>
                                                 <button className='btn btn-info' style={{"marginRight":"5px"}}
-                                                onClick={()=>{
+                                                onClick={async ()=>{
                                                     console.log(d['_id']['$oid'])
+                                                    const req=await fetch(`/api/task/execute?id=${d['_id']['$oid']}`);
+                                                    const res=await req.json();
+                                                    console.log(res)
                                                 }}
                                                 >執行</button>
                                                 <button className='btn btn-warning' style={{"marginRight":"5px"}}>編輯</button>
