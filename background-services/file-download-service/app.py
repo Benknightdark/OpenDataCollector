@@ -41,7 +41,8 @@ def schedule_query():
     '''
     查詢所有使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'].find())
+    return  httpx.get('http://localhost:3500/v1.0/invoke/task-service/method/api/schedule').json()
+    #convert_collection(db('task')['schedule'].find())
 
 
 def xml_to_json(file):
@@ -139,6 +140,7 @@ class Config:
     JOBS = [      
     ]    
     schedule_list = schedule_query()
+    logging.info(schedule_list)
     for s in schedule_query():
         logging.info(f"使用者：{s['userId']}")
         for d in s['data']:
