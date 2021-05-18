@@ -28,4 +28,7 @@ async def get_schedule(id):
     data=db_service.schedule_query_by_userid(id)
     return data 
 
+# post
+# put 
+
 
