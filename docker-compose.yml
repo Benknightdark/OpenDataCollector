@@ -280,7 +280,7 @@ services:
   ############################
   file-download-service:
     ports:
-      - "50030:50002"      
+      - "50032:50002"      
     build: ./background-services/file-download-service   
     depends_on:
       - redis
@@ -296,7 +296,7 @@ services:
           "-app-id", "file-download-service",
           "-app-port", "5000",
           "-placement-host-address", "placement:50006",
-          "-dapr-grpc-port", "50030",
+          "-dapr-grpc-port", "50032",
            "-components-path", "/components"]
           volumes:
             - "./components/:/components"
