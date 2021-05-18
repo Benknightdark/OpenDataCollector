@@ -41,6 +41,11 @@ async def post_schedule(id, data: ScheduleModel):
     data_dict =  data.dict()
     db_service.add_schedule(id, data_dict)
     return {}
+
+@app.delete("/api/schedule/{id}/{data_id}")
+async def delete_schedule(id,data_id):
+    db_service.delete_schedule(id,data_id)
+    return {}    
 # post
 # put
 # delete

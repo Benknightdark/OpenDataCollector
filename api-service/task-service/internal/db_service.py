@@ -43,6 +43,7 @@ def add_schedule(user_id, data):
     新增特定使用者的排程資料
     '''
     exist_data = schedule_query_by_userid(user_id)
+    data['_id']=ObjectId()
     if exist_data == None:
         db('task')['schedule'].insert_one({
             "userId": user_id,
@@ -65,4 +66,6 @@ def delete_schedule(user_id, data_id):
     '''
     刪除使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'].find())
+    db('task')['schedule'].update_one({"userId": user_id}, 
+        { '$pull': {'data':{"_id":ObjectId(data_id)} }},True)
+
