@@ -29,3 +29,18 @@ def schedule_query():
     查詢所有使用者的排程資料
     '''
     return convert_collection(db('task')['schedule'].find())    
+def add_schedule(user_id,data_id):
+    '''
+    新增特定使用者的排程資料
+    '''
+    return convert_collection(db('task')['schedule'].find())      
+def update_schedule(user_id,data_id):
+    '''
+    更新特定使用者的排程資料
+    '''
+    return convert_collection(db('task')['schedule'].find())   
+def delete_schedule(user_id,data_id):
+    '''
+    刪除使用者的排程資料
+    '''
+    return convert_collection(db('task')['schedule'].find())          
