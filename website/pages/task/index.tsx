@@ -15,7 +15,6 @@ const index = () => {
         {
             refreshInterval: 60000
         })
-    console.log(data)
     if (!data) return <Spinner showLoading="true"></Spinner>;
 
     return (
@@ -39,7 +38,6 @@ const index = () => {
                                             <div style={{ "display": "inline-block" }}>
                                                 <button className='btn btn-info' style={{"marginRight":"5px"}}
                                                 onClick={async ()=>{
-                                                    console.log(d['_id']['$oid'])
                                                     const req=await fetch(`/api/task/execute?id=${d['_id']['$oid']}`);
                                                     const res=await req.json();
                                                     console.log(res)
