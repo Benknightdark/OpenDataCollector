@@ -136,35 +136,7 @@ logging.info("執行下載檔案排程")
 class Config:
     """App configuration."""
     JOBS = [      
-    ]    
-    schedule_list = schedule_query()
-    logging.info(schedule_list)
-    for s in schedule_query():
-        logging.info(f"使用者：{s['userId']}")
-        for d in s['data']:
-            logging.info(f'''
-            ======================================
-            ID:{d['_id']['$oid']}
-            執行時間：{d['executeTime']}
-            網址：{d['url']}
-            檔案類型：{d['type']}
-            檔名：{d['name']}
-            ======================================
-            ''')  
-            JOBS.append({
-                'id':d['_id']['$oid'],
-                "func":f'{__name__}:download',
-                'args':(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
-                "trigger": "cron",
-                'hour':f"{d['executeTime'].split(':')[0]}",
-                'minute':f"{d['executeTime'].split(':')[1]}"
-            }) 
-    logging.info(JOBS)           
-
-
-
-
-
+    ]     
     SCHEDULER_EXECUTORS = {"default": {"type": "threadpool", "max_workers": 20}}
 
     SCHEDULER_JOB_DEFAULTS = {"coalesce": False, "max_instances": 3}
@@ -181,11 +153,37 @@ def job1(var_one, var_two):
 logging.info(__name__)
 
 if __name__ == '__main__':
+    jobs_list = [      
+    ]    
+    schedule_list = schedule_query()
+    for s in schedule_query():
+        logging.info(f"使用者：{s['userId']}")
+        logging.info(s)
+        for d in s['data']:
+            logging.info(f'''
+            ======================================
+            ID:{d['_id']['$oid']}
+            執行時間：{d['executeTime']}
+            網址：{d['url']}
+            檔案類型：{d['type']}
+            檔名：{d['name']}
+            ======================================
+            ''')  
+            jobs_list.append({
+                'id':d['_id']['$oid'],
+                "func":f'{__name__}:download',
+                'args':(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
+                "trigger": "cron",
+                'hour':f"{d['executeTime'].split(':')[0]}",
+                'minute':f"{d['executeTime'].split(':')[1]}"
+            })     
     app = Flask(__name__)
-    app.config.from_object(Config())
+    config=Config()
+    config.JOBS=jobs_list
+    app.config.from_object(config)
 
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
 
-    app.run()
+    app.run(use_reloader=False)
