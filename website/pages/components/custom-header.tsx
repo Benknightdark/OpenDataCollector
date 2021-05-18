@@ -85,25 +85,30 @@ export default function CustomHeader(props) {
           >
             <div>
               {displayName ? (
-                <button
-                  className="btn"
-                  type="button"
-                  onClick={async () => {
-                    const req = await signOut({ redirect: false });
-                    setDisplayName(null)
-                    toast("已登出", {
-                      position: "top-right",
-                      autoClose: 5000,
-                      hideProgressBar: false,
-                      closeOnClick: true,
-                      pauseOnHover: true,
-                      draggable: true,
-                      progress: undefined,
+                <div>
+                  <button className="btn btn-danger" onClick={async () => {
+                    router.push('/task')
+                  }}>排程</button>
+                  <button
+                    className="btn"
+                    type="button"
+                    onClick={async () => {
+                      const req = await signOut({ redirect: false });
+                      setDisplayName(null)
+                      toast("已登出", {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
                       })
-                  }}
-                >
-                  hi~ {displayName} 登出
+                    }}
+                  >
+                    hi~ {displayName} 登出
                 </button>
+                </div>
               ) : (
                 <div>
                   <button

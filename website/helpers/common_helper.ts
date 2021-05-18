@@ -20,5 +20,5 @@ export const checkIsNotLogin=async ()=>{
    const resStatus=req.status;
    console.log(resStatus)
    if(resStatus!=200)
-      window.history.back();
+      window.location.replace('/auth/signin');
 }
