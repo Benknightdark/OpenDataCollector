@@ -41,9 +41,7 @@ def schedule_query():
     '''
     查詢所有使用者的排程資料
     '''
-    return  httpx.get('http://localhost:3500/v1.0/invoke/task-service/method/api/schedule').json()
-    #convert_collection(db('task')['schedule'].find())
-
+    return  convert_collection(db('task')['schedule'].find())
 
 def xml_to_json(file):
     obj = xmltodict.parse(file)
