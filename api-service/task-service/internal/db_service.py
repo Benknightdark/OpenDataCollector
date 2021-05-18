@@ -59,7 +59,7 @@ def update_schedule(user_id, data_id, data):
     '''
     更新特定使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'].find())
+    return convert_collection(db('task')['schedule'].find({"userId": user_id,"data":{'_id':ObjectId(data_id)}}))
 
 
 def delete_schedule(user_id, data_id):
