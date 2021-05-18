@@ -43,29 +43,38 @@ def add_schedule(user_id, data):
     新增特定使用者的排程資料
     '''
     exist_data = schedule_query_by_userid(user_id)
-    data['_id']=ObjectId()
+    data['_id'] = ObjectId()
     if exist_data == None:
-        db('task')['schedule'].insert_one({
+        insert_data = db('task')['schedule'].insert_one({
             "userId": user_id,
             "data": [
                 data
             ]
         })
+        return insert_data.inserted_id
+
     else:
-        db('task')['schedule'].update_one({"userId": user_id}, {'$push': {'data': data}},True)
+        update_data = db('task')['schedule'].update_one(
+            {"userId": user_id}, {'$push': {'data': data}}, True)
+        return update_data.upserted_id
 
 
-def update_schedule(user_id, data_id, data):
+def update_schedule(data_id, data):
     '''
     更新特定使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'].find({"userId": user_id,"data":{'_id':ObjectId(data_id)}}))
+    data['_id'] = ObjectId(data_id)
+    update_data = db('task')['schedule'].update_one(
+        {'data': {'$elemMatch': {'_id': ObjectId(data_id)}}}, {'$set': {"data.$": data}})
+    print(update_data)    
+    return update_data.raw_result
 
 
-def delete_schedule(user_id, data_id):
+def delete_schedule(data_id):
     '''
     刪除使用者的排程資料
     '''
-    db('task')['schedule'].update_one({"userId": user_id}, 
-        { '$pull': {'data':{"_id":ObjectId(data_id)} }},True)
-
+    delete_data = db('task')['schedule'].update_one(
+        {'data': {'$elemMatch': {'_id': ObjectId(data_id)}}},
+         {'$pull': {'data': {"_id": ObjectId(data_id)}}}, True)
+    return delete_data.upserted_id
