@@ -60,7 +60,7 @@ async def delete_schedule(data_id):
 
 
 @app.put("/api/schedule/{data_id}", summary="修改使用者的排程")
-async def post_schedule(data_id, data: ScheduleModel):
+async def put_schedule(data_id, data: ScheduleModel):
     '''
     * {data_id} : 排程id
     * {data} : 欲修改的排程資料
