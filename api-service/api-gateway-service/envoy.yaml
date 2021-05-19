@@ -19,7 +19,7 @@ static_resources:
                   - name: envoy.filters.http.cors
                   - name: envoy.filters.http.jwt_authn
                     typed_config:
-                      '@type': type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
                       providers:
                         jwt_provider:
                           issuer: http://127.0.0.1:80
@@ -42,7 +42,12 @@ static_resources:
                             prefix: "/task-service/"
                           requires:
                             provider_and_audiences:
-                              provider_name: jwt_provider                              
+                              provider_name: jwt_provider
+                        - match:
+                            prefix: "/file-download-service/"
+                          requires:
+                            provider_and_audiences:
+                              provider_name: jwt_provider
                   - name: envoy.filters.http.router
                 route_config:
                   name: open_data_service_route
@@ -118,7 +123,7 @@ static_resources:
                               auto_host_rewrite: true,
                               prefix_rewrite: "/v1.0/invoke/file-download-service/method/",
                               cluster: dapr,
-                            }                                                        
+                            }
 
   clusters:
     - name: dapr
