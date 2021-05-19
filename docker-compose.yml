@@ -101,7 +101,7 @@ services:
     depends_on:
       - pthg-service
     network_mode: "service:pthg-service"  
- ############################
+  ############################
   # Taichung Api Service
   ############################
   taichung-service:
