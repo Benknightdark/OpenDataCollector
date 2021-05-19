@@ -94,7 +94,11 @@ const index = () => {
                                                 >明細</button>
                                                 <button className='btn btn-danger' style={{ "marginRight": "5px" }}
                                                     onClick={() => {
-
+                                                        const detailData = d
+                                                        detailData['formType'] = 'detail'
+                                                        setDetail(detailData);
+                                                        reset(detailData)
+                                                        setIsOpen(true);
                                                     }}
                                                 >刪除</button>
                                             </div>
