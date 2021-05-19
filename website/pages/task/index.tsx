@@ -25,7 +25,7 @@ const index = () => {
         url: yup.string().required("不能為空值"),
         type: yup.string().required("不能為空值"),
     });
-    const { register, handleSubmit,reset , formState: { errors } } = useForm({
+    const { register, handleSubmit,reset , formState: { errors },getValues } = useForm({
         resolver: yupResolver(schema),
     });
     const { data, error, isValidating, mutate } = useSWR(
@@ -122,7 +122,12 @@ const index = () => {
                         </div>
                         <div>
                             <h2>{detail['formType'] == 'detail' ? '明細' : '編輯'}</h2>
-                            <form method="post" onSubmit={handleSubmit(() => { })}>
+                            <form method="post" onSubmit={handleSubmit(async () => {
+                                const req=await fetch(`/api/task/edit`,{method:'PUT',body:JSON.stringify(getValues())});
+                                const res=await req.json();
+                                await mutate();
+                                setIsOpen(false);
+                             })}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">
                                         排程名稱</label>
