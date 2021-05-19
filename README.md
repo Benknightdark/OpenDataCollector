@@ -32,7 +32,7 @@ docker compose up -d --build
 | identity-service-dapr      | dapr side-car服務 | 處理identity-service與dapr的溝通                            |
 | placement                  | dapr服務          | dapr放置服務，產生HashTable儲存dapr side-car服務的連線名稱  |
 | redis                      | redis資料庫       | 提供dpar狀態管理和執行pub/sub功能                           |
-| mongo                      | mongodb資料庫     | 儲存與OpenDataCollector網站相關的資料，例如：使用者帳號資料 |
+| mongo                      | mongodb資料庫     | 儲存與OpenDataCollector網站相關的資料，例如：使用者帳號資料和排程 |
 | mongo-express              | 網站              | mongodb的網站式管理平台                                     |
 | identity-server-db         | sql server資料庫  | IdentityServer4的資料庫                                     |
 # 系統架構圖
