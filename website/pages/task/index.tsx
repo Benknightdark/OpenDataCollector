@@ -38,9 +38,20 @@ const index = () => {
 
     return (
         <Layout goBack="true">
-            {/* <div id='root'></div> */}
             <div className="container-fluid px-1">
-                <button className='btn btn-info'>新增排程</button>
+                <button className='btn btn-info' onClick={async () => {
+                    const detailData = {
+                        name: '',
+                        executeTime: '',
+                        url: '',
+                        type: ''
+                    }
+                    detailData['modalTitle'] = '新增'
+                    detailData['disable'] = false
+                    setDetail(detailData);
+                    reset(detailData)
+                    setIsOpen(true);
+                }}>新增排程</button>
                 <div className="table-responsive">
                     <table className="table table-bordered">
                         <thead>
@@ -137,11 +148,22 @@ const index = () => {
                         <div>
                             <h2>{detail['modalTitle']}</h2>
                             <form method="post" onSubmit={handleSubmit(async () => {
-                                const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(getValues()) });
-                                const res = await req.json();
+                                let res = {};
+                                let infoText:string='';
+                                if (detail['modalTitle'] == '編輯') {
+                                    const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(getValues()) });
+                                    res = await req.json();
+                                    infoText=`已更新【${getValues()['name']}】排程`;
+
+                                }else{
+                                    const req = await fetch(`/api/task/add`, { method: 'POST', body: JSON.stringify(getValues()) });
+                                    res = await req.json();
+                                    infoText=`已加入【${getValues()['name']}】排程`;
+
+                                }
                                 if (res['status']) {
                                     await mutate();
-                                    toast.info(`已更新【${detail['name']}】排程`, {
+                                    toast.info(infoText, {
                                         position: "top-right",
                                         autoClose: 5000,
                                         hideProgressBar: false,
