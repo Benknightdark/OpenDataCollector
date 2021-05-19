@@ -93,12 +93,19 @@ const index = () => {
                                                     }}
                                                 >明細</button>
                                                 <button className='btn btn-danger' style={{ "marginRight": "5px" }}
-                                                    onClick={() => {
-                                                        const detailData = d
-                                                        detailData['formType'] = 'detail'
-                                                        setDetail(detailData);
-                                                        reset(detailData)
-                                                        setIsOpen(true);
+                                                    onClick={async () => {
+                                                     const req=await fetch(`/api/task/delete?id=${d['_id']['$oid']}`)
+                                                     const res=await req.json();
+                                                     console.log(res);
+                                                     toast.warning(`已刪除【${d['name']}】排程`, {
+                                                        position: "top-right",
+                                                        autoClose: 5000,
+                                                        hideProgressBar: false,
+                                                        closeOnClick: true,
+                                                        pauseOnHover: true,
+                                                        draggable: true,
+                                                        progress: undefined,
+                                                    })
                                                     }}
                                                 >刪除</button>
                                             </div>
@@ -129,8 +136,22 @@ const index = () => {
                             <form method="post" onSubmit={handleSubmit(async () => {
                                 const req=await fetch(`/api/task/edit`,{method:'PUT',body:JSON.stringify(getValues())});
                                 const res=await req.json();
-                                await mutate();
-                                setIsOpen(false);
+                                if(res['status']){
+                                    await mutate();
+                                    toast.info(`已更新【${detail['name']}】排程`, {
+                                        position: "top-right",
+                                        autoClose: 5000,
+                                        hideProgressBar: false,
+                                        closeOnClick: true,
+                                        pauseOnHover: true,
+                                        draggable: true,
+                                        progress: undefined,
+                                    })
+                                    setIsOpen(false);
+                                }else{
+                                    alert("發生錯誤");
+                                }
+                                
                              })}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">
