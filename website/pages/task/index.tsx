@@ -25,7 +25,7 @@ const index = () => {
         url: yup.string().required("不能為空值"),
         type: yup.string().required("不能為空值"),
     });
-    const { register, handleSubmit,reset , formState: { errors },getValues } = useForm({
+    const { register, handleSubmit, reset, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
     const { data, error, isValidating, mutate } = useSWR(
@@ -40,6 +40,7 @@ const index = () => {
         <Layout goBack="true">
             {/* <div id='root'></div> */}
             <div className="container-fluid px-1">
+                <button className='btn btn-info'>新增排程</button>
                 <div className="table-responsive">
                     <table className="table table-bordered">
                         <thead>
@@ -75,7 +76,8 @@ const index = () => {
                                                 <button className='btn btn-warning' style={{ "marginRight": "5px" }}
                                                     onClick={() => {
                                                         const detailData = d
-                                                        detailData['formType'] = 'edit'
+                                                        detailData['modalTitle'] = '編輯'
+                                                        detailData['disable'] = false
                                                         setDetail(detailData);
                                                         reset(detailData)
                                                         setIsOpen(true);
@@ -85,7 +87,8 @@ const index = () => {
                                                 <button className='btn btn-success' style={{ "marginRight": "5px" }}
                                                     onClick={() => {
                                                         const detailData = d
-                                                        detailData['formType'] = 'detail'
+                                                        detailData['modalTitle'] = '明細'
+                                                        detailData['disable'] = true
                                                         setDetail(detailData);
                                                         reset(detailData)
                                                         setIsOpen(true);
@@ -94,18 +97,18 @@ const index = () => {
                                                 >明細</button>
                                                 <button className='btn btn-danger' style={{ "marginRight": "5px" }}
                                                     onClick={async () => {
-                                                     const req=await fetch(`/api/task/delete?id=${d['_id']['$oid']}`)
-                                                     const res=await req.json();
-                                                     console.log(res);
-                                                     toast.warning(`已刪除【${d['name']}】排程`, {
-                                                        position: "top-right",
-                                                        autoClose: 5000,
-                                                        hideProgressBar: false,
-                                                        closeOnClick: true,
-                                                        pauseOnHover: true,
-                                                        draggable: true,
-                                                        progress: undefined,
-                                                    })
+                                                        const req = await fetch(`/api/task/delete?id=${d['_id']['$oid']}`)
+                                                        const res = await req.json();
+                                                        console.log(res);
+                                                        toast.warning(`已刪除【${d['name']}】排程`, {
+                                                            position: "top-right",
+                                                            autoClose: 5000,
+                                                            hideProgressBar: false,
+                                                            closeOnClick: true,
+                                                            pauseOnHover: true,
+                                                            draggable: true,
+                                                            progress: undefined,
+                                                        })
                                                     }}
                                                 >刪除</button>
                                             </div>
@@ -120,7 +123,7 @@ const index = () => {
                     </table>
                 </div>
                 {
-                     <Modal
+                    <Modal
                         isOpen={modalIsOpen}
                         appElement={document.querySelector('#root')}
                         contentLabel="Example Modal">
@@ -132,11 +135,11 @@ const index = () => {
                             </button>
                         </div>
                         <div>
-                            <h2>{detail['formType'] == 'detail' ? '明細' : '編輯'}</h2>
+                            <h2>{detail['modalTitle']}</h2>
                             <form method="post" onSubmit={handleSubmit(async () => {
-                                const req=await fetch(`/api/task/edit`,{method:'PUT',body:JSON.stringify(getValues())});
-                                const res=await req.json();
-                                if(res['status']){
+                                const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(getValues()) });
+                                const res = await req.json();
+                                if (res['status']) {
                                     await mutate();
                                     toast.info(`已更新【${detail['name']}】排程`, {
                                         position: "top-right",
@@ -148,11 +151,11 @@ const index = () => {
                                         progress: undefined,
                                     })
                                     setIsOpen(false);
-                                }else{
+                                } else {
                                     alert("發生錯誤");
                                 }
-                                
-                             })}>
+
+                            })}>
                                 <div className="mb-3">
                                     <label htmlFor="name" className="form-label">
                                         排程名稱</label>
@@ -162,7 +165,7 @@ const index = () => {
                                         id="name"
                                         name="name"
                                         defaultValue={detail['name']}
-                                        disabled={detail['formType'] == 'detail' ? true : false}
+                                        disabled={detail['disable']}
                                         {...register("name")}
                                     />
                                     <p>{errors.name?.message}</p>
@@ -175,7 +178,7 @@ const index = () => {
                                         className="form-control"
                                         id="type"
                                         name="type"
-                                        disabled={detail['formType'] == 'detail' ? true : false}
+                                        disabled={detail['disable']}
 
                                         defaultValue={detail['type']}
                                         {...register("type")}
@@ -190,7 +193,7 @@ const index = () => {
                                         className="form-control"
                                         id="executeTime"
                                         name="executeTime"
-                                        disabled={detail['formType'] == 'detail' ? true : false}
+                                        disabled={detail['disable']}
 
                                         defaultValue={detail['executeTime']}
                                         {...register("executeTime")}
@@ -205,7 +208,7 @@ const index = () => {
                                         className="form-control"
                                         id="url"
                                         name="url"
-                                        disabled={detail['formType'] == 'detail' ? true : false}
+                                        disabled={detail['disable']}
 
                                         defaultValue={detail['url']}
                                         {...register("url")}
@@ -213,7 +216,7 @@ const index = () => {
                                     <p>{errors.url?.message}</p>
                                 </div>
                                 {
-                                    detail['formType'] == 'edit' && <input
+                                    detail['disable'] == false && <input
                                         type="submit"
                                         className="btn btn-primary"
                                         value="送出"
