@@ -1,27 +1,27 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
 FROM python:3.9
 
-EXPOSE 8000
+EXPOSE 5000
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
+ENV TZ=Asia/Taipei
 
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
-ENV TZ=Asia/Taipei
+
 # Install pip requirements
-COPY requirements.txt .
+ADD requirements.txt .
 RUN python -m pip install -r requirements.txt
 
 WORKDIR /app
-COPY . /app
+ADD . /app
 
-# Creates a non-root user and adds permission to access the /app folder
-# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+# Switching to a non-root user, please refer to https://aka.ms/vscode-docker-python-user-rights
 RUN useradd appuser && chown -R appuser /app
 USER appuser
-
+ENV FLASK_DEBUG=1
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-# CMD ["gunicorn", "--bind", "0.0.0.0:8000", "-k", "uvicorn.workers.UvicornWorker", "main:app"]
-# CMD ["uvicorn", "main:app"]
+# CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app"]
+# app:
 CMD ["python","app.py"]

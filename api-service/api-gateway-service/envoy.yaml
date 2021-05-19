@@ -54,7 +54,7 @@ static_resources:
                           - safe_regex:
                               google_re2: {}
                               regex: \*
-                        allow_methods: "GET, POST, PUT, DELETE"
+                        allow_methods: "GET, POST, PUT, DELETE, PATCH"
                         allow_headers: "authorization, content-type, x-requestid, x-requested-with"
                         allow_credentials: true
                       routes:
@@ -111,7 +111,14 @@ static_resources:
                               auto_host_rewrite: true,
                               prefix_rewrite: "/v1.0/invoke/task-service/method/",
                               cluster: dapr,
-                            }                            
+                            }
+                        - match: { prefix: "/file-download-service/" }
+                          route:
+                            {
+                              auto_host_rewrite: true,
+                              prefix_rewrite: "/v1.0/invoke/file-download-service/method/",
+                              cluster: dapr,
+                            }                                                        
 
   clusters:
     - name: dapr

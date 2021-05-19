@@ -1,19 +1,20 @@
+
+from flask import Flask
+from flask_apscheduler import APScheduler
 import datetime
 from bson.objectid import ObjectId
 from bson import json_util
 import os
 from pymongo import MongoClient
-import schedule
 import time
 import httpx
 import csv
-import re
 import xmltodict
 import json
 import pyexcel as pe
 import httpx
-import asyncio
 import logging
+
 logging.basicConfig(level="INFO")
 
 
@@ -40,8 +41,7 @@ def schedule_query():
     '''
     查詢所有使用者的排程資料
     '''
-    return convert_collection(db('task')['schedule'].find())
-
+    return  convert_collection(db('task')['schedule'].find())
 
 def xml_to_json(file):
     obj = xmltodict.parse(file)
@@ -98,7 +98,6 @@ def download(url, data_type, file_name, user_id, schedule_id):
         origin_data = xml_to_json(data.text)
     if data_type == 'xlsx':
         origin_data = xsl_to_json(url)
-    # logging.info(origin_data)
     history_data = db('task')['history'].find_one(
         {"userId": user_id, "scheduleId": schedule_id})
     if history_data == None:
@@ -133,22 +132,58 @@ def download(url, data_type, file_name, user_id, schedule_id):
 
 
 logging.info("執行下載檔案排程")
-schedule_list = schedule_query()
-for s in schedule_query():
-    logging.info(f"使用者：{s['userId']}")
-    for d in s['data']:
-        logging.info(f'''
-        ======================================
-        ID:{d['_id']['$oid']}
-        執行時間：{d['executeTime']}
-        網址：{d['url']}
-        檔案類型：{d['type']}
-        檔名：{d['name']}
-        ======================================
-         ''')
-        schedule.every().day.at(d['executeTime']).do(
-            download, d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
-    logging.info('--------------------------')
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+
+class Config:
+    """App configuration."""
+    JOBS = [      
+    ]     
+    SCHEDULER_EXECUTORS = {"default": {"type": "threadpool", "max_workers": 20}}
+
+    SCHEDULER_JOB_DEFAULTS = {"coalesce": False, "max_instances": 3}
+
+    SCHEDULER_API_ENABLED = True
+
+
+def job1(var_one, var_two):
+    """Demo job function.
+    :param var_two:
+    :param var_two:
+    """
+    print(str(var_one) + " " + str(var_two))
+logging.info(__name__)
+
+if __name__ == '__main__':
+    jobs_list = [      
+    ]    
+    schedule_list = schedule_query()
+    for s in schedule_query():
+        logging.info(f"使用者：{s['userId']}")
+        logging.info(s)
+        for d in s['data']:
+            logging.info(f'''
+            ======================================
+            ID:{d['_id']['$oid']}
+            執行時間：{d['executeTime']}
+            網址：{d['url']}
+            檔案類型：{d['type']}
+            檔名：{d['name']}
+            ======================================
+            ''')  
+            jobs_list.append({
+                'id':d['_id']['$oid'],
+                "func":f'{__name__}:download',
+                'args':(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
+                "trigger": "cron",
+                'hour':f"{d['executeTime'].split(':')[0]}",
+                'minute':f"{d['executeTime'].split(':')[1]}"
+            })     
+    app = Flask(__name__)
+    config=Config()
+    config.JOBS=jobs_list
+    app.config.from_object(config)
+
+    scheduler = APScheduler()
+    scheduler.init_app(app)
+    scheduler.start()
+
+    app.run(use_reloader=False)
