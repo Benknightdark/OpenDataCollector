@@ -75,7 +75,6 @@ export default NextAuth({
       session.user.name = displayName;
       session.user.token = token;
       session.user.id=userId;
-      console.log(session)
 
       return (session)
     },
