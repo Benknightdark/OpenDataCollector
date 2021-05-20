@@ -12,7 +12,6 @@ export default function Home() {
           <Dashboard serviceName='kao-service' />
           <Dashboard serviceName='tainan-service' />
           <Dashboard serviceName='taichung-service' />
-
           <Dashboard serviceName='pthg-service' />
         </div>
       </div>

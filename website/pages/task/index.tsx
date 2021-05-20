@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
-import { checkIsNotLogin } from "../../helpers/common_helper";
 import Layout from "../components/layout";
 import Spinner from "../components/spinner";
 import Modal from 'react-modal';
@@ -144,16 +143,16 @@ const index = () => {
                             <h2>{detail['modalTitle']}</h2>
                             <form method="post" onSubmit={handleSubmit(async () => {
                                 let res = {};
-                                let infoText:string='';
+                                let infoText: string = '';
                                 if (detail['modalTitle'] == '編輯') {
                                     const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(getValues()) });
                                     res = await req.json();
-                                    infoText=`已更新【${getValues()['name']}】排程`;
+                                    infoText = `已更新【${getValues()['name']}】排程`;
 
-                                }else{
+                                } else {
                                     const req = await fetch(`/api/task/add`, { method: 'POST', body: JSON.stringify(getValues()) });
                                     res = await req.json();
-                                    infoText=`已加入【${getValues()['name']}】排程`;
+                                    infoText = `已加入【${getValues()['name']}】排程`;
 
                                 }
                                 if (res['status']) {

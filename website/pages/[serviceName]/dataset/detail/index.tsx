@@ -26,7 +26,7 @@ export default function Index() {
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
-  useEffect(() => {});
+  useEffect(() => { });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
     <Layout goBack="true">
@@ -55,7 +55,7 @@ export default function Index() {
               <hr></hr>
             </div>
           )}
-          <div className="accordion border border-danger" id="infomation" style={{zIndex:100000}}>
+          <div className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingInfomation">
                 <button
@@ -103,7 +103,7 @@ export default function Index() {
             </div>
           </div>
           <hr></hr>
-          <div className="accordion border border-danger" id="fileList"  style={{zIndex:100000}}>
+          <div className="accordion border border-danger" id="fileList" style={{ zIndex: 100000 }}>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingOne">
                 <button
@@ -168,6 +168,19 @@ export default function Index() {
                           >
                             明細
                           </button>
+                          {
+                            (r.type.toLowerCase() === 'xml' || r.type.toLowerCase() === 'json' || r.type.toLowerCase() === 'csv'
+                              || r.type.toLowerCase() === 'xls' || r.type.toLowerCase() === 'xlsx'
+                            ) && <button
+                              className="btn btn-warning m-lg-2"
+                              type="button"
+                              onClick={() => {
+                                console.log(r)
+                              }}
+                            >
+                              加入排程
+                          </button>
+                          }
                         </div>
                       </div>
                     ))}
