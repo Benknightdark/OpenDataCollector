@@ -39,7 +39,7 @@ namespace identity_service.Services
             {
                 var NewClients = new Client
                 {
-                    ClientId = clientString,//client
+                    ClientId = clientString,
                     RequireRequestObject = true,
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,

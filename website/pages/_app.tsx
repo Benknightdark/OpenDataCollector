@@ -1,31 +1,28 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { checkIsLogin } from '../helpers/common_helper'
+import { checkIsLogin, checkIsNotLogin } from '../helpers/common_helper'
 import '../styles/globals.css'
-
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
+  const protectedRouteArray = ['task']
 
   useEffect(() => {
-    const handleRouteChange =async  (url, { shallow }) => {
-      console.log(
-        `App is changing to ${url} ${
-          shallow ? 'with' : 'without'
-        } shallow routing`
-      )
-      if(url.toUpperCase().includes('AUTH'.toUpperCase())){
+    const handleRouteChange = async (url) => {
+      if (url.toUpperCase().includes('LOGIN'.toUpperCase())) {
         await checkIsLogin();
+      }else if (url.toUpperCase().includes('REGISTER'.toUpperCase())) {
+        await checkIsLogin();
+      } else {
+        protectedRouteArray.map(async p => {
+          if (url.toUpperCase().includes(p.toUpperCase())) {
+            await checkIsNotLogin();
+            console.log('OK')
+          }
+        })
       }
     }
-
-    router.events.on('routeChangeStart', handleRouteChange)
-
-    // If the component is unmounted, unsubscribe
-    // from the event with the `off` method:
-    return () => {
-      router.events.off('routeChangeStart', handleRouteChange)
-    }
-  }, [])
+    handleRouteChange(router.pathname)
+  })
 
   return <Component {...pageProps} />
 }
