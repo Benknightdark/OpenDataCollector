@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import HookEmitter from 'hook-emitter';
+import  {HookEmitter} from '../../helpers/hook-event-emitter.js';
 
 const TaskForm = ({ detail }) => {
     const emitter = new HookEmitter();
@@ -17,9 +17,7 @@ const TaskForm = ({ detail }) => {
     const { register, handleSubmit, reset, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
-    emitter.on('sum', (x, y) => {
-       console.log(x,y)
-    });
+
     return (
         <div>       
             <div>
