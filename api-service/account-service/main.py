@@ -32,7 +32,6 @@ async def read_root(data: Login):
     if query_data !=None:
         user_id=str(query_data['_id']['$oid'])
         token=await identity_service.token_endpoint(query_data['userName'],user_id)  
-        print(token)    
         return {"displayName": query_data['displayName'], "token": token['access_token'],"userId":user_id}
     else:
         raise HTTPException(status_code=404, detail="不存在此使用者")
