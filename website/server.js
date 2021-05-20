@@ -1,30 +1,44 @@
-const Koa = require('koa')
+const express = require('express')
+var cookieParser = require('cookie-parser')
+
 const next = require('next')
-const Router = require('@koa/router')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
-const app = next.default({ dev })
+const app = next({ dev })
 const handle = app.getRequestHandler()
+const protectedRoute = ['task']
+const unProtectedRoute = ['signin', 'register']
 
 app.prepare().then(() => {
-  const server = new Koa.default()
-  const router = new Router()
+  const server = express()
+  server.use(cookieParser())
 
-  router.all('(.*)', async (ctx) => {
-    await handle(ctx.req, ctx.res)
-    // console.log(ctx.href)
-    console.log(ctx.cookies.get("next-auth.session-token"))
-    ctx.respond = false
+  server.all('*', (req, res) => {
+    const authCookie = req.cookies['next-auth.session-token'];
+    const isApi = req.url.toUpperCase().includes('/API')
+    if (!isApi) {
+      return handle(req, res)
+    }
+    if (authCookie == null) {
+      const check = protectedRoute.filter(p => req.url.toUpperCase().includes(p.toUpperCase()))
+      if (check.length > 0) {
+        res.redirect("/auth/signin")
+        return handle(req, res)
+      }
+    } else {
+      const check = unProtectedRoute.filter(p => req.url.toUpperCase().includes(p.toUpperCase()))
+      if (check.length > 0) {
+        res.redirect("/")
+        return handle(req, res)
+      }
+    }
+    return handle(req, res)
+
   })
 
-  server.use(async (ctx, next) => {
-    ctx.res.statusCode = 200
-    await next()
-  })
-
-  server.use(router.routes())
-  server.listen(port, () => {
+  server.listen(port, (err) => {
+    if (err) throw err
     console.log(`> Ready on http://localhost:${port}`)
   })
 })
