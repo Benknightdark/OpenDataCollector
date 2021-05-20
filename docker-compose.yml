@@ -308,7 +308,7 @@ services:
   ############################
   placement:
     restart: always
-    image: "daprio/dapr"
+    image: "daprio/dapr:latest"
     command: ["./placement", "-port", "50006"]
     ports:
       - "50006:50006"

@@ -11,9 +11,9 @@ import { toast, ToastContainer } from "react-toastify";
 import { checkIsLogin } from "../../helpers/common_helper";
 
 export default function SignIn({ csrfToken }) {
-useEffect(()=>{
-  checkIsLogin();
-});
+// useEffect(()=>{
+//   checkIsLogin();
+// });
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),

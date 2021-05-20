@@ -12,11 +12,6 @@ import * as yup from "yup";
 const fetcher = url => fetch(url).then(r => r.json())
 
 const index = () => {
-
-    useEffect(() => {
-        checkIsNotLogin();
-
-    });
     const [detail, setDetail] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
     const schema = yup.object().shape({

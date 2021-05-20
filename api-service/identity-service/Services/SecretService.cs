@@ -30,31 +30,25 @@ namespace identity_service.Services
             string clientString = string.Empty;
             string scope = string.Empty;
             string secret = string.Empty;
-            var response = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/jwtConfig:client");
-            clientString = await response.Content.ReadAsStringAsync();
-            var response2 = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/jwtConfig:scope");
-            scope = await response2.Content.ReadAsStringAsync();
-            var response3 = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/jwtConfig:secret");
-            secret = await response3.Content.ReadAsStringAsync();
-            _logger.LogInformation("===============================");
-            _logger.LogInformation(clientString.Replace("{\"jwtConfig:client\":\"", "").Replace("\"}", ""));
-            _logger.LogInformation(scope.Replace("{\"jwtConfig:secret\":\"", "").Replace("\"}", ""));
-            _logger.LogInformation(secret.Replace("{\"jwtConfig:scope\":\"", "").Replace("\"}", ""));
-            _logger.LogInformation("===============================");
+            var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/bulk");
+            System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
+            clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
+            scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
+            secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
             if (!_context.Clients.Any())
             {
                 var NewClients = new Client
                 {
-                    ClientId = clientString.Replace("{\"jwtConfig:client\":\"", "").Replace("\"}", ""),//client
+                    ClientId = clientString,
                     RequireRequestObject = true,
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
 
                     ClientSecrets =
                     {
-                        new Secret(secret.Replace("{\"jwtConfig:secret\":\"","").Replace("\"}","").ToString().Sha256())
+                        new Secret(secret.ToString().Sha256())
                     },
-                    AllowedScopes = { scope.Replace("{\"jwtConfig:scope\":\"", "").Replace("\"}", "") }
+                    AllowedScopes = { scope }
                 }.ToEntity();
                 _context.Clients.Add(NewClients);
             }
