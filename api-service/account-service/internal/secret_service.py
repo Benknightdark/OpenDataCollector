@@ -1,8 +1,6 @@
-import requests
+import logging
 import os
 import httpx
-import logging
-
 async def get_jwt_config():
     if os.getenv('ENVIRONMENT') == 'production':
         url = (
@@ -10,6 +8,7 @@ async def get_jwt_config():
         client = httpx.AsyncClient(http2=True)    
         res = await client.get(url)
         res_data=res.json()
+        print(res_data)
         await client.aclose()   
         jwt_config_key = ["client", "scope", "secret"]
         jwt_config_data = {}

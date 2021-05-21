@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 import os
 from internal import db_service,identity_service
-import python_jwt as jwt
-import jwcrypto.jwk as jwk
-import datetime
+# import python_jwt as jwt
+# import jwcrypto.jwk as jwk
+# import datetime
 
 
 class Login(BaseModel):

@@ -3,12 +3,7 @@ uvicorn
 pydantic
 pydantic[email,typing_extensions,dotenv]
 python-multipart
-# python-jose[cryptography]
-# passlib[bcrypt]
 beautifulsoup4
-requests
-gunicorn
-uvloop
-httptools
+# requests
 httpx
 httpx[http2]
