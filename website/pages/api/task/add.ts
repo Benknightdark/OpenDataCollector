@@ -37,7 +37,7 @@ const addTaskData = async (data, session) => {
             'Authorization': 'Bearer ' + session.user.token,
         }),
     })
-    const resData = await reqData.text()
+    const resData = await reqData.json()
     return resData;
 }
 export default async (req, res) => {
@@ -45,7 +45,9 @@ export default async (req, res) => {
         const session = await getSession({ req })
         const data = JSON.parse(req.body);
         const inertID=await addTaskData(data,session);
-        const addFileDownloadDataaRes = await addFileDownloadData(inertID,data, session);
+        console.log(inertID)
+        const addFileDownloadDataaRes = await addFileDownloadData(inertID['_id']['$oid'],data, session);
+        console.log(addFileDownloadDataaRes)
         res.status(200).json({status:true})
     } catch (error) {
         console.error(error)

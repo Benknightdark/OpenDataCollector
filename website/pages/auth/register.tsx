@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import Layout from "../components/layout";
 import { checkIsLogin } from "../../helpers/common_helper";
 export default function Register({ csrfToken }) {
   // useEffect(()=>{
@@ -40,7 +39,6 @@ export default function Register({ csrfToken }) {
     })()
   };
   return (
-    <Layout goBack="true">
       <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
         <div className="card" style={{ width: "1000px" }}>
           <div className="card-header">註冊</div>
@@ -108,7 +106,6 @@ export default function Register({ csrfToken }) {
           </div>
         </div>
       </div>
-    </Layout>
   );
 }
 

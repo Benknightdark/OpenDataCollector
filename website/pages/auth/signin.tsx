@@ -54,7 +54,6 @@ export default function SignIn({ csrfToken }) {
     });
   };
   return (
-    <Layout goBack="true">
       <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
         <div className="card" style={{ width: "1000px" }}>
           <div className="card-header">登入</div>
@@ -100,9 +99,9 @@ export default function SignIn({ csrfToken }) {
             </form>
           </div>
         </div>
+        <Spinner showLoading={showLoading}></Spinner>
+
       </div>
-      <Spinner showLoading={showLoading}></Spinner>
-    </Layout>
   );
 }
 

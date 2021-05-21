@@ -43,8 +43,7 @@ export default function Type() {
   });
   if (!data) return <Spinner showLoading="true"></Spinner>;
   return (
-    <Layout goBack="true">
-      <div className="container-fluid px-1">
+      <div>
         <div className="d-flex mb-3 p-2 bd-highlight flex-wrap justify-content-md-start justify-content-lg-start justify-content-sm-center justify-content-xs-center">
           {data.map((lists, index) => {
             return lists.map((d) => (
@@ -108,8 +107,8 @@ export default function Type() {
             ));
           })}
         </div>
+        <Spinner showLoading={showLoading}></Spinner>
+
       </div>
-      <Spinner showLoading={showLoading}></Spinner>
-    </Layout>
   );
 }

@@ -1,28 +1,16 @@
 
+import React from 'react'
 import '../styles/globals.css'
+import Layout from './components/layout'
+
 function MyApp({ Component, pageProps }) {
-  // const router = useRouter()
-  // const protectedRouteArray = ['task']
 
-  // useEffect(() => {
-  //   const handleRouteChange = async (url) => {
-  //     if (url.toUpperCase().includes('LOGIN'.toUpperCase())) {
-  //       await checkIsLogin();
-  //     }else if (url.toUpperCase().includes('REGISTER'.toUpperCase())) {
-  //       await checkIsLogin();
-  //     } else {
-  //       protectedRouteArray.map(async p => {
-  //         if (url.toUpperCase().includes(p.toUpperCase())) {
-  //           await checkIsNotLogin();
-  //           console.log('OK')
-  //         }
-  //       })
-  //     }
-  //   }
-  //   handleRouteChange(router.pathname)
-  // })
 
-  return <Component {...pageProps} />
+  return <Layout>
+    <div className="container-fluid px-1">
+      <Component {...pageProps} />
+    </div>
+  </Layout>
 }
 
 export default MyApp

@@ -31,10 +31,9 @@ export default function Index() {
         };
     })
     if (!data) return <Spinner showLoading='true'></Spinner>
-    return (        <Layout goBack='true'>
+    return (        
 
-        {/* <div className="alert alert-warning" role="alert">
-            <h3>{data[0]?.title}</h3></div> */}
+
 
         <div className="d-flex flex-column mb-3 bd-highlight flex-wrap justify-content-start align-content-stretch">
             {
@@ -76,10 +75,11 @@ export default function Index() {
 
                 })
             }
+                    <Spinner showLoading={showLoading}></Spinner>
+
         </div>
 
 
-        <Spinner showLoading={showLoading}></Spinner>
-    </Layout>)
+    )
 
 }
