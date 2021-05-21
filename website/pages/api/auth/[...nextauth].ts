@@ -28,8 +28,10 @@ export default NextAuth({
         })
 
         if (req.status === 200) {
+          const dd=await req.text();
+          console.log( )
           // Any object returned will be saved in `user` property of the JWT
-          return { name: await req.text() }
+          return { name: dd }
 
         } else {
           // If you return null or false then the credentials will be rejected
