@@ -89,6 +89,7 @@ def download(url, data_type, file_name, user_id, schedule_id):
         f'----------------START: {file_name}-----------------------------')
 
     origin_data = None
+    data_type=str(data_type).lower()
     if data_type == 'csv':
         data = httpx.get(url)
         origin_data = csv_to_json(

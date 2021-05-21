@@ -46,7 +46,8 @@ export default async (req, res) => {
         const data = JSON.parse(req.body);
         const inertID=await addTaskData(data,session);
         console.log(inertID)
-        const addFileDownloadDataaRes = await addFileDownloadData(inertID,data, session);
+        const addFileDownloadDataaRes = await addFileDownloadData(inertID['$oid'],data, session);
+        console.log(addFileDownloadDataaRes)
         res.status(200).json({status:true})
     } catch (error) {
         console.error(error)

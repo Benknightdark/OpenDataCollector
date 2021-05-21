@@ -51,12 +51,12 @@ def add_schedule(user_id, data):
                 data
             ]
         })
-        return insert_data.inserted_id
+        return data['_id']
 
     else:
         update_data = db('task')['schedule'].update_one(
             {"userId": user_id}, {'$push': {'data': data}}, True)
-        return update_data.upserted_id
+        return data['_id']
 
 
 def update_schedule(data_id, data):
