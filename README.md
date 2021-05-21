@@ -78,4 +78,5 @@ dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c Config
 cd api-service/identity-service
 dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
+http://localhost:3000
 ```

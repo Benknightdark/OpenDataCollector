@@ -38,8 +38,7 @@ export default function Index() {
   useEffect(() => { });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
-    <Layout goBack="true">
-      <div className="container-fluid px-1">
+      <div>
       
         <div className="d-flex flex-column  p-3 mb-3 bd-highlight flex-wrap justify-content-center">
           <div className="card  border-success bg-light">
@@ -211,6 +210,5 @@ export default function Index() {
         </div>
       </div>
       
-    </Layout>
   );
 }

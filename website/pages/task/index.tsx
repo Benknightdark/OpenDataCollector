@@ -27,8 +27,7 @@ const index = () => {
     if (!data) return <Spinner showLoading="true"></Spinner>;
 
     return (
-        <Layout goBack="true">
-            <div className="container-fluid px-1">
+            <div>
                 <button className='btn btn-info' onClick={async () => {
                     const detailData = {
                         name: '',
@@ -142,7 +141,6 @@ const index = () => {
 
             </div>
             
-        </Layout>
     );
 }
 
