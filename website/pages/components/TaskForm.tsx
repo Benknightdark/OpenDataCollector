@@ -3,10 +3,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import  {HookEmitter} from '../../helpers/hook-event-emitter.js';
+import { EventEmitter } from "tsee";
 
-const TaskForm = ({ detail }) => {
-    const emitter = new HookEmitter();
+const TaskForm = ({ detail, events }) => {
 
     const schema = yup.object().shape({
         name: yup.string().required("不能為空值"),
@@ -19,7 +18,7 @@ const TaskForm = ({ detail }) => {
     });
 
     return (
-        <div>       
+        <div>
             <div>
                 <h2>{detail?.modalTitle}</h2>
                 <form method="post" onSubmit={handleSubmit(async () => {
@@ -37,7 +36,7 @@ const TaskForm = ({ detail }) => {
 
                     }
                     if (res['status']) {
-                   
+
                         toast.info(infoText, {
                             position: "top-right",
                             autoClose: 5000,
@@ -47,7 +46,8 @@ const TaskForm = ({ detail }) => {
                             draggable: true,
                             progress: undefined,
                         })
-                        await emitter.emit('sum', 3, 7);
+                        events.emit('close');
+
                     } else {
                         alert("發生錯誤");
                     }

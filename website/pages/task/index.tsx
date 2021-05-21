@@ -1,23 +1,16 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
 import Layout from "../components/layout";
 import Spinner from "../components/spinner";
 import Modal from 'react-modal';
 import TaskForm from "../components/TaskForm";
-// const HookEmitter=require('../../helpers/hook-event-emitter.js')
-import  {HookEmitter} from '../../helpers/hook-event-emitter.js';
+import { EventEmitter } from 'tsee';
 const fetcher = url => fetch(url).then(r => r.json())
 
 const index = () => {
-    const emitter = new HookEmitter;
 
-    emitter.on('sum',1, (x, y) => {
-       console.log(x,y)
-    });
-    
-    // emit and wait for all listeners to be called
-   // await emitter.emit('sum', 3, 7);
+
     const [detail, setDetail] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
     const { data, error, isValidating, mutate } = useSWR(
@@ -26,6 +19,13 @@ const index = () => {
         {
             refreshInterval: 60000
         })
+    const events = new EventEmitter<{
+        close: () => void,
+    }>();
+    events.on('close', async () => {
+        await mutate();
+        setIsOpen(false);
+    })
     if (!data) return <Spinner showLoading="true"></Spinner>;
 
     return (
@@ -112,6 +112,7 @@ const index = () => {
                                                             draggable: true,
                                                             progress: undefined,
                                                         })
+                                                        await mutate();
                                                     }}
                                                 >刪除</button>
                                             </div>
@@ -134,10 +135,10 @@ const index = () => {
                                 <span aria-hidden="true" style={{ 'fontSize': '40px' }}>x</span>
                             </button>
                         </div>
-                        <TaskForm detail={detail}></TaskForm>
+                        <TaskForm detail={detail} events={events}></TaskForm>
                     </Modal>
                 }
-                
+
             </div>
         </Layout>
     );
