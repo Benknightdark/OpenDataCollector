@@ -47,6 +47,7 @@ async def post_schedule(user_id, data: ScheduleModel):
     '''    
     data_dict = data.dict()
     res = db_service.add_schedule(user_id, data_dict)
+    print(res)
     return res
 
 
