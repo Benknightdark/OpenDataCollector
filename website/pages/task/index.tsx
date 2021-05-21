@@ -9,16 +9,14 @@ import { EventEmitter } from 'tsee';
 const fetcher = url => fetch(url).then(r => r.json())
 
 const index = () => {
-
-
-    const [detail, setDetail] = useState({});
-    const [modalIsOpen, setIsOpen] = useState(false);
     const { data, error, isValidating, mutate } = useSWR(
         `/api/task`,
         fetcher,
         {
             refreshInterval: 60000
         })
+    const [detail, setDetail] = useState({});
+    const [modalIsOpen, setIsOpen] = useState(false);
     const events = new EventEmitter<{
         close: () => void,
     }>();
@@ -125,9 +123,10 @@ const index = () => {
                             }
                         </tbody>
                     </table>
-                </div>
-                {
-                    <Modal isOpen={modalIsOpen} appElement={document.querySelector('#root')}>
+                    {
+                    <Modal isOpen={modalIsOpen} appElement={document.querySelector('#root')}
+      
+                    >
                         <div className='d-flex justify-content-end'>
                             <button type="button" className="btn"
                                 onClick={() => { setIsOpen(false) }}
@@ -138,8 +137,11 @@ const index = () => {
                         <TaskForm detail={detail} events={events}></TaskForm>
                     </Modal>
                 }
+                </div>
+                
 
             </div>
+            
         </Layout>
     );
 }

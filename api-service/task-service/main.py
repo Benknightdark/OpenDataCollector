@@ -55,7 +55,7 @@ async def delete_schedule(data_id):
     '''
     * {data_id} : 排程id
     '''      
-    res = db_service.delete_schedule(id, data_id)
+    res = db_service.delete_schedule( data_id)
     return res
 
 

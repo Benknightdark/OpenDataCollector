@@ -4,6 +4,9 @@ import useSWR from "swr";
 import Layout from "../../../components/layout";
 import Spinner from "../../../components/spinner";
 import { useEffect, useState } from "react";
+import { EventEmitter } from "tsee";
+import Modal from 'react-modal';
+import TaskForm from "../../../components/TaskForm";
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -26,11 +29,18 @@ export default function Index() {
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
+  const events = new EventEmitter<{
+    close: () => void,
+  }>();
+  events.on('close', async () => {
+    await fetchDetailData.mutate();
+  })
   useEffect(() => { });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
     <Layout goBack="true">
       <div className="container-fluid px-1">
+      
         <div className="d-flex flex-column  p-3 mb-3 bd-highlight flex-wrap justify-content-center">
           <div className="card  border-success bg-light">
             <div className="card-body">
@@ -43,7 +53,7 @@ export default function Index() {
             <div>
               <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
                 {fetchDetailData.data.statics.map((s) => (
-                  <div className="card  border-info bg-light p-3 m-3">
+                  <div className="card  border-info bg-light p-3 m-3" >
                     <div className="card-body">
                       <h3 className="quote-text"> {s.name}</h3>
                       <hr></hr>
@@ -55,7 +65,7 @@ export default function Index() {
               <hr></hr>
             </div>
           )}
-          <div className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
+          <div className="accordion border border-danger" id="infomation"  style={{ zIndex: 100000 }}>
             <div className="accordion-item">
               <h2 className="accordion-header" id="headingInfomation">
                 <button
@@ -77,7 +87,7 @@ export default function Index() {
                     : "accordion-collapse collapse collapsed"
                 }
               >
-                <div className="accordion-body">
+                <div className="accordion-body" >
                   <div className="p-3">
                     <div className="table-responsive">
                       <table className="table table-bordered border-primary table-hover">
@@ -176,6 +186,15 @@ export default function Index() {
                               type="button"
                               onClick={() => {
                                 console.log(r)
+                                // setIsOpen(true);
+                                router.push(`/${serviceName}/dataset/schedule?data=${JSON.stringify({
+                                  executeTime:'',
+                                  type:r.type,
+                                  name:r.name,
+                                  url:r.downloadLink,
+                                  modalTitle:'新增',
+                                  disable: false
+                                })}`)
                               }}
                             >
                               加入排程
@@ -191,6 +210,7 @@ export default function Index() {
           </div>
         </div>
       </div>
+      
     </Layout>
   );
 }

@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
-import { EventEmitter } from "tsee";
 
 const TaskForm = ({ detail, events }) => {
 
@@ -47,6 +46,7 @@ const TaskForm = ({ detail, events }) => {
                             progress: undefined,
                         })
                         events.emit('close');
+                        reset();
 
                     } else {
                         alert("發生錯誤");
@@ -122,6 +122,7 @@ const TaskForm = ({ detail, events }) => {
                 </form>
             </div>
         </div>
+        
     );
 }
 
