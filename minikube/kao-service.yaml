@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kao-service
+  labels:
+    app: kao-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kao-service
+  template:
+    metadata:
+      labels:
+        app: kao-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "kao-service"
+    spec:
+      containers:
+      - name: kao-service
+        image: localhost:5000/kao-service:latest

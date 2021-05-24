@@ -190,13 +190,14 @@ services:
   # Api Gateway Service
   ############################
   api-gateway-service:
-      image: envoyproxy/envoy:v1.18-latest
+      build: ./api-service/api-gateway-service
         #v1.18-latest      
         #v1.17-latest
         #v1.16-latest
         #v1.14.2
-      volumes:
-        - ./api-service/api-gateway-service:/etc/envoy
+        #envoyproxy/envoy:v1.18-latest
+      # volumes:
+      #   - ./api-service/api-gateway-service:/etc/envoy
       ports:
         - "5202:80"
         - "15202:8001"
