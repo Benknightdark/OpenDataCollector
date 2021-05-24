@@ -45,6 +45,21 @@ docker push localhost:5000/api-gateway-service:latest
 kubectl apply -f ./minikube/api-gateway-service.yaml
 
 
+docker build --pull --rm -f "api-service\tainan-service\Dockerfile" -t tainan-service:latest "api-service\tainan-service"
+docker tag tainan-service:latest localhost:5000/tainan-service:latest
+docker push localhost:5000/tainan-service:latest
+kubectl apply -f ./minikube/tainan-service.yaml
 
 
+
+docker build --pull --rm -f "api-service\taichung-service\Dockerfile" -t taichung-service:latest "api-service\taichung-service"
+docker tag taichung-service:latest localhost:5000/taichung-service:latest
+docker push localhost:5000/taichung-service:latest
+kubectl apply -f ./minikube/taichung-service.yaml
+
+
+docker build --pull --rm -f "api-service\pthg-service\Dockerfile" -t pthg-service:latest "api-service\pthg-service"
+docker tag pthg-service:latest localhost:5000/pthg-service:latest
+docker push localhost:5000/pthg-service:latest
+kubectl apply -f ./minikube/pthg-service.yaml
 ```

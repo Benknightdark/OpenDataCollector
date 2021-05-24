@@ -66,7 +66,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "tainan-service",
-    "-app-port", "8000",
+    "-app-port", "8779",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50007",
      "-components-path", "/components"]
@@ -92,7 +92,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "pthg-service",
-    "-app-port", "8000",
+    "-app-port", "8780",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50009",
      "-components-path", "/components"]
@@ -118,7 +118,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "taichung-service",
-    "-app-port", "8000",
+    "-app-port", "8778",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50010",
      "-components-path", "/components"]
