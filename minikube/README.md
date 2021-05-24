@@ -30,10 +30,16 @@ helm repo update
 helm install redis bitnami/redis
 kubectl apply -f ./minikube/redis.yaml
 # 啟動服務
+minikube dashboard
+minikube service dapr-dashboard -n dapr-system
+
+docker build --pull --rm -f "api-service\kao-service\Dockerfile" -t kao-service:latest "api-service\kao-service"
 docker tag kao-service:latest localhost:5000/kao-service:latest
 docker push localhost:5000/kao-service:latest
 kubectl apply -f ./minikube/kao-service.yaml
 
+
+docker build --pull --rm -f "api-service\api-gateway-service\Dockerfile" -t api-gateway-service:latest "api-service\api-gateway-service"
 docker tag api-gateway-service:latest localhost:5000/api-gateway-service:latest
 docker push localhost:5000/api-gateway-service:latest
 kubectl apply -f ./minikube/api-gateway-service.yaml
