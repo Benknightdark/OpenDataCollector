@@ -37,4 +37,8 @@ kubectl apply -f ./minikube/kao-service.yaml
 docker tag api-gateway-service:latest localhost:5000/api-gateway-service:latest
 docker push localhost:5000/api-gateway-service:latest
 kubectl apply -f ./minikube/api-gateway-service.yaml
+
+
+
+
 ```

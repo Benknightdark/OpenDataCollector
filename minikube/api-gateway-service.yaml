@@ -39,3 +39,6 @@ spec:
       containers:
       - name: api-gateway-service
         image: localhost:5000/api-gateway-service:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always

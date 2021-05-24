@@ -16,7 +16,12 @@ spec:
       annotations:
         dapr.io/enabled: "true"
         dapr.io/app-id: "kao-service"
+        # dapr.io/app-protocol: "grpc"
+        dapr.io/app-port: "8777"
     spec:
       containers:
       - name: kao-service
         image: localhost:5000/kao-service:latest
+        ports:
+        - containerPort: 8777
+        imagePullPolicy: Always
