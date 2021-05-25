@@ -1,0 +1,17 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: awssecretmanager
+  namespace: default
+spec:
+  type: secretstores.aws.secretmanager
+  version: v1
+  metadata:
+  - name: region
+    value: "[aws_region]"
+  - name: accessKey
+    value: "[aws_access_key]"
+  - name: secretKey
+    value: "[aws_secret_key]"
+  - name: sessionToken
+    value: "[aws_session_token]"

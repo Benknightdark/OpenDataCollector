@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: taichung-service
+  labels:
+    app: taichung-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taichung-service
+  template:
+    metadata:
+      labels:
+        app: taichung-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "taichung-service"
+        dapr.io/app-port: "8778"
+    spec:
+      containers:
+      - name: taichung-service
+        image: localhost:5000/taichung-service:latest
+        ports:
+        - containerPort: 8778
+        imagePullPolicy: Always
