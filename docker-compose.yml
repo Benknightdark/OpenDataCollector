@@ -148,7 +148,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "account-service",
-    "-app-port", "8000",
+    "-app-port", "8781",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50008",
      "-components-path", "/components"]
@@ -177,7 +177,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "personal-service",
-    "-app-port", "8000",
+    "-app-port", "8782",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50016",
      "-components-path", "/components"]
