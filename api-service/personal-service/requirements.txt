@@ -4,7 +4,7 @@ pydantic
 pydantic[email,typing_extensions,dotenv]
 python-multipart
 pyjwt
-cryptography
+# cryptography
 pymongo
 httpx
 httpx[http2]
