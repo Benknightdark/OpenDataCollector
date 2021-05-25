@@ -25,7 +25,10 @@ namespace identity_service
         public void ConfigureServices(IServiceCollection services)
         {
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
-            services.AddIdentityServer()
+            services.AddIdentityServer(
+                options=>{
+                }
+            )
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = b => b.UseSqlServer(Configuration.GetConnectionString("db"),

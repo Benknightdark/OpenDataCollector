@@ -73,6 +73,7 @@ export default NextAuth({
     async session(session) {
       const displayName = JSON.parse(session.user.name).displayName
       const token = JSON.parse(session.user.name).token;
+      console.log(token)
       const userId = JSON.parse(session.user.name).userId;
       session.user.name = displayName;
       session.user.token = token;
