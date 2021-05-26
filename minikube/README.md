@@ -90,6 +90,18 @@ docker tag account-service:latest localhost:5000/account-service:latest
 docker push localhost:5000/account-service:latest
 kubectl delete -f ./minikube/api-service/account-service.yaml
 kubectl apply -f ./minikube/api-service/account-service.yaml
+
+docker build --pull --rm --no-cache -f "api-service\personal-service\Dockerfile" -t personal-service:latest "api-service\personal-service"
+docker tag personal-service:latest localhost:5000/personal-service:latest
+docker push localhost:5000/personal-service:latest
+kubectl delete -f ./minikube/api-service/personal-service.yaml
+kubectl apply -f ./minikube/api-service/personal-service.yaml
+
+docker build --pull --rm --no-cache -f "api-service\task-service\Dockerfile" -t task-service:latest "api-service\task-service"
+docker tag task-service:latest localhost:5000/task-service:latest
+docker push localhost:5000/task-service:latest
+kubectl delete -f ./minikube/api-service/task-service.yaml
+kubectl apply -f ./minikube/api-service/task-service.yaml
 ```
 
 ``` Bash
