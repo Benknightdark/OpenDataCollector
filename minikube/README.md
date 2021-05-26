@@ -22,6 +22,8 @@ kubectl apply -f ./minikube/redis.yaml
 # 移除dapr
 # helm uninstall dapr -n dapr-system
 
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm install mongo  bitnami/mongodb --set auth.rootPassword=example 
 ###############################################
 # 開啟local registry對外連線
 docker run -d --rm -it --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:host.docker.internal:5000"
@@ -81,8 +83,10 @@ kubectl apply -f ./minikube/api-service/pthg-service.yaml
 
 ``` powershell
 # 建立secrets
+kubectl delete secret opendatasecrets
 kubectl create secret generic opendatasecrets `
 --from-literal=client=client `
 --from-literal=scope=api1 `
---from-literal=secret=9e564bd21af4a8ba8fd0cde4c38cec3de51ae169b13339777f5fdbd4a044f22c
+--from-literal=secret=9e564bd21af4a8ba8fd0cde4c38cec3de51ae169b13339777f5fdbd4a044f22c `
+--from-literal=mongodb=mongodb://root:example@mongo-mongodb:27017/
 ```
