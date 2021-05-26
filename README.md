@@ -7,7 +7,7 @@
     docker compose up -d --build
     ```
    - 開啟 http://localhost:3333
-- kubernetes
+2. kubernetes
   1. 參考此說明文件
      - https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme
 
