@@ -8,8 +8,7 @@
     ```
    - 開啟 http://localhost:3333
 2. kubernetes
-  1. 參考此說明文件
-     - https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme
+   - [參考此文件](https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme)
 
 # 系統說明
 | 服務名稱                   | 類型              | 用途                                                        |
