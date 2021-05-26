@@ -1,0 +1,1 @@
+    "db": "Server=identity-server-db;Database=IdentityServerDB;user id=sa;password=YourStrong!Passw0rd"

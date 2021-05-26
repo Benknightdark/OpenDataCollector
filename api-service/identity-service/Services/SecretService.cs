@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -30,11 +31,20 @@ namespace identity_service.Services
             string clientString = string.Empty;
             string scope = string.Empty;
             string secret = string.Empty;
-            var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/bulk");
-            System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
-            clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
-            scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
-            secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
+            var cc = Environment.GetEnvironmentVariable("SECRET");
+            if (string.IsNullOrEmpty(cc))
+            {
+                var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/bulk");
+                System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
+                clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
+                scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
+                secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
+            }else{
+                clientString =Environment.GetEnvironmentVariable("CLIENT");
+                scope =Environment.GetEnvironmentVariable("SCOPE");
+                secret =Environment.GetEnvironmentVariable("SECRET");
+            }
+_logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(_context.Clients.ToList()));
             if (!_context.Clients.Any())
             {
                 var NewClients = new Client
