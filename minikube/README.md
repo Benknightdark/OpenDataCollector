@@ -104,12 +104,13 @@ kubectl delete -f ./minikube/api-service/task-service.yaml
 kubectl apply -f ./minikube/api-service/task-service.yaml
 
 
-
-docker build --pull --rm --no-cache -f "website\Dockerfile" -t nodeapp:latest "website"
+#--no-cache
+docker build --pull --rm  -f "website\Dockerfile" -t nodeapp:latest "website"
 docker tag nodeapp:latest localhost:5000/nodeapp:latest
 docker push localhost:5000/nodeapp:latest
 kubectl delete -f ./minikube/website/nodeapp.yaml
 kubectl apply -f ./minikube/website/nodeapp.yaml
+
 ```
 
 ``` Bash
@@ -119,4 +120,6 @@ minikube dashboard
 minikube service dapr-dashboard -n dapr-system
 # 開啟api gateway服務
 minikube service api-gateway-service
+# 開啟website服務
+minikube service nodeapp
 ```
