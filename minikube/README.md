@@ -102,6 +102,14 @@ docker tag task-service:latest localhost:5000/task-service:latest
 docker push localhost:5000/task-service:latest
 kubectl delete -f ./minikube/api-service/task-service.yaml
 kubectl apply -f ./minikube/api-service/task-service.yaml
+
+
+
+docker build --pull --rm --no-cache -f "website\Dockerfile" -t nodeapp:latest "website"
+docker tag nodeapp:latest localhost:5000/nodeapp:latest
+docker push localhost:5000/nodeapp:latest
+kubectl delete -f ./minikube/website/nodeapp.yaml
+kubectl apply -f ./minikube/website/nodeapp.yaml
 ```
 
 ``` Bash
