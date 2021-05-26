@@ -1,15 +1,15 @@
 # OpenDataCollector
 
 # 系統啟動方式
-- docker-compose
-  1. 在終端機界面執行以下指令
+1. docker-compose
+   - 在終端機界面執行以下指令
     ```Bash
     docker compose up -d --build
     ```
-  2. 開啟 http://localhost:3333
+   - 開啟 http://localhost:3333
 - kubernetes
-  - 參考此說明文件
-  - https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme
+  1. 參考此說明文件
+     - https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme
 
 # 系統說明
 | 服務名稱                   | 類型              | 用途                                                        |
