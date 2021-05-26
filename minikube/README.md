@@ -1,3 +1,4 @@
+# 第一次建立OpendataCollector系統要跑的Scripts
 ``` Bash
 # 啟動minikube
 minikube start --cpus=4 --memory=4096  
@@ -5,7 +6,7 @@ minikube addons enable dashboard
 minikube addons enable ingress
 minikube addons enable registry
 minikube addons enable metrics-server
-# 使用helm3安裝dapr
+# 安裝dapr
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --wait
@@ -16,12 +17,12 @@ helm install redis bitnami/redis
 kubectl apply -f ./minikube/redis.yaml
 # 安裝mongodb
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install mongo  bitnami/mongodb --set auth.rootPassword=example 
-# 安裝sql server
+helm install mongo  bitnami/mongodb --set auth.rootPassword=example
+# 安裝SqlServer
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
 ```
-``` powershell
+``` Powershell
 # 建立secrets
 kubectl delete secret opendatasecrets
 kubectl create secret generic opendatasecrets `
@@ -32,15 +33,15 @@ kubectl create secret generic opendatasecrets `
 --from-literal=sqlserver='Server=mssql-deployment;Database=IdentityServerDB;user id=sa;password=MyC0m9l&xP@ssw0rd'
 ```
 
-``` Bash
+``` Powershell
 # 開啟local registry對外連線
 docker run -d --rm -it --network=host alpine ash -c "apk add socat && socat TCP-LISTEN:5000,reuseaddr,fork TCP:host.docker.internal:5000"
 kubectl port-forward --namespace kube-system $($(kubectl get po -n kube-system  -o=name  | Where-Object {$_ | Select-String "registry-"} | Where-Object {$_ -notlike  "*proxy*"} )-replace 'pod/', '') 5000:5000 
 
 ```
 
+# 建立或更新OpenDataCollector相關服務
 ``` Bash
-# 建立OpenDataCollector Kubernetes System
 
 docker build --pull --rm --no-cache -f "api-service\kao-service\Dockerfile" -t kao-service:latest "api-service\kao-service"
 docker tag kao-service:latest localhost:5000/kao-service:latest
@@ -84,6 +85,11 @@ kubectl delete -f ./minikube/api-service/identity-service.yaml
 kubectl apply -f ./minikube/api-service/identity-service.yaml
 
 
+docker build --pull --rm --no-cache -f "api-service\account-service\Dockerfile" -t account-service:latest "api-service\account-service"
+docker tag account-service:latest localhost:5000/account-service:latest
+docker push localhost:5000/account-service:latest
+kubectl delete -f ./minikube/api-service/account-service.yaml
+kubectl apply -f ./minikube/api-service/account-service.yaml
 ```
 
 ``` Bash

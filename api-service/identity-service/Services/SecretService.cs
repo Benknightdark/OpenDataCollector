@@ -32,6 +32,8 @@ namespace identity_service.Services
             string scope = string.Empty;
             string secret = string.Empty;
             var cc = Environment.GetEnvironmentVariable("SECRET");
+            _logger.LogInformation(cc);
+            _logger.LogInformation(Environment.GetEnvironmentVariable("SQLSERVER"));
             if (string.IsNullOrEmpty(cc))
             {
                 var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/bulk");
@@ -39,12 +41,14 @@ namespace identity_service.Services
                 clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
                 scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
                 secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
-            }else{
-                clientString =Environment.GetEnvironmentVariable("CLIENT");
-                scope =Environment.GetEnvironmentVariable("SCOPE");
-                secret =Environment.GetEnvironmentVariable("SECRET");
             }
-_logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(_context.Clients.ToList()));
+            else
+            {
+                clientString = Environment.GetEnvironmentVariable("CLIENT");
+                scope = Environment.GetEnvironmentVariable("SCOPE");
+                secret = Environment.GetEnvironmentVariable("SECRET");
+            }
+            _logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(_context.Clients.ToList()));
             if (!_context.Clients.Any())
             {
                 var NewClients = new Client

@@ -30,6 +30,7 @@ namespace identity_service
                 DBConnectString = System.Environment.GetEnvironmentVariable("SQLSERVER");
             }
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
+            System.Console.WriteLine(DBConnectString);
             services.AddIdentityServer(
                 options =>
                 {
