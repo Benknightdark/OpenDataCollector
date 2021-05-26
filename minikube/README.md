@@ -42,77 +42,69 @@ kubectl port-forward --namespace kube-system $($(kubectl get po -n kube-system  
 
 # 建立或更新OpenDataCollector相關服務
 ``` Bash
-
+# 建立kao-service
 docker build --pull --rm --no-cache -f "api-service\kao-service\Dockerfile" -t kao-service:latest "api-service\kao-service"
 docker tag kao-service:latest localhost:5000/kao-service:latest
 docker push localhost:5000/kao-service:latest 
 kubectl delete -f ./minikube/api-service/kao-service.yaml
 kubectl apply -f ./minikube/api-service/kao-service.yaml
-
-
+# 建立api-gateway-service
 docker build --pull --rm  --no-cache -f "api-service\api-gateway-service\Dockerfile" -t api-gateway-service:latest "api-service\api-gateway-service"
 docker tag api-gateway-service:latest localhost:5000/api-gateway-service:latest
 docker push localhost:5000/api-gateway-service:latest
 kubectl delete  -f ./minikube/api-service/api-gateway-service.yaml
 kubectl apply -f ./minikube/api-service/api-gateway-service.yaml
-
-
+# 建立tainan-service
 docker build --pull --rm  --no-cache -f "api-service\tainan-service\Dockerfile" -t tainan-service:latest "api-service\tainan-service"
 docker tag tainan-service:latest localhost:5000/tainan-service:latest
 docker push localhost:5000/tainan-service:latest
 kubectl delete -f ./minikube/api-service/tainan-service.yaml
 kubectl apply -f ./minikube/api-service/tainan-service.yaml
-
-
-
+# 建立taichung-service
 docker build --pull --rm --no-cache -f "api-service\taichung-service\Dockerfile" -t taichung-service:latest "api-service\taichung-service"
 docker tag taichung-service:latest localhost:5000/taichung-service:latest
 docker push localhost:5000/taichung-service:latest
 kubectl delete -f ./minikube/api-service/taichung-service.yaml
 kubectl apply -f ./minikube/api-service/taichung-service.yaml
-
-
+# 建立pthg-service
 docker build --pull --rm --no-cache -f "api-service\pthg-service\Dockerfile" -t pthg-service:latest "api-service\pthg-service"
 docker tag pthg-service:latest localhost:5000/pthg-service:latest
 docker push localhost:5000/pthg-service:latest
 kubectl delete -f ./minikube/api-service/pthg-service.yaml
 kubectl apply -f ./minikube/api-service/pthg-service.yaml
-
+# 建立identity-service
 docker build --pull --rm --no-cache -f "api-service\identity-service\Dockerfile" -t identity-service:latest "api-service\identity-service"
 docker tag identity-service:latest localhost:5000/identity-service:latest
 docker push localhost:5000/identity-service:latest
 kubectl delete -f ./minikube/api-service/identity-service.yaml
 kubectl apply -f ./minikube/api-service/identity-service.yaml
-
-
+# 建立account-service
 docker build --pull --rm --no-cache -f "api-service\account-service\Dockerfile" -t account-service:latest "api-service\account-service"
 docker tag account-service:latest localhost:5000/account-service:latest
 docker push localhost:5000/account-service:latest
 kubectl delete -f ./minikube/api-service/account-service.yaml
 kubectl apply -f ./minikube/api-service/account-service.yaml
-
+# 建立personal-service
 docker build --pull --rm --no-cache -f "api-service\personal-service\Dockerfile" -t personal-service:latest "api-service\personal-service"
 docker tag personal-service:latest localhost:5000/personal-service:latest
 docker push localhost:5000/personal-service:latest
 kubectl delete -f ./minikube/api-service/personal-service.yaml
 kubectl apply -f ./minikube/api-service/personal-service.yaml
-
+# 建立task-service
 docker build --pull --rm --no-cache -f "api-service\task-service\Dockerfile" -t task-service:latest "api-service\task-service"
 docker tag task-service:latest localhost:5000/task-service:latest
 docker push localhost:5000/task-service:latest
 kubectl delete -f ./minikube/api-service/task-service.yaml
 kubectl apply -f ./minikube/api-service/task-service.yaml
-
-
-#--no-cache
-docker build --pull --rm  -f "website\Dockerfile" -t nodeapp:latest "website"
+# 建立nodeapp
+docker build --pull --rm --no-cache -f "website\Dockerfile" -t nodeapp:latest "website"
 docker tag nodeapp:latest localhost:5000/nodeapp:latest
 docker push localhost:5000/nodeapp:latest
 kubectl delete -f ./minikube/website/nodeapp.yaml
 kubectl apply -f ./minikube/website/nodeapp.yaml
 
 ```
-
+# 開啟對外服務連線
 ``` Bash
 # 開啟dashboard
 minikube dashboard
