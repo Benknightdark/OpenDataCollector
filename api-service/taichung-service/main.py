@@ -1,6 +1,6 @@
 from typing import List, Optional
 from fastapi import FastAPI
-import requests
+# import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel

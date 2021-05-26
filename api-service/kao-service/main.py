@@ -1,6 +1,5 @@
 from typing import List, Optional
 from fastapi import FastAPI
-import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
@@ -26,10 +25,9 @@ root_url = "https://data.kcg.gov.tw"
 
 @app.get("/")
 async def read_root():
-    client = httpx.AsyncClient(http2=True)
-    response = await client.get(root_url)
-    print(response.http_version)  # "HTTP/1.0", "HTTP/1.1", or "HTTP/2".
-    await client.aclose()
+    print(os.getenv("CLIENT"))
+    print(os.getenv("SCOPE"))
+    print(os.getenv("SECRET"))
     return {"Hello": "Kao Service"}
 
 @app.get("/api/dashboard", response_model=Dashboard, summary='取得高雄OpenData Dashboard資料')

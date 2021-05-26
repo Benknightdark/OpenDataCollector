@@ -28,8 +28,10 @@ export default NextAuth({
         })
 
         if (req.status === 200) {
+          const dd=await req.text();
+          console.log( )
           // Any object returned will be saved in `user` property of the JWT
-          return { name: await req.text() }
+          return { name: dd }
 
         } else {
           // If you return null or false then the credentials will be rejected
@@ -71,6 +73,7 @@ export default NextAuth({
     async session(session) {
       const displayName = JSON.parse(session.user.name).displayName
       const token = JSON.parse(session.user.name).token;
+      console.log(token)
       const userId = JSON.parse(session.user.name).userId;
       session.user.name = displayName;
       session.user.token = token;

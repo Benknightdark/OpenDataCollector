@@ -1,7 +1,7 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.9
+FROM python:alpine
 
-EXPOSE 8000
+EXPOSE 8778
 
 # Keeps Python from generating .pyc files in the container
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -18,8 +18,7 @@ COPY . /app
 
 # Creates a non-root user and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN useradd appuser && chown -R appuser /app
-USER appuser
+
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "-k", "uvicorn.workers.UvicornWorker", "main:app"]
+CMD ["uvicorn","main:app","--host", "0.0.0.0", "--port", "8778"]

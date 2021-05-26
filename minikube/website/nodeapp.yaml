@@ -1,0 +1,44 @@
+  
+kind: Service
+apiVersion: v1
+metadata:
+  name: nodeapp
+  labels:
+    app: nodeapp
+spec:
+  selector:
+    app: nodeapp
+  ports:
+  - protocol: TCP
+    port: 3399
+    targetPort: 3000
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp
+  labels:
+    app: nodeapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodeapp
+  template:
+    metadata:
+      labels:
+        app: nodeapp
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "nodeapp"
+        dapr.io/app-port: "3000"
+    spec:
+      containers:
+      - name: nodeapp
+        image: localhost:5000/nodeapp:latest
+        ports:
+        - containerPort: 3000
+        imagePullPolicy: Always

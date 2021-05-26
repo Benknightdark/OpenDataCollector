@@ -1,5 +1,5 @@
 from typing import Optional
-import requests
+# import requests
 from bs4 import BeautifulSoup
 import httpx
 async def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optional[str] = '',group: Optional[str] = ''):

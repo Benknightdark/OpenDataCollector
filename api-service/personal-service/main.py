@@ -1,6 +1,6 @@
 from typing import List, Optional
 from fastapi import FastAPI, Header,HTTPException
-import requests
+# import requests
 import re
 from pydantic import BaseModel
 from internal import identity_service,db_service

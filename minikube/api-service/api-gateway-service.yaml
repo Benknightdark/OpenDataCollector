@@ -1,0 +1,44 @@
+  
+kind: Service
+apiVersion: v1
+metadata:
+  name: api-gateway-service
+  labels:
+    app: api-gateway-service
+spec:
+  selector:
+    app: api-gateway-service
+  ports:
+  - protocol: TCP
+    port: 8182
+    targetPort: 80
+  type: ClusterIP
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-service
+  labels:
+    app: api-gateway-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway-service
+  template:
+    metadata:
+      labels:
+        app: api-gateway-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "api-gateway-service"
+        dapr.io/app-port: "80"
+    spec:
+      containers:
+      - name: api-gateway-service
+        image: localhost:5000/api-gateway-service:latest
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always

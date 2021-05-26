@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "env-cmd -f environments/.env.development nodemon server.js",
     "build": "env-cmd -f environments/.env.production next build",
-    "start": "env-cmd -f environments/.env.production node server.js"
+    "start": "env-cmd -f environments/.env.production next start"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.5.1",

@@ -17,7 +17,10 @@ def db(db_name):
     取得MongoDB 資料庫
     '''
     if os.getenv('ENVIRONMENT') == 'production':
-        db_uri = ('mongodb://root:example@mongo/')
+        if os.getenv('MONGODB'):
+            db_uri =os.getenv('MONGODB')
+        else:
+            db_uri =('mongodb://root:example@mongo/')
     else:
         db_uri = ('mongodb://root:example@localhost:1769/')
     db_client = MongoClient(db_uri)

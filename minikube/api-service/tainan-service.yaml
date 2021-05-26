@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tainan-service
+  labels:
+    app: tainan-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tainan-service
+  template:
+    metadata:
+      labels:
+        app: tainan-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "tainan-service"
+        dapr.io/app-port: "8779"
+    spec:
+      containers:
+      - name: tainan-service
+        image: localhost:5000/tainan-service:latest
+        env:
+          - name: CLIENT
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: client
+          - name: SCOPE
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: scope
+          - name: SECRET
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: secret
+          - name: ENVIRONMENT
+            value: production        
+        ports:
+        - containerPort: 8779
+        imagePullPolicy: Always

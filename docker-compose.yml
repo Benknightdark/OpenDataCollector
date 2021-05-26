@@ -40,7 +40,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "kao-service",
-    "-app-port", "8000",
+    "-app-port", "8777",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50003",
      "-components-path", "/components"]
@@ -66,7 +66,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "tainan-service",
-    "-app-port", "8000",
+    "-app-port", "8779",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50007",
      "-components-path", "/components"]
@@ -92,7 +92,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "pthg-service",
-    "-app-port", "8000",
+    "-app-port", "8780",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50009",
      "-components-path", "/components"]
@@ -118,7 +118,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "taichung-service",
-    "-app-port", "8000",
+    "-app-port", "8778",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50010",
      "-components-path", "/components"]
@@ -148,7 +148,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "account-service",
-    "-app-port", "8000",
+    "-app-port", "8781",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50008",
      "-components-path", "/components"]
@@ -177,7 +177,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "personal-service",
-    "-app-port", "8000",
+    "-app-port", "8782",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50016",
      "-components-path", "/components"]
@@ -190,13 +190,14 @@ services:
   # Api Gateway Service
   ############################
   api-gateway-service:
-      image: envoyproxy/envoy:v1.18-latest
+      build: ./api-service/api-gateway-service
         #v1.18-latest      
         #v1.17-latest
         #v1.16-latest
         #v1.14.2
-      volumes:
-        - ./api-service/api-gateway-service:/etc/envoy
+        #envoyproxy/envoy:v1.18-latest
+      # volumes:
+      #   - ./api-service/api-gateway-service:/etc/envoy
       ports:
         - "5202:80"
         - "15202:8001"
@@ -367,8 +368,8 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
         - identity-server-db-data:/var/opt/mssql      
-    # ports:
-    #   - 8734:1433
+    ports:
+      - 8734:1433
     networks:
       - open-data                                                    
 networks:
