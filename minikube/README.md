@@ -14,7 +14,13 @@ minkube stop
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --wait
-helm uninstall dapr -n dapr-system
+# 安裝redis
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm install redis bitnami/redis
+kubectl apply -f ./minikube/redis.yaml
+# 移除dapr
+# helm uninstall dapr -n dapr-system
 
 ###############################################
 # 開啟local registry對外連線
@@ -24,17 +30,18 @@ kubectl port-forward --namespace kube-system $($(kubectl get po -n kube-system  
 
 ########################################################################
 
-# 安裝redis
-helm repo add bitnami https://charts.bitnami.com/bitnami
-helm repo update
-helm install redis bitnami/redis
-kubectl apply -f ./minikube/redis.yaml
+# 建立secrets
+kubectl create secret generic opendatasecrets |
+--from-literal=client=client | 
+--from-literal=scope=api1 |
+--from-literal=secret=9e564bd21af4a8ba8fd0cde4c38cec3de51ae169b13339777f5fdbd4a044f22c |
 # 開啟dashboard
 minikube dashboard
 # 開啟dapr dashboard
 minikube service dapr-dashboard -n dapr-system
 # 開啟api gateway服務
 minikube service api-gateway-service
+
 
 
 # 建立image和更新kubernetes服務
