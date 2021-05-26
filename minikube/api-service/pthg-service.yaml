@@ -21,6 +21,24 @@ spec:
       containers:
       - name: pthg-service
         image: localhost:5000/pthg-service:latest
+        env:
+          - name: CLIENT
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: client
+          - name: SCOPE
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: scope
+          - name: SECRET
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: secret
+          - name: ENVIRONMENT
+            value: production        
         ports:
         - containerPort: 8780
         imagePullPolicy: Always
