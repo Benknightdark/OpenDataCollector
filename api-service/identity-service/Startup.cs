@@ -24,19 +24,25 @@ namespace identity_service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string DBConnectString = Configuration.GetConnectionString("db");
+            if (!string.IsNullOrEmpty(System.Environment.GetEnvironmentVariable("SQLSERVER")))
+            {
+                DBConnectString = System.Environment.GetEnvironmentVariable("SQLSERVER");
+            }
             var migrationsAssembly = typeof(Startup).GetTypeInfo().Assembly.GetName().Name;
             services.AddIdentityServer(
-                options=>{
+                options =>
+                {
                 }
             )
                 .AddConfigurationStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(Configuration.GetConnectionString("db"),
+                    options.ConfigureDbContext = b => b.UseSqlServer(DBConnectString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddOperationalStore(options =>
                 {
-                    options.ConfigureDbContext = b => b.UseSqlServer(Configuration.GetConnectionString("db"),
+                    options.ConfigureDbContext = b => b.UseSqlServer(DBConnectString,
                         sql => sql.MigrationsAssembly(migrationsAssembly));
                 }).AddCustomCredential()
             //.AddDeveloperSigningCredential()

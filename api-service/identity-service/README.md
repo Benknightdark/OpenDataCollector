@@ -1,1 +1,1 @@
-    "db": "Server=identity-server-db;Database=IdentityServerDB;user id=sa;password=YourStrong!Passw0rd"
+    "db": "Server=mssql-deployment;Database=IdentityServerDB;user id=sa;password=MyC0m9l&xP@ssw0rd"

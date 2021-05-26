@@ -37,8 +37,11 @@ spec:
               secretKeyRef:
                 name: opendatasecrets
                 key: secret
-          - name: ENVIRONMENT
-            value: production        
+          - name: SQLSERVER
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: sqlserver        
         ports:
         - containerPort: 8779
         imagePullPolicy: Always
