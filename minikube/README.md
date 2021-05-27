@@ -21,6 +21,14 @@ helm install mongo  bitnami/mongodb --set auth.rootPassword=example
 # 安裝SqlServer
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
+# 安裝prometheus
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
+# 安裝grafana
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+helm install grafana grafana/grafana -n dapr-monitoring --set persistence.enabled=false --set admin.user=admin --set admin.password=admin123
 ```
 ``` Powershell
 # 建立secrets
