@@ -30,7 +30,12 @@ def db(db_name):
     取得MongoDB 資料庫
     '''
     if os.getenv('ENVIRONMENT') == 'production':
-        db_uri = ('mongodb://root:example@mongo/')
+        if os.getenv('MONGODB'):
+            db_uri = os.getenv('MONGODB')
+            print('================================')
+            print(db_uri)
+        else:
+            db_uri = ('mongodb://root:example@mongo/')
     else:
         db_uri = ('mongodb://root:example@localhost:1769/')
     db_client = MongoClient(db_uri)
@@ -41,7 +46,8 @@ def schedule_query():
     '''
     查詢所有使用者的排程資料
     '''
-    return  convert_collection(db('task')['schedule'].find())
+    return convert_collection(db('task')['schedule'].find())
+
 
 def xml_to_json(file):
     obj = xmltodict.parse(file)
@@ -89,7 +95,7 @@ def download(url, data_type, file_name, user_id, schedule_id):
         f'----------------START: {file_name}-----------------------------')
 
     origin_data = None
-    data_type=str(data_type).lower()
+    data_type = str(data_type).lower()
     if data_type == 'csv':
         data = httpx.get(url)
         origin_data = csv_to_json(
@@ -134,11 +140,13 @@ def download(url, data_type, file_name, user_id, schedule_id):
 
 logging.info("執行下載檔案排程")
 
+
 class Config:
     """App configuration."""
-    JOBS = [      
-    ]     
-    SCHEDULER_EXECUTORS = {"default": {"type": "threadpool", "max_workers": 20}}
+    JOBS = [
+    ]
+    SCHEDULER_EXECUTORS = {"default": {
+        "type": "threadpool", "max_workers": 20}}
 
     SCHEDULER_JOB_DEFAULTS = {"coalesce": False, "max_instances": 3}
 
@@ -151,11 +159,13 @@ def job1(var_one, var_two):
     :param var_two:
     """
     print(str(var_one) + " " + str(var_two))
+
+
 logging.info(__name__)
 
 if __name__ == '__main__':
-    jobs_list = [      
-    ]    
+    jobs_list = [
+    ]
     schedule_list = schedule_query()
     for s in schedule_query():
         logging.info(f"使用者：{s['userId']}")
@@ -169,22 +179,22 @@ if __name__ == '__main__':
             檔案類型：{d['type']}
             檔名：{d['name']}
             ======================================
-            ''')  
+            ''')
             jobs_list.append({
-                'id':d['_id']['$oid'],
-                "func":f'{__name__}:download',
-                'args':(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
+                'id': d['_id']['$oid'],
+                "func": f'{__name__}:download',
+                'args': (d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid']),
                 "trigger": "cron",
-                'hour':f"{d['executeTime'].split(':')[0]}",
-                'minute':f"{d['executeTime'].split(':')[1]}"
-            })     
+                'hour': f"{d['executeTime'].split(':')[0]}",
+                'minute': f"{d['executeTime'].split(':')[1]}"
+            })
     app = Flask(__name__)
-    config=Config()
-    config.JOBS=jobs_list
+    config = Config()
+    config.JOBS = jobs_list
     app.config.from_object(config)
 
     scheduler = APScheduler()
     scheduler.init_app(app)
     scheduler.start()
 
-    app.run(use_reloader=False)
+    app.run(use_reloader=False, port=8999)

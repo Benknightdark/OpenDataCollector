@@ -295,7 +295,7 @@ services:
           image: "daprio/daprd:edge"
           command: ["./daprd",
           "-app-id", "file-download-service",
-          "-app-port", "5000",
+          "-app-port", "8999",
           "-placement-host-address", "placement:50006",
           "-dapr-grpc-port", "50032",
            "-components-path", "/components"]
