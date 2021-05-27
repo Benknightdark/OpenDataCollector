@@ -96,13 +96,12 @@ docker tag task-service:latest localhost:5000/task-service:latest
 docker push localhost:5000/task-service:latest
 kubectl delete -f ./minikube/api-service/task-service.yaml
 kubectl apply -f ./minikube/api-service/task-service.yaml
-
 # 建立file-download-service
 docker build --pull --rm --no-cache -f "background-services\file-download-service\Dockerfile" -t file-download-service:latest "background-services\file-download-service"
 docker tag file-download-service:latest localhost:5000/file-download-service:latest
 docker push localhost:5000/file-download-service:latest
-kubectl delete -f ./minikube/background-services/file-download-service.yaml
-kubectl apply -f ./minikube/background-services/file-download-service.yaml
+kubectl delete -f ./minikube/background-service/file-download-service.yaml
+kubectl apply -f ./minikube/background-service/file-download-service.yaml
 # 建立nodeapp
 docker build --pull --rm --no-cache -f "website\Dockerfile" -t nodeapp:latest "website"
 docker tag nodeapp:latest localhost:5000/nodeapp:latest
