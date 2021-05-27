@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "kao-service"
         dapr.io/app-port: "8777"
+        dapr.io/log-as-json: "true"
     spec:
       containers:
       - name: kao-service

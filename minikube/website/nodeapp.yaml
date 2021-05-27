@@ -35,6 +35,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "nodeapp"
         dapr.io/app-port: "3000"
+        dapr.io/log-as-json: "true"
     spec:
       containers:
       - name: nodeapp

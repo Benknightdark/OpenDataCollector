@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "identity-service"
         dapr.io/app-port: "80"
+        dapr.io/log-as-json: "true"
     spec:
       containers:
       - name: identity-service

@@ -17,6 +17,7 @@ spec:
         dapr.io/enabled: "true"
         dapr.io/app-id: "personal-service"
         dapr.io/app-port: "8782"
+        dapr.io/log-as-json: "true"
     spec:
       containers:
       - name: personal-service

@@ -1,7 +1,7 @@
 # 第一次建立OpendataCollector系統要跑的Scripts
 ``` Bash
-# 啟動minikube
-minikube start --cpus=4 --memory=4096  
+# 啟動minikube 16384  4096
+minikube start --cpus=4 --memory=10000  
 minikube addons enable dashboard
 minikube addons enable ingress
 minikube addons enable registry
@@ -21,14 +21,31 @@ helm install mongo  bitnami/mongodb --set auth.rootPassword=example
 # 安裝SqlServer
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
-# 安裝prometheus
+# 安裝 Dapr with JSON formatted logs
+helm repo add dapr https://dapr.github.io/helm-charts/
+helm repo update
+helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
+# 安裝prometheus (Optional)
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
 helm install dapr-prom prometheus-community/prometheus -n dapr-monitoring --set alertmanager.persistentVolume.enable=false --set pushgateway.persistentVolume.enabled=false --set server.persistentVolume.enabled=false
-# 安裝grafana
+helm uninstall dapr-prom -n dapr-monitoring
+# 安裝grafana (Optional)
 helm repo add grafana https://grafana.github.io/helm-charts
 helm repo update
 helm install grafana grafana/grafana -n dapr-monitoring --set persistence.enabled=false --set admin.user=admin --set admin.password=admin123
+helm uninstall grafana -n dapr-monitoring
+# 安裝ELK (Optional)
+helm repo add elastic https://helm.elastic.co
+helm repo update
+helm install elasticsearch elastic/elasticsearch -n dapr-monitoring --set persistence.enabled=false,replicas=1
+helm install kibana elastic/kibana -n dapr-monitoring
+# helm uninstall elasticsearch -n dapr-monitoring
+# helm uninstall kibana -n dapr-monitoring
+# 安裝fluentd (Optional)
+kubectl apply -f ./minikube/fluentd-config-map.yaml
+kubectl apply -f ./minikube/fluentd-dapr-with-rbac.yaml
+
 ```
 ``` Powershell
 # 建立secrets
