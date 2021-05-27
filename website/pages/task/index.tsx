@@ -75,6 +75,7 @@ const index = () => {
                                                 >執行</button>
                                                 <button className='btn btn-warning' style={{ "marginRight": "5px" }}
                                                     onClick={() => {
+                                                        
                                                         const detailData = d
                                                         detailData['modalTitle'] = '編輯'
                                                         detailData['disable'] = false
