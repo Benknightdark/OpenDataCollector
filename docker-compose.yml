@@ -267,7 +267,7 @@ services:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "task-service",
-    "-app-port", "8000",
+    "-app-port", "8799",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50018",
      "-components-path", "/components"]
