@@ -50,12 +50,12 @@ async def read_root():
     print(sched.get_jobs())
     return {"Hello": "File Downloader Service"}
 
-@app.delete("/scheduler/jobs/{id}")
+@app.delete("/scheduler/jobs/{id}",summary="刪除下載檔案排程")
 async def delete(id):
     sched.remove_job(id)
     return {"status": True}
 
-@app.post("/scheduler/jobs")
+@app.post("/scheduler/jobs",summary="新增下載檔案排程")
 async def post(request: Request):
     d = await request.json()
     sched.add_job(
@@ -66,7 +66,7 @@ async def post(request: Request):
     )
     return d
 
-@app.post("/scheduler/jobs/{id}/run") 
+@app.post("/scheduler/jobs/{id}/run","執行下載檔案排程") 
 async def execute(id):
     sched.get_job(id).modify(next_run_time=datetime.datetime.now())
     return {"id":id}   
