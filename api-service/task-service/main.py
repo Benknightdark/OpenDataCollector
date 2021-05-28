@@ -88,6 +88,6 @@ async def post_schedule(user_id, schedule_id, request: Request):
 @app.put("/api/history/{user_id}/{schedule_id}",)
 async def put_schedule(user_id, schedule_id, request: Request):
     body = await request.json()
-    data = db_service.put_history(user_id, schedule_id, body['data'])
+    data = db_service.update_history(user_id, schedule_id, body['data'])
     print(data)
     return {"status":True}
