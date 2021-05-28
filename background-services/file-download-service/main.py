@@ -66,7 +66,7 @@ async def post(request: Request):
     )
     return d
 
-@app.post("/scheduler/jobs/{id}/run","執行下載檔案排程") 
+@app.post("/scheduler/jobs/{id}/run",summary="執行下載檔案排程") 
 async def execute(id):
     sched.get_job(id).modify(next_run_time=datetime.datetime.now())
     return {"id":id}   
