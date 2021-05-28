@@ -44,7 +44,7 @@ async def post_schedule(user_id, data: ScheduleModel):
     '''
     * {user_id} : 使用者id
     * {data} : 欲新增的排程資料
-    '''    
+    '''
     data_dict = data.dict()
     res = db_service.add_schedule(user_id, data_dict)
     print(res)
@@ -55,8 +55,8 @@ async def post_schedule(user_id, data: ScheduleModel):
 async def delete_schedule(data_id):
     '''
     * {data_id} : 排程id
-    '''      
-    res = db_service.delete_schedule( data_id)
+    '''
+    res = db_service.delete_schedule(data_id)
     return res
 
 
@@ -65,7 +65,29 @@ async def put_schedule(data_id, data: ScheduleModel):
     '''
     * {data_id} : 排程id
     * {data} : 欲修改的排程資料
-    '''      
+    '''
     data_dict = data.dict()
     res = db_service.update_schedule(data_id, data_dict)
     return res
+
+
+@app.get("/api/history/{user_id}/{schedule_id}",)
+async def get_schedule(user_id, schedule_id):
+    data = db_service.history_query(user_id, schedule_id)
+    return data
+
+
+@app.post("/api/history/{user_id}/{schedule_id}",)
+async def post_schedule(user_id, schedule_id, request: Request):
+    body = await request.json()
+    data = db_service.add_history(user_id, schedule_id, body['data'])
+    print(data)
+    return {"status":True}
+
+
+@app.put("/api/history/{user_id}/{schedule_id}",)
+async def put_schedule(user_id, schedule_id, request: Request):
+    body = await request.json()
+    data = db_service.update_history(user_id, schedule_id, body['data'])
+    print(data)
+    return {"status":True}
