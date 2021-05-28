@@ -186,13 +186,12 @@ async def delete(id):
 
 @app.post("/scheduler/jobs")
 async def post(request: Request):
-    # json_compatible_item_data = jsonable_encoder((await request.body()))
     d = await request.json()
     sched.add_job(
         download,
-        id=d['_id']['$oid'],
-        hour=f"{d['executeTime'].split(':')[0]}", minute=f"{d['executeTime'].split(':')[1]}",
-        trigger='cron', args=(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
+        id=d['id'],
+        hour=d["hour"], minute=d["minute"],
+        trigger='cron', args=(d['args'][0],d['args'][1],d['args'][2],d['args'][3],d['args'][4])
     )
     return d
 asyncio.create_task(init_scheduler())
