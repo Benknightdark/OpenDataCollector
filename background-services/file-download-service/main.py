@@ -194,4 +194,11 @@ async def post(request: Request):
         trigger='cron', args=(d['args'][0],d['args'][1],d['args'][2],d['args'][3],d['args'][4])
     )
     return d
+#scheduler/jobs/${req.query['id']}/run
+@app.post("scheduler/jobs/{id}/run") 
+async def execute(id):
+    # sched.get_job(id)
+    # for job in cron.get_jobs():
+    # job.modify(next_run_time=datetime.now())
+    return {"id":id}   
 asyncio.create_task(init_scheduler())
