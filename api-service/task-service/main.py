@@ -69,3 +69,8 @@ async def put_schedule(data_id, data: ScheduleModel):
     data_dict = data.dict()
     res = db_service.update_schedule(data_id, data_dict)
     return res
+
+
+# get history detail by id
+# add history
+# edit
