@@ -1,5 +1,5 @@
-from fastapi import FastAPI,Request
-import os 
+from fastapi import FastAPI, Request
+import os
 import httpx
 from apscheduler.schedulers.background import BackgroundScheduler
 import asyncio
@@ -131,9 +131,11 @@ def download(url, data_type, file_name, user_id, schedule_id):
     #     },
     #         True)
     logging.info(f'----------------END: {file_name}------------------------')
+
+
 sched = BackgroundScheduler()
 
- 
+
 async def init_scheduler():
     await asyncio.sleep(delay=10)
     async with httpx.AsyncClient() as client:
@@ -153,33 +155,44 @@ async def init_scheduler():
                 ======================================
                 ''')
                 sched.add_job(
-                    download, 
-                id=d['_id']['$oid'],
-                hour =  f"{d['executeTime'].split(':')[0]}",minute =f"{d['executeTime'].split(':')[1]}",
-                trigger='cron',args=(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
-                )      
+                    download,
+                    id=d['_id']['$oid'],
+                    hour=f"{d['executeTime'].split(':')[0]}", 
+                    minute=f"{d['executeTime'].split(':')[1]}",
+                    trigger='cron', args=(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
+                )
         await client.aclose()
 
         sched.start()
 
-if os.getenv("ENVIRONMENT")=='production':
+if os.getenv("ENVIRONMENT") == 'production':
 
-        app = FastAPI(docs_url=None, redoc_url=None)
+    app = FastAPI(docs_url=None, redoc_url=None)
 else:
-        app = FastAPI()
+    app = FastAPI()
+
 
 @app.get("/")
 async def read_root():
     print(sched.get_jobs())
-    return {"Hello": "File Downloader Service"} 
+    return {"Hello": "File Downloader Service"}
+
+
 @app.delete("/scheduler/jobs/{id}")
 async def delete(id):
     sched.remove_job(id)
-    return {"status":True}   
+    return {"status": True}
+
+
 @app.post("/scheduler/jobs")
-async def post( request: Request):
+async def post(request: Request):
     # json_compatible_item_data = jsonable_encoder((await request.body()))
-    return await request.json()
-# add
-# delete    
+    d = await request.json()
+    sched.add_job(
+        download,
+        id=d['_id']['$oid'],
+        hour=f"{d['executeTime'].split(':')[0]}", minute=f"{d['executeTime'].split(':')[1]}",
+        trigger='cron', args=(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
+    )
+    return d
 asyncio.create_task(init_scheduler())
