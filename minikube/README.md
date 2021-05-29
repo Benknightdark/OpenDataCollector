@@ -25,6 +25,7 @@ kubectl apply -f ./minikube/sqlserver.yaml
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
+#################Optional#######################
 # 安裝prometheus (Optional)
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 helm repo update
