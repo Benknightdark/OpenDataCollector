@@ -75,5 +75,6 @@ async def execute2():
     url=f'http://localhost:3500/v1.0/publish/pubsub/C'
     client = httpx.AsyncClient(http2=True)
     data=await client.post(url,json={'aa':'aa'})
-    return data.json()     
+    print(data.status_code)
+    return {'receive':data.text}   
 asyncio.create_task(init_scheduler())
