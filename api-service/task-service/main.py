@@ -91,3 +91,5 @@ async def put_schedule(user_id, schedule_id, request: Request):
     data = db_service.update_history(user_id, schedule_id, body['data'])
     print(data)
     return {"status":True}
+
+
