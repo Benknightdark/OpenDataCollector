@@ -93,3 +93,8 @@ async def put_schedule(user_id, schedule_id, request: Request):
     return {"status":True}
 
 
+@app.post('/C')
+async def c_subscriber(request: Request):
+    data=await request.json()
+    data['aa']='cccc'
+    return  data

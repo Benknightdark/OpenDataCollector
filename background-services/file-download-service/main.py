@@ -70,4 +70,10 @@ async def post(request: Request):
 async def execute(id):
     sched.get_job(id).modify(next_run_time=datetime.datetime.now())
     return {"id":id}   
+@app.post("/scheduler/jobs/do",summary="執行下載檔案排程2") 
+async def execute2():
+    url=f'http://localhost:3500/v1.0/publish/pubsub/C'
+    client = httpx.AsyncClient(http2=True)
+    data=await client.post(url,json={'aa':'aa'})
+    return data.json()     
 asyncio.create_task(init_scheduler())
