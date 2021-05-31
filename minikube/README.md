@@ -124,8 +124,6 @@ docker tag file-download-service:latest localhost:5000/file-download-service:lat
 docker push localhost:5000/file-download-service:latest
 kubectl delete -f ./minikube/api-service/file-download-service.yaml
 kubectl apply -f ./minikube/api-service/file-download-service.yaml
-
-
 # 建立subscribe-service
 docker build --pull --rm --no-cache -f "background-services\subscribe-service\Dockerfile" -t subscribe-service:latest "background-services\subscribe-service"
 docker tag subscribe-service:latest localhost:5000/subscribe-service:latest

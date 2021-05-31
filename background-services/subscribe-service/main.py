@@ -3,6 +3,7 @@ import os
 import os
 import logging
 import data_process
+import httpx
 logging.basicConfig(level="INFO")
 
 if os.getenv("ENVIRONMENT") == 'production':
@@ -38,4 +39,5 @@ async def add_file_subscriber(request: Request):
 @app.post('/cron')
 async def add_file_subscriber(request: Request):
     print("OKOKOK")
+    print(httpx.get('http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets').text)
     return {"status":"OK"}
