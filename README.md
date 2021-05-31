@@ -8,7 +8,7 @@
     ```
    - 開啟 http://localhost:3333
 2. kubernetes
-   - [參考此文件](https://github.com/Benknightdark/OpenDataCollector/blob/main/minikube#readme)
+   - [參考此文件](./minikube#readme)
 
 # 系統說明
 | 服務名稱                   | 類型              | 用途                                  |
@@ -47,27 +47,27 @@
 
 # 系統畫面
 - 各縣市Open Data統計資料
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/1.png?raw=true" />
+<center><img src="./screenshot/1.png" />
 </center>
 
 - 組織資料
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/2.png?raw=true" />
+<center><img src="./screenshot/2.png" />
 </center>
 
 - 群組資料
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/3.png?raw=true" />
+<center><img src="./screenshot/3.png" />
 </center>
 
 - Open Data列表
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/4.png?raw=true" />
+<center><img src="./screenshot/4.png" />
 </center>
 
 - Open Data明細
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/5.png?raw=true" />
+<center><img src="./screenshot/5.png" />
 </center>
 
 - 排程管理
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/6.png?raw=true" />
+<center><img src="./screenshot/6.png" />
 </center>
 
 # 其他指令
