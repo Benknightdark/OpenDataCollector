@@ -92,13 +92,3 @@ async def put_schedule(user_id, schedule_id, request: Request):
     print(data)
     return {"status":True}
 
-@app.get('/dapr/subscribe')
-def subscribe():
-    subscriptions = [{'pubsubname': 'pubsub', 'topic': 'C', 'route': 'C'}]
-    return (subscriptions)
-@app.post('/C')
-async def c_subscriber(request: Request):
-    data=await request.json()
-    data['aa']='cccc'
-    print(data)
-    return  data

@@ -6,6 +6,8 @@ import pyexcel as pe
 import httpx
 import logging
 logging.basicConfig(level="INFO")
+pubsub_url=f'http://localhost:3500/v1.0/publish/pubsub'
+api_url = 'http://localhost:3500/v1.0/invoke/task-service/method'
 
 
 def xml_to_json(file):
@@ -52,7 +54,6 @@ def download(url, data_type, file_name, user_id, schedule_id):
     '''
     logging.info(
         f'----------------START: {file_name}-----------------------------')
-    api_url = 'http://localhost:3500/v1.0/invoke/task-service/method'
     origin_data = None
     data_type = str(data_type).lower()
     if data_type == 'csv':
@@ -65,16 +66,26 @@ def download(url, data_type, file_name, user_id, schedule_id):
     if data_type == 'xlsx':
         origin_data = xsl_to_json(url)
     print(origin_data)
+    publish_data={
+        "userId":user_id,
+        "scheduleId":schedule_id,
+        "url":url,
+        "fileName":file_name,
+        "dataType":data_type
+    }
     history_data = httpx.get(
         f'{api_url}/api/history/{user_id}/{schedule_id}').json()
+    print(history_data)    
     if history_data == None:
         logging.info("新增")
-        res = httpx.post(
-            f'{api_url}/api/history/{user_id}/{schedule_id}', json={"data":origin_data})
-        print(res)
+        # res = httpx.post(
+        #     f'{api_url}/api/history/{user_id}/{schedule_id}', json={"data":origin_data})
+        httpx.post(f'{pubsub_url}/addFile',json=publish_data)
     else:
         logging.info("修改")
-        res = httpx.put(
-            f'{api_url}/api/history/{user_id}/{schedule_id}', json={"data":origin_data})
-        print(res)
+        # res = httpx.put(
+        #     f'{api_url}/api/history/{user_id}/{schedule_id}', json={"data":origin_data})
+        httpx.post(f'{pubsub_url}/updateFile',json=publish_data)
+    
+        
     logging.info(f'----------------END: {file_name}------------------------')

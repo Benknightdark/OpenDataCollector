@@ -85,7 +85,7 @@ def delete_schedule(data_id):
 
 def history_query(user_id, schedule_id):
     history_data = db('task')['history'].find_one(
-        {"userId": user_id, "scheduleId": schedule_id})
+        {"userId": user_id, "scheduleId": schedule_id},{"userId":1})
     return convert_collection(history_data)
 
 

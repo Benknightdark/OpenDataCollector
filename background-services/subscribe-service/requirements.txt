@@ -1,0 +1,10 @@
+httpx
+xmltodict
+pyexcel
+pyexcel-xls
+pymongo
+uvicorn
+fastapi
+pydantic
+pydantic[email,typing_extensions,dotenv]
+httpx[http2]
