@@ -9,7 +9,7 @@ minikube addons enable metrics-server
 # 安裝dapr
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
-helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --wait
+helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --set global.logAsJson=true  --wait
 # 安裝redis
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
@@ -21,10 +21,6 @@ helm install mongo  bitnami/mongodb --set auth.rootPassword=example
 # 安裝SqlServer
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
-# 安裝 Dapr with JSON formatted logs
-helm repo add dapr https://dapr.github.io/helm-charts/
-helm repo update
-helm install dapr dapr/dapr --namespace dapr-system --set global.logAsJson=true
 #################Optional#######################
 # 安裝prometheus (Optional)
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -123,7 +119,7 @@ docker push localhost:5000/task-service:latest
 kubectl delete -f ./minikube/api-service/task-service.yaml
 kubectl apply -f ./minikube/api-service/task-service.yaml
 # 建立file-download-service
-docker build --pull --rm --no-cache -f "api-services\file-download-service\Dockerfile" -t file-download-service:latest "api-services\file-download-service"
+docker build --pull --rm --no-cache -f "api-service\file-download-service\Dockerfile" -t file-download-service:latest "api-service\file-download-service"
 docker tag file-download-service:latest localhost:5000/file-download-service:latest
 docker push localhost:5000/file-download-service:latest
 kubectl delete -f ./minikube/api-service/file-download-service.yaml
