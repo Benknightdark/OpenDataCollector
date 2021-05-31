@@ -3,7 +3,6 @@ import os
 from bson import json_util
 import json
 from bson.objectid import ObjectId
-import datetime
 
 
 def convert_collection(data):
@@ -85,32 +84,32 @@ def delete_schedule(data_id):
 
 def history_query(user_id, schedule_id):
     history_data = db('task')['history'].find_one(
-        {"userId": user_id, "scheduleId": schedule_id})
+        {"userId": user_id, "scheduleId": schedule_id}, {"userId": 1})
     return convert_collection(history_data)
 
 
-def add_history(user_id, schedule_id, origin_data):
-    inesert_data = db('task')['history'].insert_one({
-        "userId": user_id,
-        "scheduleId": schedule_id,
-        "data": [
-            {
-                "createdTime": datetime.datetime.now(),
-                "record": origin_data
-            }
-        ]
-    })
-    return inesert_data.inserted_id
+# def add_history(user_id, schedule_id, origin_data):
+#     inesert_data = db('task')['history'].insert_one({
+#         "userId": user_id,
+#         "scheduleId": schedule_id,
+#         "data": [
+#             {
+#                 "createdTime": datetime.datetime.now(),
+#                 "record": origin_data
+#             }
+#         ]
+#     })
+#     return inesert_data.inserted_id
 
 
-def update_history(user_id, schedule_id, origin_data):
-    update_data = db('task')['history'].update_one({"userId": user_id, "scheduleId": schedule_id}, {
-        '$push': {
-            'data': {
-                "createdTime": datetime.datetime.now(),
-                "record": origin_data
-            }
-        }
-    },
-        True)
-    return update_data.raw_result
+# def update_history(user_id, schedule_id, origin_data):
+#     update_data = db('task')['history'].update_one({"userId": user_id, "scheduleId": schedule_id}, {
+#         '$push': {
+#             'data': {
+#                 "createdTime": datetime.datetime.now(),
+#                 "record": origin_data
+#             }
+#         }
+#     },
+#         True)
+#     return update_data.raw_result

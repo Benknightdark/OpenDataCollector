@@ -77,28 +77,18 @@ async def get_schedule(user_id, schedule_id):
     return data
 
 
-@app.post("/api/history/{user_id}/{schedule_id}",)
-async def post_schedule(user_id, schedule_id, request: Request):
-    body = await request.json()
-    data = db_service.add_history(user_id, schedule_id, body['data'])
-    print(data)
-    return {"status":True}
+# @app.post("/api/history/{user_id}/{schedule_id}",)
+# async def post_schedule(user_id, schedule_id, request: Request):
+#     body = await request.json()
+#     data = db_service.add_history(user_id, schedule_id, body['data'])
+#     print(data)
+#     return {"status":True}
 
 
-@app.put("/api/history/{user_id}/{schedule_id}",)
-async def put_schedule(user_id, schedule_id, request: Request):
-    body = await request.json()
-    data = db_service.update_history(user_id, schedule_id, body['data'])
-    print(data)
-    return {"status":True}
+# @app.put("/api/history/{user_id}/{schedule_id}",)
+# async def put_schedule(user_id, schedule_id, request: Request):
+#     body = await request.json()
+#     data = db_service.update_history(user_id, schedule_id, body['data'])
+#     print(data)
+#     return {"status":True}
 
-@app.get('/dapr/subscribe')
-def subscribe():
-    subscriptions = [{'pubsubname': 'pubsub', 'topic': 'C', 'route': 'C'}]
-    return (subscriptions)
-@app.post('/C')
-async def c_subscriber(request: Request):
-    data=await request.json()
-    data['aa']='cccc'
-    print(data)
-    return  data

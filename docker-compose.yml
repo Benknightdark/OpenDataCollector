@@ -282,11 +282,10 @@ services:
   file-download-service:
     ports:
       - "50032:50002"      
-    build: ./background-services/file-download-service   
+    build: ./api-service/file-download-service   
     depends_on:
       - redis
       - placement      
-      - mongo 
     networks:
       - open-data
     environment:
@@ -303,7 +302,35 @@ services:
             - "./components/:/components"
           depends_on:
             - file-download-service
-          network_mode: "service:file-download-service"                                         
+          network_mode: "service:file-download-service"   
+  ############################
+  # Subscribe Service
+  ############################
+  subscribe-service:
+    ports:
+      - "50052:50002"      
+    build: ./background-services/subscribe-service   
+    depends_on:
+      - redis
+      - placement      
+      - mongo 
+    networks:
+      - open-data
+    environment:
+        ENVIRONMENT: production
+  subscribe-service-dapr:
+          image: "daprio/daprd:edge"
+          command: ["./daprd",
+          "-app-id", "subscribe-service",
+          "-app-port", "8949",
+          "-placement-host-address", "placement:50006",
+          "-dapr-grpc-port", "50052",
+           "-components-path", "/components"]
+          volumes:
+            - "./components/:/components"
+          depends_on:
+            - subscribe-service
+          network_mode: "service:subscribe-service"                                                  
   ############################
   # Dapr placement service
   ############################
