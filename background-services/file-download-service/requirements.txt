@@ -1,8 +1,4 @@
 httpx
-xmltodict
-pyexcel
-pyexcel-xls
-pymongo
 apscheduler
 uvicorn
 fastapi

@@ -286,7 +286,6 @@ services:
     depends_on:
       - redis
       - placement      
-      - mongo 
     networks:
       - open-data
     environment:

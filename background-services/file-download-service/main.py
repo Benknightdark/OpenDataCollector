@@ -1,6 +1,4 @@
 from fastapi import FastAPI, Request
-import os
-import httpx
 from apscheduler.schedulers.background import BackgroundScheduler
 import asyncio
 import os

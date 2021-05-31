@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/bin/python3.9",
+    "python.pythonPath": "C:\\Python39\\python.exe",
     "python.linting.enabled": true
 }

@@ -6,10 +6,11 @@ from pymongo import MongoClient
 import os
 from bson import json_util
 import json
-from bson.objectid import ObjectId
 import datetime
 import logging
 logging.basicConfig(level="INFO")
+
+
 def convert_collection(data):
     '''
     轉換Collection資料形態
@@ -30,7 +31,12 @@ def db(db_name):
         db_uri = ('mongodb://root:example@localhost:1769/')
     db_client = MongoClient(db_uri)
     return db_client[db_name]
+
+
 def add_history(user_id, schedule_id, origin_data):
+    '''
+    新增下載檔案到資料庫
+    '''
     inesert_data = db('task')['history'].insert_one({
         "userId": user_id,
         "scheduleId": schedule_id,
@@ -45,6 +51,9 @@ def add_history(user_id, schedule_id, origin_data):
 
 
 def update_history(user_id, schedule_id, origin_data):
+    '''
+    更新下載檔案到資料庫
+    '''
     update_data = db('task')['history'].update_one({"userId": user_id, "scheduleId": schedule_id}, {
         '$push': {
             'data': {
@@ -55,6 +64,8 @@ def update_history(user_id, schedule_id, origin_data):
     },
         True)
     return update_data.raw_result
+
+
 def xml_to_json(file):
     obj = xmltodict.parse(file)
     return (obj)
@@ -97,9 +108,9 @@ def download(req_data):
     xml => json
     xslx => json
     '''
-    file_name=req_data['fileName']
-    data_type=req_data['dataType']
-    url=req_data['url']
+    file_name = req_data['fileName']
+    data_type = req_data['dataType']
+    url = req_data['url']
 
     logging.info(
         f'----------------START: {file_name}-----------------------------')
@@ -118,11 +129,16 @@ def download(req_data):
 
     return origin_data
 
+
 def add_file(req_data):
-    download_data=download(req_data)
-    inserted_id=add_history(req_data["userId"],req_data["scheduleId"],download_data)
+    download_data = download(req_data)
+    inserted_id = add_history(
+        req_data["userId"], req_data["scheduleId"], download_data)
     print(inserted_id)
+
+
 def update_file(req_data):
-    download_data=download(req_data)
-    raw_result=update_history(req_data["userId"],req_data["scheduleId"],download_data)
-    print(raw_result)    
+    download_data = download(req_data)
+    raw_result = update_history(
+        req_data["userId"], req_data["scheduleId"], download_data)
+    print(raw_result)
