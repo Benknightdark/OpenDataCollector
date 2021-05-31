@@ -46,4 +46,4 @@ spec:
   version: v1
   metadata:
   - name: schedule
-    value: "@every 3s"     
+    value: "@every 20s"     
