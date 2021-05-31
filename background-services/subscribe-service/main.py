@@ -32,5 +32,5 @@ async def add_file_subscriber(request: Request):
 @app.post('/updateFile')
 async def add_file_subscriber(request: Request):
     data = await request.json()
-    data_process.updata_file(data['data'])
+    data_process.update_file(data['data'])
     return data

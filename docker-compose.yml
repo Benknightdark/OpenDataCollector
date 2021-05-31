@@ -282,7 +282,7 @@ services:
   file-download-service:
     ports:
       - "50032:50002"      
-    build: ./background-services/file-download-service   
+    build: ./api-service/file-download-service   
     depends_on:
       - redis
       - placement      
