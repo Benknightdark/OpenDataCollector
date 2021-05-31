@@ -34,3 +34,8 @@ async def add_file_subscriber(request: Request):
     data = await request.json()
     data_process.update_file(data['data'])
     return data
+
+@app.post('/cron')
+async def add_file_subscriber(request: Request):
+    print("OKOKOK")
+    return {"status":"OK"}

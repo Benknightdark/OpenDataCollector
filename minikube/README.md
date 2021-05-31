@@ -14,7 +14,7 @@ helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 helm install redis bitnami/redis
-kubectl apply -f ./minikube/redis.yaml
+kubectl apply -f ./minikube/config.yaml
 # 安裝mongodb
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm install mongo  bitnami/mongodb --set auth.rootPassword=example
