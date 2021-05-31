@@ -3,34 +3,11 @@ import { useRouter } from "next/router";
 import { signOut } from "next-auth/client";
 import React, { useEffect, useState } from "react";
 
-import { toast } from "react-toastify";
-const protectedRoute = ['task']
-const unProtectedRoute = ['signin', 'register']
+
 
 export default function CustomHeader(props) {
-  const router = useRouter();
-  const [displayName, setDisplayName] = useState();
-  useEffect(() => {
-    (async () => {
-      const req = await fetch("/api/personal");
-      const res = await req.json();
-      if (res?.message == null) {
-        // 有登入
-        setDisplayName(res?.displayName);
-        const check = unProtectedRoute.filter(p => router.pathname.toUpperCase().includes(p.toUpperCase()))
-        if (check.length > 0) {
-          window.location.replace("/")
-        }
-      } else {
-        // 沒登入
-        const check = protectedRoute.filter(p => router.pathname.toUpperCase().includes(p.toUpperCase()))
-        console.log(check)
-        if (check.length > 0) {
-          window.location.replace("/auth/signin")
-        }
-      }
-    })();
-  });
+
+  
 
   return (
     <div>
@@ -61,9 +38,12 @@ export default function CustomHeader(props) {
           integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
           crossOrigin="anonymous"
         />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
       </Head>
 
-      <nav className="navbar navbar-light bg-light custom-nav-bar">
+      {/* <nav className="navbar navbar-light bg-light custom-nav-bar">
         <div className="container-fluid">
           <div className="navbar-brand">
 
@@ -157,8 +137,17 @@ export default function CustomHeader(props) {
         }}
       >
         keyboard_arrow_up
+      </span> */}
+      <span
+        className="material-icons  scroll-btn"
+        style={{ fontSize: "60px" }}
+        onClick={() => {
+          document.body.scrollTop = 0; // For Safari
+          document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        }}
+      >
+        keyboard_arrow_up
       </span>
-
     </div>
   );
 }
