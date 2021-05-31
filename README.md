@@ -42,7 +42,7 @@
 | identity-server-db         | sql server資料庫  | IdentityServer4的資料庫                                           |
 # 系統架構圖
 
-<center><img src="https://github.com/Benknightdark/OpenDataCollector/blob/main/screenshot/System3.png?raw=true" />
+<center><img src="./screenshot/System4.png" />
 </center>
 
 # 系統畫面
