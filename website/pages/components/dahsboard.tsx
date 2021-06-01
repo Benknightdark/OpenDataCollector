@@ -134,7 +134,7 @@ export default function Dashboard(props) {
                             })
                         }
                     </Grid>
-                    <div className="d-flex flex-wrap justify-content-center p-2">
+                    <Grid style={{paddingTop:10}}>
                         {
                             fetchDashboardData.data &&
                             <HighchartsReact
@@ -143,7 +143,7 @@ export default function Dashboard(props) {
                                 {...props}
                             />
                         }
-                    </div>
+                    </Grid>
                 </CardContent>
             </Card>
         </Grid>
