@@ -54,17 +54,17 @@ export default function Type() {
   return (
     <div className={classes.root}>
       <Grid container 
-      justify="center"
-        alignItems="center"
+  justify="flex-start"
+  alignItems="baseline"
         direction="row"
       >
         {data.map((lists, index) => {
           return lists.map((d) => (
-            <Grid item xs={12} sm
+            <Grid item xs={12} sm={12} xl={2}  md={2} lg={2}
               className="p-2 animate__animated  animate__zoomIn"
               key={d.name}
             >
-              <div className="card mb-3 p-2" style={{ width: "300px" }}>
+              <div className="card mb-3 p-2" >
                 <img
                   src={d.image}
                   className="card-img-top"
