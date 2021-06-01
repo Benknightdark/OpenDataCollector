@@ -4,6 +4,17 @@ import * as Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import randomColor from "randomcolor";
 import { useRouter } from 'next/router';
+import Grid from '@material-ui/core/Grid';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            flexGrow: 1,
+            padding: theme.spacing(2),
+        },
+    }),
+);
 const options = (rawData) => {
     const seriesData = rawData.map(a => {
         return { name: a.name, y: a.count, color: randomColor() }
@@ -49,9 +60,10 @@ const fetcher = url => fetch(url).then(r => r.json())
 export default function Dashboard(props) {
     const fetchDashboardData = dashboardData(props.serviceName);
     const router = useRouter()
+    const classes = useStyles();
 
     return (
-        <div className='p-4 col-lg-6 col-md-12'>
+        <Grid item xs={12} lg={6} md={12} className={classes.root}>
             <div className="card bg-light">
                 <div className="card-header">
                     {
@@ -99,7 +111,11 @@ export default function Dashboard(props) {
 
                 </div>
             </div>
-        </div>
+        </Grid>
+
+        // <div className='p-4 col-lg-6 col-md-12'>
+
+        // </div>
 
     )
 }
