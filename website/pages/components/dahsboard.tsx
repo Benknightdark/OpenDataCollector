@@ -5,13 +5,28 @@ import HighchartsReact from 'highcharts-react-official';
 import randomColor from "randomcolor";
 import { useRouter } from 'next/router';
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import React from "react";
+import { IconButton } from "@material-ui/core";
+import Refresh from '@material-ui/icons/Refresh';
+import BarChart from '@material-ui/icons/BarChart';
 
+import Divider from '@material-ui/core/Divider';
+import Alert from "@material-ui/lab/Alert";
+import Fab from '@material-ui/core/Fab';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             flexGrow: 1,
             padding: theme.spacing(2),
+        },
+        '& hr': {
+            margin: theme.spacing(0, 0.5),
         },
     }),
 );
@@ -64,41 +79,62 @@ export default function Dashboard(props) {
 
     return (
         <Grid item xs={12} lg={6} md={12} className={classes.root}>
-            <div className="card bg-light">
-                <div className="card-header">
-                    {
-                        fetchDashboardData.data ? (<div className="d-flex justify-content-between">
-                            <div>🟢 {fetchDashboardData.data?.title}</div>
-                            <div style={{ flex: "1 1 auto;" }}></div>
-                            <span className="material-icons" style={{ cursor: 'pointer' }} onClick={() => {
-                                fetchDashboardData.mutate()
-                            }}>refresh</span>
-                        </div>) : (<div className="d-flex justify-content-between"> <div>🔴 資料載入中......</div></div>)
-                    }
-                </div>
 
-                <div className="card-body">
-                    <div className="d-flex p-2 bd-highlight flex-wrap justify-content-center">
+            <Card className="card">
+                <CardHeader
+                    action={
+                        <IconButton aria-label="重新整理" onClick={() => {
+                            fetchDashboardData.mutate()
+                        }}>
+                            <Refresh />
+                        </IconButton>
+                    }
+                    title={
+                        fetchDashboardData.data ? (<div>
+                            <div>🟢 {fetchDashboardData.data?.title}</div>
+
+                        </div>) : (<div> <div>🔴 資料載入中......</div></div>)
+                    }
+                />
+                <Divider variant="middle" style={{
+                    background: "black", border: "5px solid orange;",
+                    borderRadius: "5px;"
+                }} />
+                <CardContent>
+                    <Grid container spacing={1}
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
                         {
                             fetchDashboardData.data && fetchDashboardData.data.items.map(d => {
-                                return (d.name !== '應用展示' && <div className="p-3 bd-highlight" key={d.name} style={{ borderRight: '1px solid white' }}>
-                                    <h3 className="text-center">
-                                        <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3>
-                                    <h4>
-                                        <div className="animate__animated animate__flipInX text-center">{d.count}</div>
-                                    </h4>
-                                    <div className='text-center'>
-                                        <button className="btn btn-warning" onClick={() => {
+                                return (d.name !== '應用展示' && <Grid item
+                                    key={d.name}>
+                                    {/* <h3 className="text-center">
+                                        <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3> */}
+
+                                    <Alert severity="success">{d.name}</Alert>
+
+
+                                    <Alert className="animate__animated animate__flipInX text-center" icon={<BarChart fontSize="inherit" />} severity="info">
+                                        {d.count}
+                                    </Alert>
+                                    <Fab
+                                        variant="extended"
+                                        size="small"
+                                        color="secondary"
+                                        aria-label="navigate"
+                                        onClick={() => {
                                             router.push(`/${props.serviceName}/${d.route}`, undefined, { shallow: true });
-                                        }}>
-                                            看更多<span className="material-icons" style={{ fontSize: '18px' }}>open_in_new</span>
-                                        </button>
-                                    </div>
-                                </div>)
+                                        }}
+                                    >
+                                        <OpenInNewIcon />
+                                        看更多
+                                    </Fab>
+                                </Grid>)
                             })
                         }
-                    </div>
-                    <div className="d-flex flex-wrap justify-content-center">
+                    </Grid>
+                    <div className="d-flex flex-wrap justify-content-center p-2">
                         {
                             fetchDashboardData.data &&
                             <HighchartsReact
@@ -108,14 +144,9 @@ export default function Dashboard(props) {
                             />
                         }
                     </div>
-
-                </div>
-            </div>
+                </CardContent>
+            </Card>
         </Grid>
-
-        // <div className='p-4 col-lg-6 col-md-12'>
-
-        // </div>
 
     )
 }

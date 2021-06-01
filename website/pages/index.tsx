@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} >
         <Dashboard serviceName='kao-service' />
         <Dashboard serviceName='tainan-service' />
         <Dashboard serviceName='taichung-service' />
