@@ -35,15 +35,12 @@ export default function Layout({ children }) {
   const [displayName, setDisplayName] = useState();
   const [open, setOpen] = React.useState(false);
 
-  const handleClick = () => {
-    setOpen(true);
-  };
+
 
   const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
-
     setOpen(false);
   };
   useEffect(() => {
@@ -130,12 +127,10 @@ export default function Layout({ children }) {
               </div>
 
             )}
-
-
           </Toolbar>
         </AppBar>
       </div>
-      <Container>
+      <Container maxWidth="xl"> 
         {children}
       </Container>
       <Snackbar

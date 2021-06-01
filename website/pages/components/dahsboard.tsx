@@ -109,8 +109,6 @@ export default function Dashboard(props) {
                             fetchDashboardData.data && fetchDashboardData.data.items.map(d => {
                                 return (d.name !== '應用展示' && <Grid item
                                     key={d.name}>
-                                    {/* <h3 className="text-center">
-                                        <div className="badge rounded-pill bg-primary ">{d.name}</div> </h3> */}
 
                                     <Alert severity="success">{d.name}</Alert>
 

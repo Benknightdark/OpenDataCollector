@@ -1,17 +1,15 @@
 import { useRouter } from "next/router"
 import Spinner from '../../components/spinner'
-
 import { useSWRInfinite } from "swr"
 import React, { useEffect, useState } from "react"
-import Layout from "../../components/layout"
 export default function Index() {
     const router = useRouter()
     const fetcher = url => fetch(url).then(r => r.json())
     const [showLoading, setShowLoading] = useState(false);
-    const { serviceName, queryUrl,target,org,group } = router.query
+    const { serviceName, queryUrl, target, org, group } = router.query
     const getKey = (pageIndex, previousPageData) => {
         if (previousPageData && !previousPageData.length) return null
-        let otherQueryString=target===null?'':`&target=${target}&org=${org}&group=${group}`
+        let otherQueryString = target === null ? '' : `&target=${target}&org=${org}&group=${group}`
         const url = `/api/dataset?serviceName=${serviceName}&pageUrl=${queryUrl}&page=${pageIndex + 1}${otherQueryString}`;
         return url
     }
@@ -31,26 +29,23 @@ export default function Index() {
         };
     })
     if (!data) return <Spinner showLoading='true'></Spinner>
-    return (        
-
-
-
+    return (
         <div className="d-flex flex-column mb-3 bd-highlight flex-wrap justify-content-start align-content-stretch">
             {
                 data.map((lists, index) => {
                     return lists.map(d => <div className='p-2  animate__animated  animate__zoomInLeft' key={d.name}>
                         <div className="card" onClick={() => {
-                                    console.log(d.url)
-                                    router.push({
-                                        pathname: `/${serviceName}/dataset/detail`,
-                                        query: { queryUrl: d.url },
-                                    })
-                                }}>
+                            console.log(d.url)
+                            router.push({
+                                pathname: `/${serviceName}/dataset/detail`,
+                                query: { queryUrl: d.url },
+                            })
+                        }}>
                             <div className="card-header">
-                            <div className="d-flex justify-content-between">
-                                <div>{d.name}</div>
-                                <div style={{ flex: "1 1 auto;" }}></div>
-                                <span className="material-icons" style={{ cursor: 'pointer' }} >open_in_new</span>
+                                <div className="d-flex justify-content-between">
+                                    <div>{d.name}</div>
+                                    <div style={{ flex: "1 1 auto;" }}></div>
+                                    <span className="material-icons" style={{ cursor: 'pointer' }} >open_in_new</span>
                                 </div>
                             </div>
                             <div className="card-body">
@@ -65,21 +60,15 @@ export default function Index() {
                                             <span className='label' data-format={dt.toLowerCase()}>{dt}</span>
                                         </div>
                                     )
-
                                 }
                             </div>
                         </div>
                     </div>
 
                     )
-
                 })
             }
-                    <Spinner showLoading={showLoading}></Spinner>
-
+            <Spinner showLoading={showLoading}></Spinner>
         </div>
-
-
     )
-
 }
