@@ -1,13 +1,13 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { signOut } from "next-auth/client";
-import React, { useEffect, useState } from "react";
+
+import React from "react";
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 
 export default function CustomHeader(props) {
 
-  
+
 
   return (
     <div>
@@ -42,16 +42,15 @@ export default function CustomHeader(props) {
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
       </Head>
-      <span
-        className="material-icons  scroll-btn"
-        style={{ fontSize: "60px" }}
+      <div
+        className="scroll-btn"
         onClick={() => {
           document.body.scrollTop = 0; // For Safari
           document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
         }}
       >
-        keyboard_arrow_up
-      </span>
+         <KeyboardArrowUpIcon style={{ fontSize: "60px" }} />
+      </div>
     </div>
   );
 }
