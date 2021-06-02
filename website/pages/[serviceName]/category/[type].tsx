@@ -4,6 +4,14 @@ import Spinner from "../../components/spinner";
 import React, { useEffect, useState } from "react";
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import IconButton from "@material-ui/core/IconButton";
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import Button from "@material-ui/core/Button";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,12 +38,12 @@ export default function Type() {
   const classes = useStyles();
 
   useEffect(() => {
-    if (serviceName.toString().toLowerCase() !== 'pthg-service'){
+    if (serviceName.toString().toLowerCase() !== 'pthg-service') {
       window.onscroll = async () => {
         if (showLoading) return;
 
         if (
-          window.innerHeight + window.scrollY - document.body.offsetHeight ==0
+          window.innerHeight + window.scrollY - document.body.offsetHeight == 0
         ) {
           setShowLoading(true);
           setSize(size + 1)
@@ -53,37 +61,40 @@ export default function Type() {
   if (!data) return <Spinner showLoading="true"></Spinner>;
   return (
     <div className={classes.root}>
-      <Grid container 
-  justify="flex-start"
-  alignItems="baseline"
+      <Grid container
+        justify="flex-start"
+        alignItems="baseline"
         direction="row"
       >
         {data.map((lists, index) => {
           return lists.map((d) => (
-            <Grid item xs={12} sm={12} xl={2}  md={2} lg={2}
+            <Grid item xs={12} sm={12} xl={2} md={2} lg={2}
               className="p-2 animate__animated  animate__zoomIn"
               key={d.name}
             >
-              <div className="card mb-3 p-2" >
-                <img
-                  src={d.image}
-                  className="card-img-top"
-                  style={{ maxWidth: "100%", height: "auto" }}
-                />
-                <hr></hr>
-                <div className="card-body">
-                  <h5 className="card-title">{d.title}</h5>
-                  {d.count > 0 && (
-                    <div className="skillbar clearfix ">
-                      <div className="skillbar-title">
-                        <span>資料數量</span>
+              <Card>
+                <CardActionArea>
+                  <CardMedia
+                  component="img"
+                    style={{ maxWidth: "100%", height: "auto" }}
+                    image={d.image}
+                  />
+                  <CardContent>
+                    <h5 className="card-title">{d.title}</h5>
+                    {d.count > 0 && (
+                      <div className="skillbar clearfix ">
+                        <div className="skillbar-title">
+                          <span>資料數量</span>
+                        </div>
+                        <div className="skillbar-bar"></div>
+                        <div className="skill-bar-percent">{d.count}</div>
                       </div>
-                      <div className="skillbar-bar"></div>
-                      <div className="skill-bar-percent">{d.count}</div>
-                    </div>
-                  )}
-                  <button
-                    className="btn btn-warning"
+                    )}
+                  </CardContent>
+                </CardActionArea>
+                <CardActions>
+                  <Button
+                    variant="contained" color="primary"
                     onClick={() => {
                       if (serviceName !== 'pthg-service') {
                         router.push({
@@ -103,19 +114,12 @@ export default function Type() {
                           query: queryData,
                         });
                       }
-
                     }}
                   >
-                    看更多
-                      <span
-                      className="material-icons"
-                      style={{ fontSize: "18px" }}
-                    >
-                      open_in_new
-                      </span>
-                  </button>
-                </div>
-              </div>
+                    <OpenInNewIcon />看更多
+                  </Button>
+                </CardActions>
+              </Card> 
             </Grid>
           ));
         })}
