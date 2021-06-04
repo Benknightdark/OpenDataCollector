@@ -44,11 +44,7 @@ const detailData = (
 const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function Index() {
   const classes = useStyles();
-
   const router = useRouter();
-  const [showInfo, setShowInfo] = useState(true);
-  const [showFile, setShowFile] = useState(true);
-
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
   console.log(fetchDetailData.data);
@@ -133,30 +129,15 @@ export default function Index() {
         </Grid>
         <hr></hr>
         {/* 檔案下載 */}
-        <Grid item xs={12} className="accordion" id="fileList" style={{ zIndex: 100000 }}>
-          <div className="accordion-item">
-            <h2 className="accordion-header" id="headingOne">
-              <button
-                className={
-                  showFile ? "accordion-button" : "accordion-button collapsed"
-                }
-                type="button"
-                onClick={() => {
-                  setShowFile(!showFile);
-                }}
-              >
-                檔案下載
-                </button>
-            </h2>
-            <div
-              className={
-                showFile
-                  ? "accordion-collapse collapse show"
-                  : "accordion-collapse collapse collapsed"
-              }
-            >
-              <div className="accordion-body">
-                <div className="list-group">
+        <Grid item xs={12}  style={{ zIndex: 100000 }}>
+
+        <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}        
+            ><h3>檔案下載</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+            <div className="list-group">
                   {fetchDetailData.data.resources.map((r) => (
                     <div
                       className="list-group-item"
@@ -237,9 +218,8 @@ export default function Index() {
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          </div>
+            </AccordionDetails>
+          </Accordion>          
         </Grid>
       </Grid>
     </div>
