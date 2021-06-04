@@ -4,6 +4,24 @@ import useSWR from "swr";
 import Spinner from "../../../components/spinner";
 import { useEffect, useState } from "react";
 import { EventEmitter } from "tsee";
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import Button from "@material-ui/core/Button";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import Card from "@material-ui/core/Card";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      padding: theme.spacing(3),
+    }
+
+  }),
+);
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -19,6 +37,8 @@ const detailData = (
 };
 const fetcher = (url) => fetch(url).then((r) => r.json());
 export default function Index() {
+  const classes = useStyles();
+
   const router = useRouter();
   const [showInfo, setShowInfo] = useState(true);
   const [showFile, setShowFile] = useState(true);
@@ -35,16 +55,20 @@ export default function Index() {
   useEffect(() => { });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
-      <div className="d-flex flex-column  p-3 mb-3 bd-highlight flex-wrap justify-content-center">
+    <div className={classes.root}>
+      <Grid container
+        spacing={3}>
+
+
         {/* 標題 */}
-        <div className="card  border-success bg-light">
+        <Grid item xs={12} className="card  border-success bg-light">
           <div className="card-body">
             <h1> {fetchDetailData.data.title}</h1>
           </div>
-        </div>
+        </Grid>
         {/* 統計資料 */}
         {fetchDetailData.data.statics.length > 0 && (
-          <div>
+          <Grid item xs={12}>
             <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
               {fetchDetailData.data.statics.map((s) => (
                 <div className="card  border-info bg-light p-3 m-3" >
@@ -56,10 +80,10 @@ export default function Index() {
                 </div>
               ))}
             </div>
-          </div>
+          </Grid>
         )}
         {/* 資料說明 */}
-        <div className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
+        <Grid item xs={12} className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
           <div className="accordion-item">
             <h2 className="accordion-header" id="headingInfomation">
               <button
@@ -105,10 +129,10 @@ export default function Index() {
               </div>
             </div>
           </div>
-        </div>
+        </Grid>
         <hr></hr>
         {/* 檔案下載 */}
-        <div className="accordion border border-danger" id="fileList" style={{ zIndex: 100000 }}>
+        <Grid item xs={12} className="accordion border border-danger" id="fileList" style={{ zIndex: 100000 }}>
           <div className="accordion-item">
             <h2 className="accordion-header" id="headingOne">
               <button
@@ -193,8 +217,8 @@ export default function Index() {
                                     modalTitle: '新增',
                                     disable: false
                                   })}`)
-                                }else{
-                                  const resData=await personalDataReq.json();
+                                } else {
+                                  const resData = await personalDataReq.json();
                                   alert(resData['message'])
                                 }
 
@@ -215,7 +239,8 @@ export default function Index() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </Grid>
+      </Grid>
+    </div>
   );
 }
