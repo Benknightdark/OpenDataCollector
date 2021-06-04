@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { EventEmitter } from "tsee";
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -14,6 +13,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
 import { CardHeader } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -71,74 +76,65 @@ export default function Index() {
         </Grid>
         {/* 統計資料 */}
         {fetchDetailData.data.statics.length > 0 && (
-          <Grid container  item xs={12} justify="center"
-            alignItems="center">
+          <Grid container item xs={12} justify="center"
+            alignItems="center" spacing={3}>
             {fetchDetailData.data.statics.map((s) => (
-              <React.Fragment>
-                <Grid item xs={12}  sm={12} xl={4} md={4} lg={4}>
-                  <div className="card  border-info bg-light p-3 m-3" >
-                    <div className="card-body">
-                      <h3 className="quote-text"> {s.name}</h3>
-                      <hr></hr>
-                      <h2 className="text-center"> {s.value}</h2>
-                    </div>
-                  </div>
-                </Grid>
-              </React.Fragment>
+              <Grid item xs={12} sm={12} xl={2} md={2} lg={2}>
+                <Card variant="outlined" className="card">
+                  <CardHeader
+                    title={
+                      <div>
+                        <h3 className="quote-text"> {s.name}</h3>
+                        <hr></hr>
+                      </div>
+                    }
+                    subheader={
+                      <Box textAlign="center">
+                        <h2> {s.value}</h2>
+                      </Box>
+                    }
+                  >
+                  </CardHeader>
+                </Card>
+              </Grid>
             ))}
           </Grid>
         )}
         {/* 資料說明 */}
-        <Grid item xs={12} className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
-          <div className="accordion-item">
-            <h2 className="accordion-header" id="headingInfomation">
-              <button
-                className={
-                  showInfo ? "accordion-button" : "accordion-button collapsed"
-                }
-                type="button"
-                onClick={() => {
-                  setShowInfo(!showInfo);
-                }}
-              >
-                資料說明
-                </button>
-            </h2>
-            <div
-              className={
-                showInfo
-                  ? "accordion-collapse collapse show"
-                  : "accordion-collapse collapse collapsed"
-              }
-            >
-              <div className="accordion-body" >
-                <div className="p-3">
-                  <div className="table-responsive">
-                    <table className="table table-bordered border-primary table-hover">
-                      <thead className="table-warning">
+        <Grid item xs={12} className="accordion" id="infomation" style={{ zIndex: 100000 }}>
+          <Accordion defaultExpanded>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+            
+            ><h3>資料說明</h3>
+            </AccordionSummary>
+            <AccordionDetails>
+              <div className="p-3">
+                <div className="table-responsive">
+                  <table className="table table-bordered border-primary table-hover">
+                    <thead className="table-warning">
+                      <tr>
+                        <th scope="col">名稱</th>
+                        <th scope="col">值</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {fetchDetailData.data.infomation.map((s) => (
                         <tr>
-                          <th scope="col">名稱</th>
-                          <th scope="col">值</th>
+                          <th scope="row">{s.name}</th>
+                          <td>{s.value}</td>
                         </tr>
-                      </thead>
-                      <tbody>
-                        {fetchDetailData.data.infomation.map((s) => (
-                          <tr>
-                            <th scope="row">{s.name}</th>
-                            <td>{s.value}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </div>
-          </div>
+            </AccordionDetails>
+          </Accordion>          
         </Grid>
         <hr></hr>
         {/* 檔案下載 */}
-        <Grid item xs={12} className="accordion border border-danger" id="fileList" style={{ zIndex: 100000 }}>
+        <Grid item xs={12} className="accordion" id="fileList" style={{ zIndex: 100000 }}>
           <div className="accordion-item">
             <h2 className="accordion-header" id="headingOne">
               <button
