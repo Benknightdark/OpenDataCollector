@@ -80,6 +80,7 @@ export default function Dashboard(props) {
 
             <Card className="card">
                 <CardHeader
+                className='gradient-yellow'
                     action={
                         <IconButton aria-label="重新整理" onClick={() => {
                             fetchDashboardData.mutate()
@@ -94,10 +95,7 @@ export default function Dashboard(props) {
                         </div>) : (<div> <div>🔴 資料載入中......</div></div>)
                     }
                 />
-                <Divider variant="middle" style={{
-                    background: "black", border: "5px solid orange;",
-                    borderRadius: "5px;"
-                }} />
+              
                 <CardContent>
                     <Grid container spacing={1}
                         direction="row"
