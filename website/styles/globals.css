@@ -7,6 +7,15 @@
 	
 
 }
+.gradient-blue{
+	background: #ebf1f6;
+	background: -moz-linear-gradient(left,  #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%);
+	background: -webkit-linear-gradient(left,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	background: linear-gradient(to right,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=1 );
+	
+
+}
 html,
 body {
   padding: 0;

@@ -132,7 +132,7 @@ export default function Index() {
         {/* 檔案下載 */}
         <Grid item xs={12} style={{ zIndex: 100000 }}>
           <Accordion defaultExpanded TransitionProps={{ unmountOnExit: false }} >
-            <AccordionSummary
+            <AccordionSummary className='gradient-blue'
               expandIcon={<ExpandMoreIcon />}
             ><h3>檔案下載</h3>
             </AccordionSummary>
@@ -162,6 +162,7 @@ export default function Index() {
                       <CardActions>
                         <Button
                           variant="contained"
+                          style={{color:'white',backgroundColor:"purple"}}
                           onClick={() => {
                             const link = document.createElement("a");
                             link.download = "download";
@@ -176,6 +177,7 @@ export default function Index() {
                           </Button>
                         <Button
                           variant="contained"
+                          color="secondary"
                           onClick={() => {
                             window.open(r.detail);
                           }}
