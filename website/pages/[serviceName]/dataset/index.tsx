@@ -4,6 +4,14 @@ import { useSWRInfinite } from "swr"
 import React, { useEffect, useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardHeader from '@material-ui/core/CardHeader';
+import Card from "@material-ui/core/Card";
+import IconButton from "@material-ui/core/IconButton"
+import Divider from "@material-ui/core/Divider"
+import Typography from "@material-ui/core/Typography"
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +40,7 @@ export default function Index() {
         window.onscroll = async () => {
             if (showLoading) return;
             console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0)
-            if ((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0) {
+            if ((window.innerHeight + window.scrollY) - document.body.offsetHeight === 0) {
                 setShowLoading(true)
                 setSize(size + 1).then(() => {
                     setShowLoading(false)
@@ -49,37 +57,34 @@ export default function Index() {
                 {
                     data.map((lists, index) => {
                         return lists.map(d => <Grid item xs={12} key={d.name}>
-                            <div className="card" onClick={() => {
+                            <Card className="card" onClick={() => {
                                 console.log(d.url)
                                 router.push({
                                     pathname: `/${serviceName}/dataset/detail`,
                                     query: { queryUrl: d.url },
                                 })
                             }}>
-                                <div className="card-header">
-                                    <div className="d-flex justify-content-between">
-                                        <div>{d.name}</div>
-                                        <div style={{ flex: "1 1 auto;" }}></div>
-                                        <span className="material-icons" style={{ cursor: 'pointer' }} >open_in_new</span>
-                                    </div>
-                                </div>
-                                <div className="card-body">
-                                    <p className="card-text">{d.content}</p>
-
-                                </div>
-                                <div className="card-footer d-flex   bd-highlight flex-wrap align-content-stretch">
+                                <CardHeader
+                                    action={
+                                        <IconButton aria-label="settings">
+                                            <OpenInNewIcon />
+                                        </IconButton>
+                                    }
+                                    title={d.name}
+                                />
+                                <Divider light  variant="middle" style={{backgroundColor:"black"}}></Divider>
+                                <CardContent>
+                                    <Typography paragraph>{d.content}</Typography>
+                                </CardContent>
+                                <CardActions>
                                     {
-
                                         d.data_type.map(dt =>
-                                            <div className='px-1'>
-                                                <span className='label' data-format={dt.toLowerCase()}>{dt}</span>
-                                            </div>
+                                            <span className='label' data-format={dt.toLowerCase()}>{dt}</span>
                                         )
                                     }
-                                </div>
-                            </div>
+                                </CardActions>
+                            </Card>
                         </Grid>
-
                         )
                     })
                 }
