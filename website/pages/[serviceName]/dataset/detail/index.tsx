@@ -131,16 +131,15 @@ export default function Index() {
         <hr></hr>
         {/* 檔案下載 */}
         <Grid item xs={12} style={{ zIndex: 100000 }}>
-
           <Accordion defaultExpanded>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
             ><h3>檔案下載</h3>
             </AccordionSummary>
             <AccordionDetails>
-              <List component="nav">
+              <Grid container spacing={3}>
                 {fetchDetailData.data.resources.map((r) => (
-                  <ListItem button>
+                  <Grid item xs={12}>
                     <Card>
                       <CardHeader title={<div>
                         <div>{r.name}</div>
@@ -215,8 +214,8 @@ export default function Index() {
                         }
                       </CardActions>
                     </Card>
-                  </ListItem>))}
-              </List>
+                  </Grid>))}
+              </Grid>
             </AccordionDetails>
           </Accordion>
         </Grid>
