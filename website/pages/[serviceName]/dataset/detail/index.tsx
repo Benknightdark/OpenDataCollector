@@ -13,6 +13,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
+import { CardHeader } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -56,30 +57,35 @@ export default function Index() {
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
     <div className={classes.root}>
-      <Grid container
-        spacing={3}>
-
-
+      <Grid container spacing={3}>
         {/* 標題 */}
-        <Grid item xs={12} className="card  border-success bg-light">
-          <div className="card-body">
-            <h1> {fetchDetailData.data.title}</h1>
-          </div>
+        <Grid item xs={12} className="card">
+          <Card variant="outlined">
+            <CardHeader title={
+              <h1>
+                {fetchDetailData.data.title}
+              </h1>
+            } >
+            </CardHeader>
+          </Card>
         </Grid>
         {/* 統計資料 */}
         {fetchDetailData.data.statics.length > 0 && (
-          <Grid item xs={12}>
-            <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
-              {fetchDetailData.data.statics.map((s) => (
-                <div className="card  border-info bg-light p-3 m-3" >
-                  <div className="card-body">
-                    <h3 className="quote-text"> {s.name}</h3>
-                    <hr></hr>
-                    <h2 className="text-center"> {s.value}</h2>
+          <Grid container  item xs={12} justify="center"
+            alignItems="center">
+            {fetchDetailData.data.statics.map((s) => (
+              <React.Fragment>
+                <Grid item xs={12}  sm={12} xl={4} md={4} lg={4}>
+                  <div className="card  border-info bg-light p-3 m-3" >
+                    <div className="card-body">
+                      <h3 className="quote-text"> {s.name}</h3>
+                      <hr></hr>
+                      <h2 className="text-center"> {s.value}</h2>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                </Grid>
+              </React.Fragment>
+            ))}
           </Grid>
         )}
         {/* 資料說明 */}
