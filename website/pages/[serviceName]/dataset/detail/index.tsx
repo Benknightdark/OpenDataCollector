@@ -101,11 +101,10 @@ export default function Index() {
           </Grid>
         )}
         {/* 資料說明 */}
-        <Grid item xs={12} className="accordion" id="infomation" style={{ zIndex: 100000 }}>
+        <Grid item xs={12}  style={{ zIndex: 100000 }}>
           <Accordion defaultExpanded>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-            
+              expandIcon={<ExpandMoreIcon />}        
             ><h3>資料說明</h3>
             </AccordionSummary>
             <AccordionDetails>
