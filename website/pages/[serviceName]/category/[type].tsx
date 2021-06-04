@@ -69,7 +69,7 @@ export default function Type() {
         {data.map((lists, index) => {
           return lists.map((d) => (
             <Grid item xs={12} sm={12} xl={2} md={2} lg={2}
-              className="p-2 animate__animated  animate__zoomIn"
+              className="animate__animated  animate__zoomIn"
               key={d.name}
             >
               <Card>

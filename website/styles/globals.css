@@ -1,3 +1,12 @@
+.gradient-green{
+	background: #f8ffe8;
+	background: -moz-linear-gradient(left,  #f8ffe8 0%, #e3f5ab 33%, #b7df2d 100%);
+	background: -webkit-linear-gradient(left,  #f8ffe8 0%,#e3f5ab 33%,#b7df2d 100%);
+	background: linear-gradient(to right,  #f8ffe8 0%,#e3f5ab 33%,#b7df2d 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f8ffe8', endColorstr='#b7df2d',GradientType=1 );
+	
+
+}
 html,
 body {
   padding: 0;

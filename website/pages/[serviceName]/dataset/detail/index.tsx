@@ -9,17 +9,17 @@ import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import Card from "@material-ui/core/Card";
 import { CardHeader } from "@material-ui/core";
 import { Box } from "@material-ui/core";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import List from '@material-ui/core/List';
-import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { List } from "@material-ui/core";
+import { ListItem } from "@material-ui/core";
+import { ListItemText } from "@material-ui/core";
+import { ListItemIcon } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -99,7 +99,7 @@ export default function Index() {
         )}
         {/* 資料說明 */}
         <Grid item xs={12} style={{ zIndex: 100000 }}>
-          <Accordion defaultExpanded>
+          <Accordion defaultExpanded TransitionProps={{ unmountOnExit: false }} >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
             ><h3>資料說明</h3>
@@ -131,7 +131,7 @@ export default function Index() {
         <hr></hr>
         {/* 檔案下載 */}
         <Grid item xs={12} style={{ zIndex: 100000 }}>
-          <Accordion defaultExpanded>
+          <Accordion defaultExpanded TransitionProps={{ unmountOnExit: false }} >
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
             ><h3>檔案下載</h3>
@@ -141,24 +141,27 @@ export default function Index() {
                 {fetchDetailData.data.resources.map((r) => (
                   <Grid item xs={12}>
                     <Card>
-                      <CardHeader title={<div>
-                        <div>{r.name}</div>
-                        <span
-                          className="label"
-                          data-format={r.type.toLowerCase()}
-                        >
-                          {r.type}
-                        </span>
-                      </div>}></CardHeader>
-                      <hr></hr>
+                      <List className="gradient-green">
+                        <ListItem >
+                          <ListItemText primary={r.name} />
+                          <ListItemIcon>
+                            <span
+                              className="label"
+                              data-format={r.type.toLowerCase()}
+                            >
+                              {r.type}
+                            </span>
+                          </ListItemIcon>
 
+                        </ListItem>
+                      </List>
                       <CardContent>
                         <blockquote>{r.description}</blockquote>
 
                       </CardContent>
                       <CardActions>
-                        <button
-                          className="btn btn-info m-lg-2"
+                        <Button
+                          variant="contained"
                           onClick={() => {
                             const link = document.createElement("a");
                             link.download = "download";
@@ -170,22 +173,21 @@ export default function Index() {
                           }}
                         >
                           下載
-                          </button>
-                        <button
-                          className="btn btn-primary m-lg-2"
-                          type="button"
+                          </Button>
+                        <Button
+                          variant="contained"
                           onClick={() => {
                             window.open(r.detail);
                           }}
                         >
                           明細
-                          </button>
+                          </Button>
                         {
                           (r.type.toLowerCase() === 'xml' || r.type.toLowerCase() === 'json' || r.type.toLowerCase() === 'csv'
                             || r.type.toLowerCase() === 'xls' || r.type.toLowerCase() === 'xlsx'
-                          ) && <button
-                            className="btn btn-warning m-lg-2"
-                            type="button"
+                          ) && <Button
+
+                            variant="contained" color="primary"
                             onClick={async () => {
                               try {
                                 const personalDataReq = await fetch('/api/personal')
@@ -210,7 +212,7 @@ export default function Index() {
                             }}
                           >
                             加入排程
-                          </button>
+                          </Button>
                         }
                       </CardActions>
                     </Card>
