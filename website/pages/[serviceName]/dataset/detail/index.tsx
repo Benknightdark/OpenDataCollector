@@ -17,7 +17,8 @@ import { Box } from "@material-ui/core";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem, { ListItemProps } from '@material-ui/core/ListItem';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -97,10 +98,10 @@ export default function Index() {
           </Grid>
         )}
         {/* 資料說明 */}
-        <Grid item xs={12}  style={{ zIndex: 100000 }}>
+        <Grid item xs={12} style={{ zIndex: 100000 }}>
           <Accordion defaultExpanded>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}        
+              expandIcon={<ExpandMoreIcon />}
             ><h3>資料說明</h3>
             </AccordionSummary>
             <AccordionDetails>
@@ -125,25 +126,23 @@ export default function Index() {
                 </div>
               </div>
             </AccordionDetails>
-          </Accordion>          
+          </Accordion>
         </Grid>
         <hr></hr>
         {/* 檔案下載 */}
-        <Grid item xs={12}  style={{ zIndex: 100000 }}>
+        <Grid item xs={12} style={{ zIndex: 100000 }}>
 
-        <Accordion defaultExpanded>
+          <Accordion defaultExpanded>
             <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}        
+              expandIcon={<ExpandMoreIcon />}
             ><h3>檔案下載</h3>
             </AccordionSummary>
             <AccordionDetails>
-            <div className="list-group">
-                  {fetchDetailData.data.resources.map((r) => (
-                    <div
-                      className="list-group-item"
-                      style={{ borderBottom: "5px solid red" }}
-                    >
-                      <div className="d-flex justify-content-between">
+              <List component="nav">
+                {fetchDetailData.data.resources.map((r) => (
+                  <ListItem button>
+                    <Card>
+                      <CardHeader title={<div>
                         <div>{r.name}</div>
                         <span
                           className="label"
@@ -151,11 +150,14 @@ export default function Index() {
                         >
                           {r.type}
                         </span>
-                      </div>
+                      </div>}></CardHeader>
                       <hr></hr>
-                      <blockquote>{r.description}</blockquote>
-                      <div className="p-3"></div>
-                      <div className="d-grid gap-2 d-md-block d-md-flex  justify-content-md-center">
+
+                      <CardContent>
+                        <blockquote>{r.description}</blockquote>
+
+                      </CardContent>
+                      <CardActions>
                         <button
                           className="btn btn-info m-lg-2"
                           onClick={() => {
@@ -203,23 +205,20 @@ export default function Index() {
                                   const resData = await personalDataReq.json();
                                   alert(resData['message'])
                                 }
-
-
                               } catch (error) {
                                 alert("登入後才能加入排程")
                               }
-
                             }}
                           >
                             加入排程
                           </button>
                         }
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      </CardActions>
+                    </Card>
+                  </ListItem>))}
+              </List>
             </AccordionDetails>
-          </Accordion>          
+          </Accordion>
         </Grid>
       </Grid>
     </div>
