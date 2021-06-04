@@ -35,16 +35,14 @@ export default function Index() {
   useEffect(() => { });
   if (!fetchDetailData.data) return <Spinner showLoading="true"></Spinner>;
   return (
-    <div>
-
       <div className="d-flex flex-column  p-3 mb-3 bd-highlight flex-wrap justify-content-center">
+        {/* 標題 */}
         <div className="card  border-success bg-light">
           <div className="card-body">
             <h1> {fetchDetailData.data.title}</h1>
           </div>
         </div>
-        <hr></hr>
-
+        {/* 統計資料 */}
         {fetchDetailData.data.statics.length > 0 && (
           <div>
             <div className="d-flex  flex-lg-row  flex-xl-row flex-xxl-row flex-sm-column  flex-column flex-xs-column p-3 mb-3 bd-highlight flex-wrap justify-content-center">
@@ -58,9 +56,9 @@ export default function Index() {
                 </div>
               ))}
             </div>
-            <hr></hr>
           </div>
         )}
+        {/* 資料說明 */}
         <div className="accordion border border-danger" id="infomation" style={{ zIndex: 100000 }}>
           <div className="accordion-item">
             <h2 className="accordion-header" id="headingInfomation">
@@ -109,6 +107,7 @@ export default function Index() {
           </div>
         </div>
         <hr></hr>
+        {/* 檔案下載 */}
         <div className="accordion border border-danger" id="fileList" style={{ zIndex: 100000 }}>
           <div className="accordion-item">
             <h2 className="accordion-header" id="headingOne">
@@ -218,7 +217,5 @@ export default function Index() {
           </div>
         </div>
       </div>
-    </div>
-
   );
 }
