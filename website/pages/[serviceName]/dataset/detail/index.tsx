@@ -20,12 +20,22 @@ import { List } from "@material-ui/core";
 import { ListItem } from "@material-ui/core";
 import { ListItemText } from "@material-ui/core";
 import { ListItemIcon } from "@material-ui/core";
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       padding: theme.spacing(3),
-    }
+    },
+    table: {
+      minWidth: 650,
+    },
 
   }),
 );
@@ -105,7 +115,27 @@ export default function Index() {
             ><h3>資料說明</h3>
             </AccordionSummary>
             <AccordionDetails>
-              <div className="p-3">
+              <TableContainer component={Paper}>
+                <Table className={classes.table} aria-label="simple table">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>名稱</TableCell>
+                      <TableCell>值</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {fetchDetailData.data.infomation.map((row) => (
+                      <TableRow key={row.name}>
+                        <TableCell>
+                          {row.name}
+                        </TableCell>
+                        <TableCell>{row.value}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {/* <div className="p-3">
                 <div className="table-responsive">
                   <table className="table table-bordered border-primary table-hover">
                     <thead className="table-warning">
@@ -124,7 +154,7 @@ export default function Index() {
                     </tbody>
                   </table>
                 </div>
-              </div>
+              </div> */}
             </AccordionDetails>
           </Accordion>
         </Grid>
@@ -162,7 +192,7 @@ export default function Index() {
                       <CardActions>
                         <Button
                           variant="contained"
-                          style={{color:'white',backgroundColor:"purple"}}
+                          style={{ color: 'white', backgroundColor: "purple" }}
                           onClick={() => {
                             const link = document.createElement("a");
                             link.download = "download";
