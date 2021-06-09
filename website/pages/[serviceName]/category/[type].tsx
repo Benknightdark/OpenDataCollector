@@ -65,6 +65,7 @@ export default function Type() {
         justify="flex-start"
         alignItems="baseline"
         direction="row"
+        spacing={3}
       >
         {data.map((lists, index) => {
           return lists.map((d) => (
@@ -75,7 +76,7 @@ export default function Type() {
               <Card>
                 <CardActionArea>
                   <CardMedia
-                  component="img"
+                    component="img"
                     style={{ maxWidth: "100%", height: "auto" }}
                     image={d.image}
                   />
@@ -119,7 +120,7 @@ export default function Type() {
                     <OpenInNewIcon />看更多
                   </Button>
                 </CardActions>
-              </Card> 
+              </Card>
             </Grid>
           ));
         })}
