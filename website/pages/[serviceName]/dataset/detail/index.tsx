@@ -4,7 +4,7 @@ import useSWR from "swr";
 import Spinner from "../../../components/spinner";
 import { useEffect, useState } from "react";
 import { EventEmitter } from "tsee";
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme, withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
@@ -39,6 +39,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
   }),
 );
+const StyledTableCell = withStyles((theme: Theme) =>
+  createStyles({
+    head: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    body: {
+      fontSize: 14,
+    },
+  }),
+)(TableCell);
+const StyledTableRow = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      '&:nth-of-type(odd)': {
+        backgroundColor: theme.palette.action.hover,
+      },
+    },
+  }),
+)(TableRow);
 const detailData = (
   serviceName: string | string[],
   pageUrl: string | string[]
@@ -110,14 +130,14 @@ export default function Index() {
         {/* 資料說明 */}
         <Grid item xs={12} style={{ zIndex: 100000 }}>
           <Accordion defaultExpanded TransitionProps={{ unmountOnExit: false }} >
-            <AccordionSummary
+            <AccordionSummary className='gradient-pink'
               expandIcon={<ExpandMoreIcon />}
             ><h3>資料說明</h3>
             </AccordionSummary>
             <AccordionDetails>
               <TableContainer component={Paper}>
                 <Table className={classes.table} aria-label="simple table">
-                  <TableHead>
+                  <TableHead className='gradient-red'>
                     <TableRow>
                       <TableCell>名稱</TableCell>
                       <TableCell>值</TableCell>
@@ -125,36 +145,16 @@ export default function Index() {
                   </TableHead>
                   <TableBody>
                     {fetchDetailData.data.infomation.map((row) => (
-                      <TableRow key={row.name}>
-                        <TableCell>
+                      <StyledTableRow key={row.name}>
+                        <StyledTableCell >
                           {row.name}
-                        </TableCell>
-                        <TableCell>{row.value}</TableCell>
-                      </TableRow>
+                        </StyledTableCell>
+                        <StyledTableCell>{row.value}</StyledTableCell>
+                      </StyledTableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-              {/* <div className="p-3">
-                <div className="table-responsive">
-                  <table className="table table-bordered border-primary table-hover">
-                    <thead className="table-warning">
-                      <tr>
-                        <th scope="col">名稱</th>
-                        <th scope="col">值</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {fetchDetailData.data.infomation.map((s) => (
-                        <tr>
-                          <th scope="row">{s.name}</th>
-                          <td>{s.value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div> */}
             </AccordionDetails>
           </Accordion>
         </Grid>
