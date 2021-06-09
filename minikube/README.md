@@ -1,7 +1,7 @@
 # 第一次建立OpendataCollector系統要跑的Scripts
 ``` Bash
 # 啟動minikube 16384  4096
-minikube start --cpus=4 --memory=10000  
+minikube start --cpus=4 --memory=9961  
 minikube addons enable dashboard
 minikube addons enable ingress
 minikube addons enable registry
