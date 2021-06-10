@@ -15,10 +15,8 @@ async def db(db_name):
     if os.getenv('ENVIRONMENT') == 'production':
         if os.getenv('MONGODB'):
             db_uri =os.getenv('MONGODB')
-            print(db_uri)
         else:
             db_uri = (await secret_service.get_jwt_config())['mongodb']
-            #('mongodb://root:example@mongo/')
     else:
         db_uri = ('mongodb://root:example@localhost:1769/')    
     db_client = MongoClient(db_uri)
