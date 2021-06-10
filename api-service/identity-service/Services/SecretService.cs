@@ -32,15 +32,13 @@ namespace identity_service.Services
             string scope = string.Empty;
             string secret = string.Empty;
             var cc = Environment.GetEnvironmentVariable("SECRET");
-            _logger.LogInformation(cc);
-            _logger.LogInformation(Environment.GetEnvironmentVariable("SQLSERVER"));
             if (string.IsNullOrEmpty(cc))
             {
-                var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/my-secret-store/bulk");
+                var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets");
                 System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
-                clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
-                scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
-                secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
+                clientString = jd.RootElement.GetProperty("client").ToString();
+                scope = jd.RootElement.GetProperty("scope").ToString();
+                secret = jd.RootElement.GetProperty("secret").ToString();
                 _logger.LogError(await r.Content.ReadAsStringAsync());
             }
             else
