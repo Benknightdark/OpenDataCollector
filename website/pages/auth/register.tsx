@@ -23,17 +23,20 @@ export default function Register({ csrfToken }) {
     (async () => {
       const req = await fetch("/api/auth/register", { method: "POST", body: JSON.stringify(data), headers: { 'content-type': "application/json" } });
       const res = await req.json();
+      console.log('-----------------')
+      console.log(res)
       if (res?.token) {
         signIn("credentials", {
           username: data.userName,
           password: data.password,
           redirect: false,
         }).then((r) => {
-          if (r.error === null) {
+          console.log(r)
+        //  if (r.error === null) {
             router.push("/");
-          } else {
-            alert(r['error'])
-          }
+         // } else {
+        //    alert(r['error'])
+        //  }
         });
       }
     })()
