@@ -23,26 +23,13 @@ spec:
       - name: identity-service
         image: localhost:5000/identity-service:latest
         env:
-          - name: CLIENT
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: client
-          - name: SCOPE
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: scope
-          - name: SECRET
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: secret
           - name: SQLSERVER
             valueFrom:
               secretKeyRef:
                 name: opendatasecrets
-                key: sqlserver        
+                key: sqlserver
+          - name: ENVIRONMENT
+            value: production                        
         ports:
         - containerPort: 8779
         imagePullPolicy: Always
