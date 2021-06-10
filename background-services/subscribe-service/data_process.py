@@ -8,6 +8,7 @@ from bson import json_util
 import json
 import datetime
 import logging
+from . import secret_service
 logging.basicConfig(level="INFO")
 
 
@@ -18,26 +19,26 @@ def convert_collection(data):
     return json.loads(json_util.dumps(data))
 
 
-def db(db_name):
+async def db(db_name):
     '''
     取得MongoDB 資料庫
     '''
     if os.getenv('ENVIRONMENT') == 'production':
         if os.getenv('MONGODB'):
-            db_uri = os.getenv('MONGODB')
+            db_uri =os.getenv('MONGODB')
         else:
-            db_uri = ('mongodb://root:example@mongo/')
+            db_uri = (await secret_service.get_jwt_config())['mongodb']
     else:
-        db_uri = ('mongodb://root:example@localhost:1769/')
+        db_uri = ('mongodb://root:example@localhost:1769/')    
     db_client = MongoClient(db_uri)
     return db_client[db_name]
 
 
-def add_history(user_id, schedule_id, origin_data):
+async def add_history(user_id, schedule_id, origin_data):
     '''
     新增下載檔案到資料庫
     '''
-    inesert_data = db('task')['history'].insert_one({
+    inesert_data = (await db('task'))['history'].insert_one({
         "userId": user_id,
         "scheduleId": schedule_id,
         "data": [
@@ -50,11 +51,11 @@ def add_history(user_id, schedule_id, origin_data):
     return inesert_data.inserted_id
 
 
-def update_history(user_id, schedule_id, origin_data):
+async def update_history(user_id, schedule_id, origin_data):
     '''
     更新下載檔案到資料庫
     '''
-    update_data = db('task')['history'].update_one({"userId": user_id, "scheduleId": schedule_id}, {
+    update_data = (await db('task'))['history'].update_one({"userId": user_id, "scheduleId": schedule_id}, {
         '$push': {
             'data': {
                 "createdTime": datetime.datetime.now(),
@@ -130,15 +131,15 @@ def download(req_data):
     return origin_data
 
 
-def add_file(req_data):
+async def add_file(req_data):
     download_data = download(req_data)
-    inserted_id = add_history(
+    inserted_id =await  add_history(
         req_data["userId"], req_data["scheduleId"], download_data)
     print(inserted_id)
 
 
-def update_file(req_data):
+async def update_file(req_data):
     download_data = download(req_data)
-    raw_result = update_history(
+    raw_result =await update_history(
         req_data["userId"], req_data["scheduleId"], download_data)
     print(raw_result)

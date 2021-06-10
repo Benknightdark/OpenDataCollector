@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 import os
-import os
 import logging
 import data_process
 import httpx
@@ -25,7 +24,7 @@ def subscribe():
 @app.post('/addFile')
 async def add_file_subscriber(request: Request):
     data = await request.json()
-    data_process.add_file(data['data'])
+    await data_process.add_file(data['data'])
     print(data)
     return data
 
@@ -33,7 +32,7 @@ async def add_file_subscriber(request: Request):
 @app.post('/updateFile')
 async def add_file_subscriber(request: Request):
     data = await request.json()
-    data_process.update_file(data['data'])
+    await data_process.update_file(data['data'])
     return data
 
 @app.post('/cron')
