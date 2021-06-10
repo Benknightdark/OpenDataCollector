@@ -73,7 +73,7 @@ async def put_schedule(data_id, data: ScheduleModel):
 
 @app.get("/api/history/{user_id}/{schedule_id}",)
 async def get_schedule(user_id, schedule_id):
-    data = db_service.history_query(user_id, schedule_id)
+    data = await db_service.history_query(user_id, schedule_id)
     return data
 
 

@@ -8,7 +8,7 @@ from bson import json_util
 import json
 import datetime
 import logging
-from . import secret_service
+import secret_service
 logging.basicConfig(level="INFO")
 
 
@@ -25,11 +25,11 @@ async def db(db_name):
     '''
     if os.getenv('ENVIRONMENT') == 'production':
         if os.getenv('MONGODB'):
-            db_uri =os.getenv('MONGODB')
+            db_uri = os.getenv('MONGODB')
         else:
             db_uri = (await secret_service.get_jwt_config())['mongodb']
     else:
-        db_uri = ('mongodb://root:example@localhost:1769/')    
+        db_uri = ('mongodb://root:example@localhost:1769/')
     db_client = MongoClient(db_uri)
     return db_client[db_name]
 
@@ -109,6 +109,7 @@ def download(req_data):
     xml => json
     xslx => json
     '''
+    logging.info(req_data)
     file_name = req_data['fileName']
     data_type = req_data['dataType']
     url = req_data['url']
@@ -126,6 +127,8 @@ def download(req_data):
         origin_data = xml_to_json(data.text)
     if data_type == 'xlsx':
         origin_data = xsl_to_json(url)
+    if data_type == 'json':
+        origin_data = httpx.get(url).json()
     logging.info(f'----------------END: {file_name}------------------------')
 
     return origin_data
@@ -133,13 +136,13 @@ def download(req_data):
 
 async def add_file(req_data):
     download_data = download(req_data)
-    inserted_id =await  add_history(
+    inserted_id = await add_history(
         req_data["userId"], req_data["scheduleId"], download_data)
     print(inserted_id)
 
 
 async def update_file(req_data):
     download_data = download(req_data)
-    raw_result =await update_history(
+    raw_result = await update_history(
         req_data["userId"], req_data["scheduleId"], download_data)
     print(raw_result)
