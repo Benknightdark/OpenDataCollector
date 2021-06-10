@@ -21,8 +21,11 @@ const addFileDownloadData = async (inertID,data, session) => {
             hour: data['executeTime'].split(':')[0],
             minute: data['executeTime'].split(':')[1]
         }),
+
         headers: new Headers({
             'Authorization': 'Bearer ' + session.user.token,
+            'content-type': 'application/json'
+
         }),
     })
     const resData2 = await reqData2.json()
@@ -35,6 +38,8 @@ const addTaskData = async (data, session) => {
         body: JSON.stringify(data),
         headers: new Headers({
             'Authorization': 'Bearer ' + session.user.token,
+            'content-type': 'application/json'
+
         }),
     })
     const resData = await reqData.json()
@@ -45,9 +50,7 @@ export default async (req, res) => {
         const session = await getSession({ req })
         const data = JSON.parse(req.body);
         const inertID=await addTaskData(data,session);
-        console.log(inertID)
         const addFileDownloadDataaRes = await addFileDownloadData(inertID['_id']['$oid'],data, session);
-        console.log(addFileDownloadDataaRes)
         res.status(200).json({status:true})
     } catch (error) {
         console.error(error)

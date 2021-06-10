@@ -39,7 +39,6 @@ export default function Index() {
     useEffect(() => {
         window.onscroll = async () => {
             if (showLoading) return;
-            console.log((window.innerHeight + window.scrollY) - document.body.offsetHeight > 0)
             if ((window.innerHeight + window.scrollY) - document.body.offsetHeight === 0) {
                 setShowLoading(true)
                 setSize(size + 1).then(() => {
@@ -58,7 +57,6 @@ export default function Index() {
                     data.map((lists, index) => {
                         return lists.map(d => <Grid item xs={12} key={d.name}>
                             <Card className="card" onClick={() => {
-                                console.log(d.url)
                                 router.push({
                                     pathname: `/${serviceName}/dataset/detail`,
                                     query: { queryUrl: d.url },

@@ -31,7 +31,6 @@ export default function Type() {
     if (previousPageData && !previousPageData.length) return null;
     const url = `/api/category?serviceName=${serviceName}&dataType=${type}&page=${pageIndex + 1
       }`;
-    console.log(url);
     return url;
   };
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);

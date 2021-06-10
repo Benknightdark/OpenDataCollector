@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import useSWR from "swr";
-import Layout from "../components/layout";
 import Spinner from "../components/spinner";
 import Modal from 'react-modal';
 import TaskForm from "../components/TaskForm";
@@ -61,7 +60,6 @@ const index = () => {
                                                     onClick={async () => {
                                                         const req = await fetch(`/api/task/execute?id=${d['_id']['$oid']}`);
                                                         const res = await req.json();
-                                                        console.log(res)
                                                         toast.success(`已執行【${d['name']}】排程`, {
                                                             position: "top-right",
                                                             autoClose: 5000,
@@ -100,7 +98,6 @@ const index = () => {
                                                     onClick={async () => {
                                                         const req = await fetch(`/api/task/delete?id=${d['_id']['$oid']}`)
                                                         const res = await req.json();
-                                                        console.log(res);
                                                         toast.warning(`已刪除【${d['name']}】排程`, {
                                                             position: "top-right",
                                                             autoClose: 5000,

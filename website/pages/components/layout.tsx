@@ -46,7 +46,6 @@ export default function Layout({ children }) {
   useEffect(() => {
     if (window.history.length > 1) {
       setGoBack("true")
-      console.log(canGoBack)
     }
     (async () => {
       const req = await fetch("/api/personal");
@@ -61,7 +60,6 @@ export default function Layout({ children }) {
       } else {
         // 沒登入
         const check = protectedRoute.filter(p => router.pathname.toUpperCase().includes(p.toUpperCase()))
-        console.log(check)
         if (check.length > 0) {
           window.location.replace("/auth/signin")
         }

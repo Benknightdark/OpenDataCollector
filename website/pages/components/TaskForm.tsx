@@ -25,12 +25,8 @@ const TaskForm = ({ detail, events }) => {
                     let infoText: string = '';
                     if (detail?.modalTitle == '編輯') {
                         let bodyData=getValues();
-                        console.log(detail)
-                        console.log(detail['_id']['$oid'])
                         bodyData['_id']={}
                         bodyData['_id']['$oid']=detail['_id']['$oid']
-                        console.log(bodyData)
-
                         const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(bodyData) });
                         res = await req.json();
                         infoText = `已更新【${getValues()['name']}】排程`;

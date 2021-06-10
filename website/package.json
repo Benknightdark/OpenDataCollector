@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "env-cmd -f environments/.env.development nodemon server.js",
+    "dev": "env-cmd -f environments/.env.development next dev",
     "build": "env-cmd -f environments/.env.production next build",
     "start": "env-cmd -f environments/.env.production next start"
   },

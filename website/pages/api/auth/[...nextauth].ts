@@ -15,21 +15,21 @@ export default NextAuth({
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // console.log(credentials)
         // Add logic here to look up the user from the credentials supplied
         const url = `${getApiUrl('account-service')}/api/login`;
 
         const req = await fetch(url, {
           method: "POST",
+          headers: {
+            'content-type': 'application/json'
+          },
           body: JSON.stringify({
             userName: credentials.username,
             password: credentials.password,
           })
         })
-
         if (req.status === 200) {
-          const dd=await req.text();
-          // Any object returned will be saved in `user` property of the JWT
+          const dd = await req.text();
           return { name: dd }
 
         } else {
@@ -53,11 +53,10 @@ export default NextAuth({
     async session(session) {
       const displayName = JSON.parse(session.user.name).displayName
       const token = JSON.parse(session.user.name).token;
-      console.log(token)
       const userId = JSON.parse(session.user.name).userId;
       session.user.name = displayName;
       session.user.token = token;
-      session.user.id=userId;
+      session.user.id = userId;
 
       return (session)
     },

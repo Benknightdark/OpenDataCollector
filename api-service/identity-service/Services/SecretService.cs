@@ -41,6 +41,7 @@ namespace identity_service.Services
                 clientString = jd.RootElement.GetProperty("jwtConfig:client").GetProperty("jwtConfig:client").ToString();
                 scope = jd.RootElement.GetProperty("jwtConfig:scope").GetProperty("jwtConfig:scope").ToString();
                 secret = jd.RootElement.GetProperty("jwtConfig:secret").GetProperty("jwtConfig:secret").ToString();
+                _logger.LogError(await r.Content.ReadAsStringAsync());
             }
             else
             {

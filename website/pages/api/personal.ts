@@ -9,13 +9,11 @@ export default async (req, res) => {
     if (session == null) {
         res.status(401).json({ "message": "Session過時" })
     } else {
-        console.log(session.user.token)
         const reqData = await fetch(url, {
             headers: new Headers({
                 'Authorization': 'Bearer ' + session.user.token,
             }),
         })
-        console.log(reqData.status)
         const resData = await reqData.json()
         res.status(200).json({ displayName: resData['displayName'] })
     }

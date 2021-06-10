@@ -33,7 +33,7 @@ export default function SignIn({ csrfToken }) {
       redirect: false,
     }).then((r) => {
       setshowLoading(false)
-   //   if (r.error === null) {
+     if (r.error === null) {
         toast("已登入", {
           position: "top-right",
           autoClose: 5000,
@@ -47,9 +47,9 @@ export default function SignIn({ csrfToken }) {
           router.push("/");
         }, 1000);
 
-    //  } else {
-     //   setCustomError(r['error'])
-     // }
+     } else {
+       setCustomError(r['error'])
+     }
 
     });
   };

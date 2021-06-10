@@ -78,7 +78,6 @@ export default function Index() {
   const router = useRouter();
   const { serviceName, queryUrl } = router.query;
   const fetchDetailData = detailData(serviceName, queryUrl);
-  console.log(fetchDetailData.data);
   const events = new EventEmitter<{
     close: () => void,
   }>();

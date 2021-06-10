@@ -8,7 +8,8 @@ const updateTaskData = async (data, token) => {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: new Headers({
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + token,            'content-type': 'application/json'
+
         }),
     })
     const resData = await reqData.json()
@@ -17,7 +18,8 @@ const updateTaskData = async (data, token) => {
 const deleteFileDownload = async (data, token) => {
     const delFielDownloadReq = await fetch(`${getApiUrl("file-download-service")}/scheduler/jobs/${data['_id']['$oid']}`, {
         method: 'DELETE', headers: new Headers({
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + token,            'content-type': 'application/json'
+
         })
     })
     const delFileDownloadRes = await delFielDownloadReq.text();
