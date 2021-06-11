@@ -31,8 +31,8 @@ namespace identity_service.Services
             string clientString = string.Empty;
             string scope = string.Empty;
             string secret = string.Empty;
-            var cc = Environment.GetEnvironmentVariable("SECRET");
-            if (string.IsNullOrEmpty(cc))
+            var checkEnvExist = Environment.GetEnvironmentVariable("SECRET");
+            if (string.IsNullOrEmpty(checkEnvExist))
             {
                 var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets");
                 System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
