@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import Button from '@material-ui/core/Button';
 import AssignmentTurnedInSharpIcon from '@material-ui/icons/AssignmentTurnedInSharp';
 import { signOut } from "next-auth/client";
-import Snackbar from '@material-ui/core/Snackbar';
+import { useSnackbar } from 'notistack';
 
 const protectedRoute = ['task']
 const unProtectedRoute = ['signin', 'register']
@@ -33,16 +33,7 @@ export default function Layout({ children }) {
   const [canGoBack, setGoBack] = useState("false")
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
-  const [open, setOpen] = React.useState(false);
-
-
-
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpen(false);
-  };
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   useEffect(() => {
     if (window.history.length > 1) {
       setGoBack("true")
@@ -84,7 +75,7 @@ export default function Layout({ children }) {
               router.push('/')
             }}>
               OpenDataCollector
-          </Typography>
+            </Typography>
 
             {displayName ? (
               <div>
@@ -107,7 +98,7 @@ export default function Layout({ children }) {
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
                     setDisplayName(null)
-                    setOpen(true)
+                    enqueueSnackbar('登出');
                   }}
                 >
                   <ExitToAppIcon />
@@ -128,12 +119,12 @@ export default function Layout({ children }) {
           </Toolbar>
         </AppBar>
       </div>
-      <Container maxWidth="xl"> 
+      <Container maxWidth="xl">
         {children}
       </Container>
-      <Snackbar
+      {/* <Snackbar
         open={open}
-        anchorOrigin={{ vertical:'top', horizontal:'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         autoHideDuration={2000}
         action={
           <Button color="inherit" size="small" onClick={handleClose}>
@@ -142,7 +133,7 @@ export default function Layout({ children }) {
         }
         onClose={handleClose}
         message="登出"
-      />
+      /> */}
     </React.Fragment>
   );
 }

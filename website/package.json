@@ -21,6 +21,7 @@
     "next": "10.2.2",
     "next-auth": "^3.14.6",
     "node-fetch": "^2.6.1",
+    "notistack": "^1.0.9",
     "randomcolor": "^0.6.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
