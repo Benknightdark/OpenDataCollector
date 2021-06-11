@@ -85,3 +85,6 @@ dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
 http://localhost:3000
 ```
+#refrence
+- simple custom hook
+  - https://usehooks.com/
