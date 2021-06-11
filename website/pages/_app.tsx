@@ -4,7 +4,7 @@ import '../styles/globals.css'
 import Layout from './components/layout'
 import { SnackbarProvider } from 'notistack';
 import { Button } from '@material-ui/core';
-const notistackRef = React.createRef();
+const notistackRef = React.createRef<SnackbarProvider>();
 const onClickDismiss = key => () => { 
   notistackRef.current.closeSnackbar(key);
 }
@@ -13,6 +13,7 @@ function MyApp({ Component, pageProps }) {
   
   return  <SnackbarProvider maxSnack={3} 
   ref={notistackRef}
+  
   action={(key) => (
       <Button variant="contained" color="primary" component="span" onClick={onClickDismiss(key)}>
           關閉
