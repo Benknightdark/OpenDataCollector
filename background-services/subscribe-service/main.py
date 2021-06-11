@@ -35,8 +35,8 @@ async def add_file_subscriber(request: Request):
     await data_process.update_file(data['data'])
     return data
 
-@app.post('/cron')
-async def add_file_subscriber(request: Request):
-    print("OKOKOK")
-    print(httpx.get('http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets').json())
-    return {"status":"OK"}
+# @app.post('/cron')
+# async def add_file_subscriber(request: Request):
+#     print("OKOKOK")
+#     print(httpx.get('http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets').json())
+#     return {"status":"OK"}
