@@ -11,26 +11,26 @@
    - [參考此文件](./minikube#readme)
 
 # 系統說明
-| 服務名稱                   | 類型              | 用途                                  |
-| -------------------------- | :---------------- | :------------------------------------ |
-| nodeapp                    | 網站              | OpenDataCollector網站                 |
-| nodeapp-dapr               | dapr side-car服務 | 處理nodeapp與dapr的溝通               |
-| kao-service                | Api               | 高雄市OpenData Api                    |
-| kao-service-dapr           | dapr side-car服務 | 處理kao-service與dapr的溝通           |
-| tainan-service             | Api               | 台南市OpenData Api                    |
-| tainan-service-dapr        | dapr side-car服務 | 處理tainan-service與dapr的溝通        |
-| pthg-service               | Api               | 屏東縣OpenData Api                    |
-| pthg-service-dapr          | dapr side-car服務 | 處理pthg-service與dapr的溝通          |
-| taichung-service           | Api               | 台中市OpenData Api                    |
-| taichung-service-dapr      | dapr side-car服務 | 處理taichung-service與dapr的溝通      |
-| account-service            | Api               | 帳號相關Api                           |
-| account-service-dapr       | dapr side-car服務 | 處理account-service與dapr的溝通       |
-| task-service               | Api               | 排程管理相關Api                       |
-| task-service-dapr          | dapr side-car服務 | 處理task-service與dapr的溝通          |
-| file-download-service      | Api和背景排程服務 | 執行下載檔案排程任務                  |
-| file-download-service-dapr | dapr side-car服務 | 處理file-download-service與dapr的溝通 |
-| subscribe-service          | pub/sub服務       | 接收publishers所發送的任務            |
-| subscribe-service-dapr     | dapr side-car服務 | 處理subscribe-service與dapr的溝通     |
+| 服務名稱                   | 類型              | 用途                                                              |
+| -------------------------- | :---------------- | :---------------------------------------------------------------- |
+| nodeapp                    | 網站              | OpenDataCollector網站                                             |
+| nodeapp-dapr               | dapr side-car服務 | 處理nodeapp與dapr的溝通                                           |
+| kao-service                | Api               | 高雄市OpenData Api                                                |
+| kao-service-dapr           | dapr side-car服務 | 處理kao-service與dapr的溝通                                       |
+| tainan-service             | Api               | 台南市OpenData Api                                                |
+| tainan-service-dapr        | dapr side-car服務 | 處理tainan-service與dapr的溝通                                    |
+| pthg-service               | Api               | 屏東縣OpenData Api                                                |
+| pthg-service-dapr          | dapr side-car服務 | 處理pthg-service與dapr的溝通                                      |
+| taichung-service           | Api               | 台中市OpenData Api                                                |
+| taichung-service-dapr      | dapr side-car服務 | 處理taichung-service與dapr的溝通                                  |
+| account-service            | Api               | 帳號相關Api                                                       |
+| account-service-dapr       | dapr side-car服務 | 處理account-service與dapr的溝通                                   |
+| task-service               | Api               | 排程管理相關Api                                                   |
+| task-service-dapr          | dapr side-car服務 | 處理task-service與dapr的溝通                                      |
+| file-download-service      | Api和背景排程服務 | 執行下載檔案排程任務                                              |
+| file-download-service-dapr | dapr side-car服務 | 處理file-download-service與dapr的溝通                             |
+| subscribe-service          | pub/sub服務       | 接收publishers所發送的任務                                        |
+| subscribe-service-dapr     | dapr side-car服務 | 處理subscribe-service與dapr的溝通                                 |
 | api-gateway-service        | Api               | Envoy Api Gateway，統一Api的連線網址                              |
 | api-gateway-service-dapr   | dapr side-car服務 | 處理api-gateway-service與dapr的溝通                               |
 | identity-service           | Api               | IdentityServer4 服務                                              |
