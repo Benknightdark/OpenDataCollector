@@ -1,3 +1,4 @@
+
 # OpenDataCollector
 
 # 系統啟動方式
@@ -71,7 +72,7 @@
 </center>
 
 # 其他指令
-``` Bash
+```bash
 net stop winnat
 net start winnat
 curl  POST 'http://localhost:5000/connect/token' --header 'Content-Type: application/x-www-form-urlencoded' --data-urlencode 'client_id=client' --data-urlencode 'client_secret=secret' --data-urlencode 'scope=api1' --data-urlencode 'grant_type=client_credentials'
@@ -84,4 +85,8 @@ cd api-service/identity-service
 dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
 http://localhost:3000
+```
+```mermaid
+sequenceDiagram
+  A-->B: Works!
 ```
