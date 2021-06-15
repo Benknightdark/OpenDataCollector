@@ -1,22 +1,21 @@
 import React, { useContext, useEffect, useState } from "react";
 import CustomHeader from "./custom-header";
-import 'react-toastify/dist/ReactToastify.css';
-import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import ArrowBack from '@material-ui/icons/ArrowBack';
-import Container from '@material-ui/core/Container';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import "react-toastify/dist/ReactToastify.css";
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import IconButton from "@material-ui/core/IconButton";
+import ArrowBack from "@material-ui/icons/ArrowBack";
+import Container from "@material-ui/core/Container";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import { useRouter } from "next/router";
-import Button from '@material-ui/core/Button';
-import AssignmentTurnedInSharpIcon from '@material-ui/icons/AssignmentTurnedInSharp';
+import Button from "@material-ui/core/Button";
+import AssignmentTurnedInSharpIcon from "@material-ui/icons/AssignmentTurnedInSharp";
 import { signOut } from "next-auth/client";
-// import { useSnackbar } from 'notistack';
 import { useSnackBar } from "./hooks/custom-snackbar-context";
-const protectedRoute = ['task']
-const unProtectedRoute = ['signin', 'register']
+const protectedRoute = ["task"];
+const unProtectedRoute = ["signin", "register"];
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -30,15 +29,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Layout({ children }) {
   const classes = useStyles();
-  const [canGoBack, setGoBack] = useState("false")
+  const [canGoBack, setGoBack] = useState("false");
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
-  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-const showSnackBar=useSnackBar();
+  const showSnackBar = useSnackBar();
 
   useEffect(() => {
     if (window.history.length > 1) {
-      setGoBack("true")
+      setGoBack("true");
     }
     (async () => {
       const req = await fetch("/api/personal");
@@ -46,37 +44,50 @@ const showSnackBar=useSnackBar();
       if (res?.message == null) {
         // 有登入
         setDisplayName(res?.displayName);
-        const check = unProtectedRoute.filter(p => router.pathname.toUpperCase().includes(p.toUpperCase()))
+        const check = unProtectedRoute.filter((p) =>
+          router.pathname.toUpperCase().includes(p.toUpperCase())
+        );
         if (check.length > 0) {
-          window.location.replace("/")
+          window.location.replace("/");
         }
       } else {
         // 沒登入
-        const check = protectedRoute.filter(p => router.pathname.toUpperCase().includes(p.toUpperCase()))
+        const check = protectedRoute.filter((p) =>
+          router.pathname.toUpperCase().includes(p.toUpperCase())
+        );
         if (check.length > 0) {
-          window.location.replace("/auth/signin")
+          window.location.replace("/auth/signin");
         }
       }
     })();
-  })
+  });
   return (
     <React.Fragment>
-
       <CustomHeader goBack={canGoBack} />
       <div className={classes.root}>
         <AppBar position="static" className="custom-nav-bar">
           <Toolbar>
             {canGoBack == "true" && (
-              <IconButton edge="start" className={classes.menuButton}
-                color="inherit" aria-label="arrowBack" onClick={() => {
+              <IconButton
+                edge="start"
+                className={classes.menuButton}
+                color="inherit"
+                aria-label="arrowBack"
+                onClick={() => {
                   router.back();
-                }}>
+                }}
+              >
                 <ArrowBack />
               </IconButton>
             )}
-            <Typography variant="h6" className={classes.title} style={{ cursor: "pointer" }} onClick={() => {
-              router.push('/')
-            }}>
+            <Typography
+              variant="h6"
+              className={classes.title}
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                router.push("/");
+              }}
+            >
               OpenDataCollector
             </Typography>
 
@@ -88,7 +99,7 @@ const showSnackBar=useSnackBar();
                   aria-haspopup="true"
                   color="inherit"
                   onClick={async () => {
-                    router.push('/task')
+                    router.push("/task");
                   }}
                 >
                   <AssignmentTurnedInSharpIcon />
@@ -100,11 +111,10 @@ const showSnackBar=useSnackBar();
                   color="inherit"
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
-                    setDisplayName(null)
+                    setDisplayName(null);
                     //enqueueSnackbar('登出');
                     //setMessage('afsdfsdaf');
-                    showSnackBar.showSnackBar("OK",'info');
-
+                    showSnackBar.showSnackBar("登出", "info");
                   }}
                 >
                   <ExitToAppIcon />
@@ -112,26 +122,28 @@ const showSnackBar=useSnackBar();
               </div>
             ) : (
               <div>
-
-                <Button color="inherit" onClick={async () => {
-                  router.push("/auth/register");
-                }}>註冊</Button>
-                <Button color="inherit" onClick={async () => {
-                  router.push("/auth/signin");
-                }}>登入</Button>
+                <Button
+                  color="inherit"
+                  onClick={async () => {
+                    router.push("/auth/register");
+                  }}
+                >
+                  註冊
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={async () => {
+                    router.push("/auth/signin");
+                  }}
+                >
+                  登入
+                </Button>
               </div>
-
             )}
           </Toolbar>
         </AppBar>
       </div>
-      <Container maxWidth="xl">
-        {children}
-      </Container>
+      <Container maxWidth="xl">{children}</Container>
     </React.Fragment>
   );
 }
-
-
-
-
