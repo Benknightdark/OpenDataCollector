@@ -7,7 +7,7 @@ export const SnackBarContext = React.createContext({
 });
 
 // Snackbar UI
-export function CustomSnackBar() {
+export default function CustomSnackBar() {
   const value = useContext(SnackBarContext);
   const [open, setOpen] = useState(value.message == "" ? false : true);
   return (
