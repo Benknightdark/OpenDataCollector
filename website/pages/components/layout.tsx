@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomHeader from "./custom-header";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import AssignmentTurnedInSharpIcon from "@material-ui/icons/AssignmentTurnedInSharp";
 import { signOut } from "next-auth/client";
 import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
+import { useCustomAuthContext } from "./hooks/custom-auth-context";
 const protectedRoute = ["task"];
 const unProtectedRoute = ["signin", "register"];
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +33,6 @@ export default function Layout({ children }) {
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
   const showSnackBar = useCustomSnackBar();
-
   useEffect(() => {
     if (window.history.length > 1) {
       setGoBack("true");
@@ -43,20 +43,6 @@ export default function Layout({ children }) {
       if (res?.message == null) {
         // 有登入
         setDisplayName(res?.displayName);
-        const check = unProtectedRoute.filter((p) =>
-          router.pathname.toUpperCase().includes(p.toUpperCase())
-        );
-        if (check.length > 0) {
-          window.location.replace("/");
-        }
-      } else {
-        // 沒登入
-        const check = protectedRoute.filter((p) =>
-          router.pathname.toUpperCase().includes(p.toUpperCase())
-        );
-        if (check.length > 0) {
-          window.location.replace("/auth/signin");
-        }
       }
     })();
   });
