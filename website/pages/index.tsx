@@ -4,8 +4,7 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import {
   CustomSnackBar,
-  SnackBarContext,
-  useSnackBarContext,
+  useCustomSnackBarContext,
 } from "./components/hooks/custom-snackbar-context";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -18,8 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 export default function Home() {
   const classes = useStyles();
-  const [setMessage] = useSnackBarContext();
-  setMessage("show")
+
   return (
     <div className={classes.root}>
         <CustomSnackBar />
@@ -31,14 +29,5 @@ export default function Home() {
         </Grid>
     </div>
   );
-  // return (
 
-  //   <div className='row  bd-highlight'>
-  //     <Dashboard serviceName='kao-service' />
-  //     <Dashboard serviceName='tainan-service' />
-  //     <Dashboard serviceName='taichung-service' />
-  //     <Dashboard serviceName='pthg-service' />
-  //   </div>
-
-  // )
 }
