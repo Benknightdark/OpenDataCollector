@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
+import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
 
 const TaskForm = ({ detail, events }) => {
 
@@ -15,7 +15,7 @@ const TaskForm = ({ detail, events }) => {
     const { register, handleSubmit, reset, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
-
+const {showSnackBar}=useCustomSnackBar();
     return (
         <div>
             <div>
@@ -39,15 +39,7 @@ const TaskForm = ({ detail, events }) => {
                     }
                     if (res['status']) {
 
-                        toast.info(infoText, {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        })
+                        showSnackBar(infoText,"info");
                         events.emit('close');
                         reset();
 

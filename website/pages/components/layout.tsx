@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import CustomHeader from "./custom-header";
-import "react-toastify/dist/ReactToastify.css";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -13,7 +12,7 @@ import { useRouter } from "next/router";
 import Button from "@material-ui/core/Button";
 import AssignmentTurnedInSharpIcon from "@material-ui/icons/AssignmentTurnedInSharp";
 import { signOut } from "next-auth/client";
-import { useSnackBar } from "./hooks/custom-snackbar-context";
+import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
 const protectedRoute = ["task"];
 const unProtectedRoute = ["signin", "register"];
 const useStyles = makeStyles((theme) => ({
@@ -32,7 +31,7 @@ export default function Layout({ children }) {
   const [canGoBack, setGoBack] = useState("false");
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
-  const showSnackBar = useSnackBar();
+  const showSnackBar = useCustomSnackBar();
 
   useEffect(() => {
     if (window.history.length > 1) {

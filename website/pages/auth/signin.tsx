@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Spinner from "../components/spinner";
-import { useSnackBar } from "../components/hooks/custom-snackbar-context";
+import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
 
 export default function SignIn({ csrfToken }) {
   const router = useRouter();
@@ -22,7 +22,7 @@ export default function SignIn({ csrfToken }) {
   });
   const [showLoading, setshowLoading] = useState(false);
   const [customError, setCustomError] = useState("");
-  const showSnackBar = useSnackBar();
+  const showSnackBar = useCustomSnackBar();
 
   const onSubmit = (data) => {
     setCustomError("");

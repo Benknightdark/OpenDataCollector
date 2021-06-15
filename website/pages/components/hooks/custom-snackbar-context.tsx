@@ -8,13 +8,13 @@ type CustomSnackBarContextActions = {
 
 const CustomSnackBarContext = createContext({} as CustomSnackBarContextActions);
 
-interface CustomSnackBarContextProviderProps {
-  children: React.ReactNode;
-}
-
-const CustomSnackBarProvider: React.FC<CustomSnackBarContextProviderProps> = ({
+// interface CustomSnackBarContextProviderProps {
+//   children: React.ReactNode;
+// }
+//: React.FC<CustomSnackBarContextProviderProps> 
+export default function CustomSnackBarProvider({
   children,
-}) => {
+}){
   const [open, setOpen] = React.useState<boolean>(false);
   const [message, setMessage] = React.useState<string>("");
   const [typeColor, setTypeColor] = React.useState<Color>("info");
@@ -50,9 +50,9 @@ const CustomSnackBarProvider: React.FC<CustomSnackBarContextProviderProps> = ({
       {children}
     </CustomSnackBarContext.Provider>
   );
-};
+}
 
-const useSnackBar = (): CustomSnackBarContextActions => {
+export const useCustomSnackBar = (): CustomSnackBarContextActions => {
   const context = useContext(CustomSnackBarContext);
 
   if (!context) {
@@ -61,5 +61,3 @@ const useSnackBar = (): CustomSnackBarContextActions => {
 
   return context;
 };
-
-export { CustomSnackBarProvider, useSnackBar };
