@@ -1,46 +1,60 @@
-import { Button, Snackbar } from "@material-ui/core";
-import React, { useContext, useState } from "react";
-// Snackbar 全域設定
-export const SnackBarContext = React.createContext({
-  message: "",
-  autoHideDuration: 6000,
-});
+import { Snackbar } from '@material-ui/core';
+import { Alert, Color } from '@material-ui/lab';
+import React, { createContext, useContext } from 'react';
 
-// Snackbar UI
-export default function CustomSnackBar() {
-  const value = useContext(SnackBarContext);
-  const [open, setOpen] = useState(value.message == "" ? false : true);
-  return (
-    value.message != "" && (
-      <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={open}
-          autoHideDuration={value.autoHideDuration}
-          message={value.message}
-          onClose={() => {
-            setOpen(false);
-          }}
-          action={
-            <Button variant="contained" color="primary" component="span" 
-            onClick={()=>{setOpen(false)}}>
-            關閉
-          </Button>
-          }
-        ></Snackbar>
-      </div>
-    )
-  );
+type CustomSnackBarContextActions = {
+  showSnackBar: (text: string, typeColor: Color) => void;
+};
+
+const CustomSnackBarContext = createContext({} as CustomSnackBarContextActions);
+
+interface CustomSnackBarContextProviderProps {
+  children: React.ReactNode;
 }
 
-// 使用 custom snackbar context
-export const useCustomSnackBarContext = () => {
-  const value = useContext(SnackBarContext);
-  const setMessage = (message) => {
-    value.message = message;
+const CustomSnackBarProvider: React.FC<CustomSnackBarContextProviderProps> = ({
+  children,
+}) => {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [message, setMessage] = React.useState<string>('');
+  const [typeColor, setTypeColor] = React.useState<Color>('info');
+
+  const showSnackBar = (text: string, color: Color) => {
+    setMessage(text);
+    setTypeColor(color);
+    setOpen(true);
   };
-  return [setMessage];
+
+  const handleClose = () => {
+    setOpen(false);
+    setTypeColor('info');
+  };
+
+  return (
+    <CustomSnackBarContext.Provider value={{ showSnackBar }}>
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={handleClose}>
+        <Alert onClose={handleClose} severity={typeColor}>
+          {message}
+        </Alert>
+      </Snackbar>
+      {children}
+    </CustomSnackBarContext.Provider>
+  );
 };
+
+const useSnackBar = (): CustomSnackBarContextActions => {
+  const context = useContext(CustomSnackBarContext);
+
+  if (!context) {
+    throw new Error('useSnackBar must be used within an SnackBarProvider');
+  }
+
+  return context;
+};
+
+export { CustomSnackBarProvider as SnackBarProvider, useSnackBar };
+

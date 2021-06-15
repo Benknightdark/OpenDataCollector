@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CustomHeader from "./custom-header";
 import 'react-toastify/dist/ReactToastify.css';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,8 +13,8 @@ import { useRouter } from "next/router";
 import Button from '@material-ui/core/Button';
 import AssignmentTurnedInSharpIcon from '@material-ui/icons/AssignmentTurnedInSharp';
 import { signOut } from "next-auth/client";
-import { useSnackbar } from 'notistack';
-
+// import { useSnackbar } from 'notistack';
+import { useSnackBar } from "./hooks/custom-snackbar-context";
 const protectedRoute = ['task']
 const unProtectedRoute = ['signin', 'register']
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +33,9 @@ export default function Layout({ children }) {
   const [canGoBack, setGoBack] = useState("false")
   const router = useRouter();
   const [displayName, setDisplayName] = useState();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  // const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+const showSnackBar=useSnackBar();
+
   useEffect(() => {
     if (window.history.length > 1) {
       setGoBack("true")
@@ -59,6 +61,7 @@ export default function Layout({ children }) {
   })
   return (
     <React.Fragment>
+
       <CustomHeader goBack={canGoBack} />
       <div className={classes.root}>
         <AppBar position="static" className="custom-nav-bar">
@@ -98,7 +101,10 @@ export default function Layout({ children }) {
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
                     setDisplayName(null)
-                    enqueueSnackbar('登出');
+                    //enqueueSnackbar('登出');
+                    //setMessage('afsdfsdaf');
+                    showSnackBar.showSnackBar("OK",'info');
+
                   }}
                 >
                   <ExitToAppIcon />
@@ -122,18 +128,6 @@ export default function Layout({ children }) {
       <Container maxWidth="xl">
         {children}
       </Container>
-      {/* <Snackbar
-        open={open}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        autoHideDuration={2000}
-        action={
-          <Button color="inherit" size="small" onClick={handleClose}>
-            關閉
-          </Button>
-        }
-        onClose={handleClose}
-        message="登出"
-      /> */}
     </React.Fragment>
   );
 }
