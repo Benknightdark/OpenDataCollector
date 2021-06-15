@@ -1,4 +1,5 @@
 {
     "python.pythonPath": "C:\\Python39\\python.exe",
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "editor.fontFamily": "'Cascadia Mono PL', Consolas, 'Courier New', monospace"
 }
