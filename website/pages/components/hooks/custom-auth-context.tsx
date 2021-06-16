@@ -48,7 +48,7 @@ export const useCustomAuthContext = () => {
   const context = useContext(CustomAuthContext);
 
   if (!context) {
-    throw new Error("useSnackBar must be used within an useCustomAuthContext");
+    throw new Error("useCustomAuthContext must be used within an CustomAuthContext");
   }
 
   return context;
