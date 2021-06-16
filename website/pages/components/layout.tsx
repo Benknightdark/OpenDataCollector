@@ -13,9 +13,7 @@ import Button from "@material-ui/core/Button";
 import AssignmentTurnedInSharpIcon from "@material-ui/icons/AssignmentTurnedInSharp";
 import { signOut } from "next-auth/client";
 import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
-import { useCustomAuthContext } from "./hooks/custom-auth-context";
-const protectedRoute = ["task"];
-const unProtectedRoute = ["signin", "register"];
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -37,11 +35,11 @@ export default function Layout({ children }) {
     if (window.history.length > 1) {
       setGoBack("true");
     }
+
     (async () => {
       const req = await fetch("/api/personal");
       const res = await req.json();
       if (res?.message == null) {
-        // 有登入
         setDisplayName(res?.displayName);
       }
     })();
@@ -76,7 +74,7 @@ export default function Layout({ children }) {
               OpenDataCollector
             </Typography>
 
-            {displayName ? (
+            {displayName? (
               <div>
                 <IconButton
                   aria-label="排程"
@@ -97,8 +95,6 @@ export default function Layout({ children }) {
                   onClick={async () => {
                     const req = await signOut({ redirect: false });
                     setDisplayName(null);
-                    //enqueueSnackbar('登出');
-                    //setMessage('afsdfsdaf');
                     showSnackBar.showSnackBar("登出", "info");
                   }}
                 >

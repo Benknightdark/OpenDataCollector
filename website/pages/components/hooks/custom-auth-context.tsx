@@ -21,8 +21,9 @@ export default function CustomSnackBarProvider({ children }) {
       refreshInterval: 60000,
     }
   );
+
   if (!data) return <Spinner showLoading="true"></Spinner>;
-  if (data.message != null) {
+  if (data?.message != null) {
     if (protectedRouteCheck.length > 0) {
       window.location.replace("/auth/signin");
     }
@@ -31,6 +32,7 @@ export default function CustomSnackBarProvider({ children }) {
       router.back();
     }
   }
+
   return (
     data && (
       <CustomAuthContext.Provider value={{}}>
