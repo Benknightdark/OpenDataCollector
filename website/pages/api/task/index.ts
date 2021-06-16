@@ -6,9 +6,9 @@ import { getApiUrl } from "../../../helpers/common_helper";
 export default async (req, res) => {
     try {
         const session = await getSession({ req })
-        const reqData = await fetch(`${getApiUrl("task-service")}/api/schedule/${session.user.id}`, {
+        const reqData = await fetch(`${getApiUrl("task-service")}/api/schedule/${session.user['id']}`, {
             headers: new Headers({
-                'Authorization': 'Bearer ' + session.user.token,
+                'Authorization': 'Bearer ' + session.user['token'], 'content-type': 'application/json'
             }),
         })
         const resData = await reqData.json()

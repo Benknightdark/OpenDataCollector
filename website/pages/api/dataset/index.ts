@@ -5,7 +5,6 @@ import { getApiUrl } from "../../../helpers/common_helper"
 export default async (req, res) => {
   let url=''
   let pageUrl=''
-  console.log(req.query)
   if(req.query['pageUrl']!=='undefined'){
     pageUrl=`?q=${req.query['pageUrl']}?page=${req.query['page']}`
   }else{
@@ -16,7 +15,6 @@ export default async (req, res) => {
 
   }
   url=`${getApiUrl(req.query['serviceName'])}/api/dataset${pageUrl}`;
-  console.log(url)
   const reqData=await fetch(url)
   const resData=await reqData.json()
   res.status(200).json(resData['data'])

@@ -71,6 +71,9 @@
 <center><img src="./screenshot/6.png" />
 </center>
 
+# 待調整
+- [ ] PTHG API Detail API Bug Fix
+- [ ] 套用material-ui至Task相關頁面
 # 其他指令
 ```bash
 net stop winnat
@@ -86,7 +89,7 @@ dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
 http://localhost:3000
 ```
-```mermaid
-sequenceDiagram
-  A-->B: Works!
-```
+# Refrence
+- simple custom hook
+  - https://usehooks.com/
+

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import useSWR from "swr";
-import Layout from "../components/layout";
 import Spinner from "../components/spinner";
 import Modal from 'react-modal';
 import TaskForm from "../components/TaskForm";
 import { EventEmitter } from 'tsee';
+import { useCustomSnackBar } from '../components/hooks/custom-snackbar-context';
 const fetcher = url => fetch(url).then(r => r.json())
 
 const index = () => {
@@ -17,6 +16,7 @@ const index = () => {
         })
     const [detail, setDetail] = useState({});
     const [modalIsOpen, setIsOpen] = useState(false);
+    const {showSnackBar}=useCustomSnackBar()
     const events = new EventEmitter<{
         close: () => void,
     }>();
@@ -61,16 +61,7 @@ const index = () => {
                                                     onClick={async () => {
                                                         const req = await fetch(`/api/task/execute?id=${d['_id']['$oid']}`);
                                                         const res = await req.json();
-                                                        console.log(res)
-                                                        toast.success(`已執行【${d['name']}】排程`, {
-                                                            position: "top-right",
-                                                            autoClose: 5000,
-                                                            hideProgressBar: false,
-                                                            closeOnClick: true,
-                                                            pauseOnHover: true,
-                                                            draggable: true,
-                                                            progress: undefined,
-                                                        })
+                                                        showSnackBar(`已執行【${d['name']}】排程`,'success'); 
                                                     }}
                                                 >執行</button>
                                                 <button className='btn btn-warning' style={{ "marginRight": "5px" }}
@@ -83,6 +74,7 @@ const index = () => {
                                                         // reset(detailData)
                                                         setIsOpen(true);
 
+
                                                     }}
                                                 >編輯</button>
                                                 <button className='btn btn-success' style={{ "marginRight": "5px" }}
@@ -93,23 +85,13 @@ const index = () => {
                                                         setDetail(detailData);
                                                         //  reset(detailData)
                                                         setIsOpen(true);
-
                                                     }}
                                                 >明細</button>
                                                 <button className='btn btn-danger' style={{ "marginRight": "5px" }}
                                                     onClick={async () => {
                                                         const req = await fetch(`/api/task/delete?id=${d['_id']['$oid']}`)
                                                         const res = await req.json();
-                                                        console.log(res);
-                                                        toast.warning(`已刪除【${d['name']}】排程`, {
-                                                            position: "top-right",
-                                                            autoClose: 5000,
-                                                            hideProgressBar: false,
-                                                            closeOnClick: true,
-                                                            pauseOnHover: true,
-                                                            draggable: true,
-                                                            progress: undefined,
-                                                        })
+                                                        showSnackBar(`已刪除【${d['name']}】排程`,'warning');                                                 
                                                         await mutate();
                                                     }}
                                                 >刪除</button>

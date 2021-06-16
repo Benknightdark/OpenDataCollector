@@ -2,7 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { toast } from "react-toastify";
+import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
 
 const TaskForm = ({ detail, events }) => {
 
@@ -15,7 +15,7 @@ const TaskForm = ({ detail, events }) => {
     const { register, handleSubmit, reset, formState: { errors }, getValues } = useForm({
         resolver: yupResolver(schema),
     });
-
+const {showSnackBar}=useCustomSnackBar();
     return (
         <div>
             <div>
@@ -25,12 +25,8 @@ const TaskForm = ({ detail, events }) => {
                     let infoText: string = '';
                     if (detail?.modalTitle == '編輯') {
                         let bodyData=getValues();
-                        console.log(detail)
-                        console.log(detail['_id']['$oid'])
                         bodyData['_id']={}
                         bodyData['_id']['$oid']=detail['_id']['$oid']
-                        console.log(bodyData)
-
                         const req = await fetch(`/api/task/edit`, { method: 'PUT', body: JSON.stringify(bodyData) });
                         res = await req.json();
                         infoText = `已更新【${getValues()['name']}】排程`;
@@ -43,15 +39,7 @@ const TaskForm = ({ detail, events }) => {
                     }
                     if (res['status']) {
 
-                        toast.info(infoText, {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        })
+                        showSnackBar(infoText,"info");
                         events.emit('close');
                         reset();
 

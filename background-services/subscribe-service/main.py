@@ -1,8 +1,8 @@
 from fastapi import FastAPI, Request
 import os
-import os
 import logging
 import data_process
+import httpx
 logging.basicConfig(level="INFO")
 
 if os.getenv("ENVIRONMENT") == 'production':
@@ -24,7 +24,7 @@ def subscribe():
 @app.post('/addFile')
 async def add_file_subscriber(request: Request):
     data = await request.json()
-    data_process.add_file(data['data'])
+    await data_process.add_file(data['data'])
     print(data)
     return data
 
@@ -32,10 +32,11 @@ async def add_file_subscriber(request: Request):
 @app.post('/updateFile')
 async def add_file_subscriber(request: Request):
     data = await request.json()
-    data_process.update_file(data['data'])
+    await data_process.update_file(data['data'])
     return data
 
-@app.post('/cron')
-async def add_file_subscriber(request: Request):
-    print("OKOKOK")
-    return {"status":"OK"}
+# @app.post('/cron')
+# async def add_file_subscriber(request: Request):
+#     print("OKOKOK")
+#     print(httpx.get('http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets').json())
+#     return {"status":"OK"}

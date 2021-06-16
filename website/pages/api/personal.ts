@@ -11,11 +11,18 @@ export default async (req, res) => {
     } else {
         const reqData = await fetch(url, {
             headers: new Headers({
-                'Authorization': 'Bearer ' + session.user.token,
+                'Authorization': 'Bearer ' + session.user['token'],
             }),
         })
+        const statusCode = reqData.status;
+        if (statusCode == 401) {
+            res.status(401).json({ "message": "Session過時" })
+        } else if (statusCode == 500) {
+            const error = await reqData.text()
+            res.status(500).json({ "message": error })
+        }
         const resData = await reqData.json()
-        res.status(200).json({displayName:resData['displayName']})
+        res.status(200).json({ displayName: resData['displayName'] })
     }
 
 }

@@ -22,27 +22,7 @@ spec:
       containers:
       - name: task-service
         image: localhost:5000/task-service:latest
-        env:
-          - name: CLIENT
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: client
-          - name: SCOPE
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: scope
-          - name: SECRET
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: secret
-          - name: MONGODB
-            valueFrom:
-              secretKeyRef:
-                name: opendatasecrets
-                key: mongodb                
+        env:               
           - name: ENVIRONMENT
             value: production                              
         ports:
