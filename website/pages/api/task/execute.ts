@@ -10,7 +10,7 @@ export default async (req, res) => {
         const reqData = await fetch(url, {
             method: 'POST',
             headers: new Headers({
-                'Authorization': 'Bearer ' + session.user.token,            'content-type': 'application/json'
+                'Authorization': 'Bearer ' + session.user['token'],            'content-type': 'application/json'
 
             }),
         })

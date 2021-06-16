@@ -6,13 +6,12 @@ import { getApiUrl } from "../../helpers/common_helper"
 export default async (req, res) => {
     const url = `${getApiUrl("personal-service")}/api/user-info`;
     const session = await getSession({ req })
-    console.log(session.expires)
     if (session == null) {
         res.status(401).json({ "message": "Session過時" })
     } else {
         const reqData = await fetch(url, {
             headers: new Headers({
-                'Authorization': 'Bearer ' + session.user.token,
+                'Authorization': 'Bearer ' + session.user['token'],
             }),
         })
         const statusCode = reqData.status;

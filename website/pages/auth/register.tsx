@@ -2,7 +2,7 @@ import {  getCsrfToken, signIn } from "next-auth/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRouter } from "next/router";
+import  {useRouter}  from "next/router";
 import React from "react";
 export default function Register({ csrfToken }) {
 

@@ -27,8 +27,8 @@ const deleteTask = async (id, token) => {
 export default async (req, res) => {
     try {
         const session = await getSession({ req })
-        const deleteTaskRes = await deleteTask(req.query['id'], session.user.token);
-        const deleteRes = await deleteFileDownload(req.query['id'], session.user.token);
+        const deleteTaskRes = await deleteTask(req.query['id'], session.user['token']);
+        const deleteRes = await deleteFileDownload(req.query['id'], session.user['token']);
         res.status(200).json({ status: true })
     } catch (error) {
         console.error(error)

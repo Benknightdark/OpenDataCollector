@@ -2,10 +2,10 @@ import { getCsrfToken, signIn } from "next-auth/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useRouter } from "next/router";
-import React, { useState } from "react";
+import  {useRouter}  from "next/router";
 import Spinner from "../components/spinner";
 import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
+import { useState } from "react"
 
 export default function SignIn({ csrfToken }) {
   const router = useRouter();

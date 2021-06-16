@@ -17,15 +17,15 @@ export default NextAuth({
       async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
         const url = `${getApiUrl('account-service')}/api/login`;
-
+        console.log(credentials)
         const req = await fetch(url, {
           method: "POST",
           headers: {
             'content-type': 'application/json'
           },
           body: JSON.stringify({
-            userName: credentials.username,
-            password: credentials.password,
+            userName: credentials['username'],
+            password: credentials['password'],
           })
         })
         if (req.status === 200) {
@@ -55,8 +55,8 @@ export default NextAuth({
       const token = JSON.parse(session.user.name).token;
       const userId = JSON.parse(session.user.name).userId;
       session.user.name = displayName;
-      session.user.token = token;
-      session.user.id = userId;
+      session.user['token'] = token;
+      session.user['id'] = userId;
 
       return (session)
     },
