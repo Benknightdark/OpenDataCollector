@@ -31,10 +31,6 @@ export default function CustomSnackBarProvider({ children }) {
       router.back();
     }
   }
-//   const [displayName,setDisplayName]=useState('')
-//   useEffect(()=>{
-//     setDisplayName(JSON.stringify(data))
-//   })
   return (
     data && (
       <CustomAuthContext.Provider value={{}}>
