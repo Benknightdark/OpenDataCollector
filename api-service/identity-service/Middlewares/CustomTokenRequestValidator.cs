@@ -9,8 +9,8 @@ namespace identity_service.Middlewares
         public Task ValidateAsync(CustomTokenRequestValidationContext context)
         {
             context.Result.ValidatedRequest.Client.AlwaysSendClientClaims = true;
-            var reqParamsDict = context.Result.ValidatedRequest.Raw["user_id"].ToString();
-            context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id", reqParamsDict));
+            var ReqParamsDict = context.Result.ValidatedRequest.Raw["user_id"].ToString();
+            context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id", ReqParamsDict));
             return Task.CompletedTask;
         }
 
