@@ -20,7 +20,7 @@ export default function CustomAuthProvider({ children }) {
     `/api/personal`,
     fetcher,
     {
-      refreshInterval: 10000,
+      refreshInterval: 3000,
     }
   );
 useEffect(()=>{
@@ -29,7 +29,6 @@ useEffect(()=>{
   }
 })
   if (!data) return <Spinner showLoading="true"></Spinner>;
-  console.log(data)
   if (data?.message != null) {
     if (protectedRouteCheck.length > 0) {
       window.location.replace("/auth/signin");

@@ -9,6 +9,8 @@ import json
 import datetime
 import logging
 import secret_service
+import calendar;
+import time;
 logging.basicConfig(level="INFO")
 
 
@@ -44,7 +46,8 @@ async def add_history(user_id, schedule_id, origin_data):
         "data": [
             {
                 "createdTime": datetime.datetime.now(),
-                "record": origin_data
+                "record": origin_data,
+                "id":str(calendar.timegm(time.gmtime()))
             }
         ]
     })
@@ -59,7 +62,8 @@ async def update_history(user_id, schedule_id, origin_data):
         '$push': {
             'data': {
                 "createdTime": datetime.datetime.now(),
-                "record": origin_data
+                "record": origin_data,
+                "id":str(calendar.timegm(time.gmtime()))
             }
         }
     },

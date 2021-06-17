@@ -1,9 +1,13 @@
+import logging
 from pymongo import MongoClient
 import os
 from bson import json_util
 import json
 from bson.objectid import ObjectId
 from . import secret_service
+import datetime
+
+logging.basicConfig(level=logging.INFO)
 
 
 def convert_collection(data):
@@ -92,4 +96,32 @@ async def history_query(user_id, schedule_id):
     collection = await db('task')
     history_data = collection['history'].find_one(
         {"userId": user_id, "scheduleId": schedule_id}, {"userId": 1})
+    return convert_collection(history_data)
+
+
+async def history_summary_query(user_id):
+    collection = await db('task')
+    history_data = collection['history'].find(
+        {"userId": user_id}, {"userId": 1,
+                              'scheduleId': 2,
+                              'dataCount': {'$size': "$data"}})
+    return convert_collection(history_data)
+
+
+async def history_download_query(scheduleId):
+    collection = await db('task')
+    history_data = collection['history'].find(
+        {"scheduleId": scheduleId}, {
+            "data.createdTime": 1
+        })
+    return convert_collection(history_data)
+
+
+async def history_download_detail(scheduleId, record_id):
+    collection = await db('task')
+    history_data = collection['history'].find_one(
+        {"scheduleId": scheduleId, "data.id": record_id}, {
+            "data": "$data.record",
+            "_id": 0
+        })
     return convert_collection(history_data)

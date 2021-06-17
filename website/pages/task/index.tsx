@@ -51,6 +51,7 @@ const index = () => {
               <th scope="col">排程名稱</th>
               <th scope="col">檔案類型</th>
               <th scope="col">執行時間</th>
+              <th scope="col">排程執行次數</th>
             </tr>
           </thead>
           <tbody>
@@ -126,6 +127,7 @@ const index = () => {
                     <th>{d["name"]}</th>
                     <th>{d["type"]}</th>
                     <th>{d["executeTime"]}</th>
+                    <th>{d["count"]}</th>
                   </tr>
                 );
               })}
