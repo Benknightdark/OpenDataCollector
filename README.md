@@ -1,6 +1,4 @@
 
-# OpenDataCollector
-
 # 系統啟動方式
 1. docker-compose
    - 在終端機界面執行以下指令
