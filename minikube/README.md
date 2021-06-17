@@ -1,4 +1,4 @@
-# 起動minikube的Scripts
+# 啟用minikube的Scripts
 ``` Bash
 # 啟動minikube 16384  4096
 minikube start --cpus=4 --memory=9961  
