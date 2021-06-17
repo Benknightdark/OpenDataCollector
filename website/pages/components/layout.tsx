@@ -93,7 +93,7 @@ export default function Layout({ children }) {
                   aria-haspopup="true"
                   color="inherit"
                   onClick={async () => {
-                    const req = await signOut({ redirect: false });
+                    const req = await signOut({ redirect: true });
                     setDisplayName(null);
                     showSnackBar.showSnackBar("登出", "info");
                   }}

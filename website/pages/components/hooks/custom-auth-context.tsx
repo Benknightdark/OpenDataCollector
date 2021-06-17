@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import Spinner from "../spinner";
 const CustomAuthContext = createContext({});
-export default function CustomSnackBarProvider({ children }) {
+export default function CustomAuthProvider({ children }) {
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const protectedRoute = ["task"];
   const unProtectedRoute = ["signin", "register"];
@@ -18,11 +18,12 @@ export default function CustomSnackBarProvider({ children }) {
     `/api/personal`,
     fetcher,
     {
-      refreshInterval: 60000,
+      refreshInterval: 10000,
     }
   );
 
   if (!data) return <Spinner showLoading="true"></Spinner>;
+  console.log(data)
   if (data?.message != null) {
     if (protectedRouteCheck.length > 0) {
       window.location.replace("/auth/signin");

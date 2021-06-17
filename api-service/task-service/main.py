@@ -71,7 +71,7 @@ async def put_schedule(data_id, data: ScheduleModel):
     return res
 
 
-@app.get("/api/history/{user_id}/{schedule_id}",)
+@app.get("/api/history/{user_id}/{schedule_id}",summary="取得使用者的排程執行歷史資料")
 async def get_schedule(user_id, schedule_id):
     data = await db_service.history_query(user_id, schedule_id)
     return data
