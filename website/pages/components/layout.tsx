@@ -86,8 +86,9 @@ export default function Layout({ children }) {
                   aria-haspopup="true"
                   color="inherit"
                   onClick={async () => {
-                    await signOut({ redirect: true });
+                    await signOut({ redirect: false });
                     showSnackBar.showSnackBar("登出", "info");
+                    location.reload()
                   }}
                 >
                   <ExitToAppIcon />
