@@ -112,7 +112,8 @@ async def history_download_query(scheduleId):
     collection = await db('task')
     history_data = collection['history'].find(
         {"scheduleId": scheduleId}, {
-            "data.createdTime": 1
+            "data.createdTime": 2,
+            "data.id": 1
         })
     return convert_collection(history_data)
 

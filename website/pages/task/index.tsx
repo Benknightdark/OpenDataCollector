@@ -5,8 +5,12 @@ import Modal from "react-modal";
 import TaskForm from "../components/TaskForm";
 import { EventEmitter } from "tsee";
 import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
-const fetcher = (url) => fetch(url).then((r) => r.json());
+import Assignment from "@material-ui/icons/Assignment";
+import Fab from "@material-ui/core/Fab";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import Dialog from "@material-ui/core/Dialog";
 
+const fetcher = (url) => fetch(url).then((r) => r.json());
 const index = () => {
   const { data, error, isValidating, mutate } = useSWR(`/api/task`, fetcher, {
     refreshInterval: 60000,
@@ -14,6 +18,8 @@ const index = () => {
   const [detail, setDetail] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const { showSnackBar } = useCustomSnackBar();
+  const [openDetail, setOpenDetail] = React.useState(false);
+
   const events = new EventEmitter<{
     close: () => void;
   }>();
@@ -21,6 +27,14 @@ const index = () => {
     await mutate();
     setIsOpen(false);
   });
+
+  const handleOpen = () => {
+    setOpenDetail(true);
+  };
+
+  const handleClose = () => {
+    setOpenDetail(false);
+  };
   if (!data) return <Spinner showLoading="true"></Spinner>;
 
   return (
@@ -127,12 +141,30 @@ const index = () => {
                     <th>{d["name"]}</th>
                     <th>{d["type"]}</th>
                     <th>{d["executeTime"]}</th>
-                    <th>{d["count"]}</th>
+                    <th>
+                      {d["count"] && (
+                        <Fab color="primary" onClick={handleOpen}>
+                          <Assignment />
+                          {d["count"]}次
+                        </Fab>
+                      )}
+                    </th>
                   </tr>
                 );
               })}
           </tbody>
         </table>
+        {
+          <Dialog
+            onClose={handleClose}
+            aria-labelledby="simple-dialog-title"
+            open={openDetail}
+          >
+            <DialogTitle id="simple-dialog-title">
+              Set backup account
+            </DialogTitle>
+          </Dialog>
+        }
         {
           <Modal
             isOpen={modalIsOpen}
