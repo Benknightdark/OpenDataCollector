@@ -8,6 +8,8 @@ export default function CustomAuthProvider({ children }) {
   const protectedRoute = ["task"];
   const unProtectedRoute = ["signin", "register"];
   const router = useRouter();
+  const [displayName, setDisplayName] = useState();
+
   const protectedRouteCheck = protectedRoute.filter((p) =>
     router.pathname.toUpperCase().includes(p.toUpperCase())
   );
@@ -21,7 +23,11 @@ export default function CustomAuthProvider({ children }) {
       refreshInterval: 10000,
     }
   );
-
+useEffect(()=>{
+  if (data?.message == null) {
+    setDisplayName(data?.displayName);
+  }
+})
   if (!data) return <Spinner showLoading="true"></Spinner>;
   console.log(data)
   if (data?.message != null) {
@@ -36,7 +42,7 @@ export default function CustomAuthProvider({ children }) {
 
   return (
     data && (
-      <CustomAuthContext.Provider value={{}}>
+      <CustomAuthContext.Provider value={{displayName:displayName}}>
         {children}
       </CustomAuthContext.Provider>
     )
