@@ -18,7 +18,7 @@ const index = () => {
   const [detail, setDetail] = useState({});
   const [modalIsOpen, setIsOpen] = useState(false);
   const { showSnackBar } = useCustomSnackBar();
-  const [openDetail, setOpenDetail] = React.useState(false);
+  const [openDetail, setOpenDetail] = useState(false);
 
   const events = new EventEmitter<{
     close: () => void;
@@ -51,7 +51,6 @@ const index = () => {
           detailData["modalTitle"] = "新增";
           detailData["disable"] = false;
           setDetail(detailData);
-          // reset(detailData)
           setIsOpen(true);
         }}
       >
@@ -143,7 +142,15 @@ const index = () => {
                     <th>{d["executeTime"]}</th>
                     <th>
                       {d["count"] && (
-                        <Fab color="primary" onClick={handleOpen}>
+                        <Fab
+                          color="primary"
+                          onClick={async () => {
+                            const detailData = d;
+                            setDetail(detailData);
+                            handleOpen();
+                            console.log(detail)
+                          }}
+                        >
                           <Assignment />
                           {d["count"]}次
                         </Fab>
@@ -161,7 +168,7 @@ const index = () => {
             open={openDetail}
           >
             <DialogTitle id="simple-dialog-title">
-              Set backup account
+             {detail['name']}
             </DialogTitle>
           </Dialog>
         }
