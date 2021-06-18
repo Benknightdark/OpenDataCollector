@@ -133,7 +133,6 @@ const index = () => {
                               </Button>{" "}
                             </Grid>
                             <Grid item>
-                              {" "}
                               <Button
                                 variant="contained"
                                 onClick={() => {
@@ -187,11 +186,9 @@ const index = () => {
                                 `/api/task/history/list?id=${d["_id"]["$oid"]}`
                               );
                               const listData = await getDetailList.json();
-                              console.log(listData[0]["data"]);
                               detailData["list"] = listData[0]["data"];
                               setDetail(detailData);
                               handleOpen();
-                              console.log(detail);
                             } catch (error) {
                               console.log(error);
                             }
