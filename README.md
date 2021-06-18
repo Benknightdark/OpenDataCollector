@@ -8,7 +8,6 @@
    - 開啟 http://localhost:3333
 2. kubernetes
    - [參考此文件](./minikube#readme)
-
 # 系統說明
 | 服務名稱                   | 類型              | 用途                                                              |
 | -------------------------- | :---------------- | :---------------------------------------------------------------- |
@@ -69,9 +68,6 @@
 <center><img src="./screenshot/6.png" />
 </center>
 
-# 待調整
-- [ ] PTHG API Detail API Bug Fix
-- [ ] 套用material-ui至Task相關頁面
 # 其他指令
 ```bash
 net stop winnat
@@ -86,6 +82,12 @@ cd api-service/identity-service
 dotnet ef database update --context PersistedGrantDbContext
 dotnet ef database update --context ConfigurationDbContext
 http://localhost:3000
+
+{
+   userId:1,
+scheduleId:2,
+dataCount: {$size: "$data"}
+}
 ```
 # Refrence
 - simple custom hook

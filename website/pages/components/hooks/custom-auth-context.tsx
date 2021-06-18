@@ -3,11 +3,13 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import Spinner from "../spinner";
 const CustomAuthContext = createContext({});
-export default function CustomSnackBarProvider({ children }) {
+export default function CustomAuthProvider({ children }) {
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const protectedRoute = ["task"];
   const unProtectedRoute = ["signin", "register"];
   const router = useRouter();
+  const [displayName, setDisplayName] = useState();
+
   const protectedRouteCheck = protectedRoute.filter((p) =>
     router.pathname.toUpperCase().includes(p.toUpperCase())
   );
@@ -18,10 +20,14 @@ export default function CustomSnackBarProvider({ children }) {
     `/api/personal`,
     fetcher,
     {
-      refreshInterval: 60000,
+      refreshInterval: 3000,
     }
   );
-
+useEffect(()=>{
+  if (data?.message == null) {
+    setDisplayName(data?.displayName);
+  }
+})
   if (!data) return <Spinner showLoading="true"></Spinner>;
   if (data?.message != null) {
     if (protectedRouteCheck.length > 0) {
@@ -35,7 +41,7 @@ export default function CustomSnackBarProvider({ children }) {
 
   return (
     data && (
-      <CustomAuthContext.Provider value={{}}>
+      <CustomAuthContext.Provider value={{displayName:displayName}}>
         {children}
       </CustomAuthContext.Provider>
     )

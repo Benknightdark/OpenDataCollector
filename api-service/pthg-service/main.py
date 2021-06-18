@@ -1,12 +1,11 @@
 from typing import List, Optional
 from fastapi import FastAPI, Depends
-# import requests
 from bs4 import BeautifulSoup
 import re
 from pydantic import BaseModel
 import os
 from internal.data_service import get_pthg_data
-
+import httpx
 # Function to validate URL
 # using regular expression
 
@@ -126,7 +125,6 @@ def data_set(data: str = Depends(get_pthg_data)):
     page_count_select = root.find(
         'select', id='ContentPlaceHolder1_ddlPager').find_all('option')
     max_page = page_count_select[len(page_count_select)-1]['value']
-    print(max_page)
     if int(data['page'])>int(max_page):
         return res_data
 
@@ -145,7 +143,7 @@ def data_set(data: str = Depends(get_pthg_data)):
 @app.get("/api/dataset/detail", summary="資料集明細")
 def data_set_detail(q: str):
     res_data = {}
-    r = requests.get(q)
+    r = httpx.get(q)
     soup = BeautifulSoup(r.text, 'html.parser')
     root = soup.find('div',attrs={'class':'page_directory'})
     res_data['title'] = root.div.text

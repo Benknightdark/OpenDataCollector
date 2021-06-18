@@ -13,6 +13,7 @@ import Button from "@material-ui/core/Button";
 import AssignmentTurnedInSharpIcon from "@material-ui/icons/AssignmentTurnedInSharp";
 import { signOut } from "next-auth/client";
 import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
+import { useCustomAuthContext } from "./hooks/custom-auth-context";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,20 +30,12 @@ export default function Layout({ children }) {
   const classes = useStyles();
   const [canGoBack, setGoBack] = useState("false");
   const router = useRouter();
-  const [displayName, setDisplayName] = useState();
   const showSnackBar = useCustomSnackBar();
+  const showDisplaName = useCustomAuthContext();
   useEffect(() => {
     if (window.history.length > 1) {
       setGoBack("true");
     }
-
-    (async () => {
-      const req = await fetch("/api/personal");
-      const res = await req.json();
-      if (res?.message == null) {
-        setDisplayName(res?.displayName);
-      }
-    })();
   });
   return (
     <React.Fragment>
@@ -73,8 +66,8 @@ export default function Layout({ children }) {
             >
               OpenDataCollector
             </Typography>
-
-            {displayName? (
+            {/* displayName */}
+            {showDisplaName["displayName"] ? (
               <div>
                 <IconButton
                   aria-label="排程"
@@ -93,9 +86,9 @@ export default function Layout({ children }) {
                   aria-haspopup="true"
                   color="inherit"
                   onClick={async () => {
-                    const req = await signOut({ redirect: false });
-                    setDisplayName(null);
+                    await signOut({ redirect: false });
                     showSnackBar.showSnackBar("登出", "info");
+                    location.reload()
                   }}
                 >
                   <ExitToAppIcon />
