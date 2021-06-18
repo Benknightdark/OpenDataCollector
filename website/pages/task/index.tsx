@@ -6,9 +6,17 @@ import TaskForm from "../components/TaskForm";
 import { EventEmitter } from "tsee";
 import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
 import Assignment from "@material-ui/icons/Assignment";
+import CloudDownload from "@material-ui/icons/CloudDownload";
+
+
 import Fab from "@material-ui/core/Fab";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Avatar from "@material-ui/core/Avatar";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 const index = () => {
@@ -145,10 +153,21 @@ const index = () => {
                         <Fab
                           color="primary"
                           onClick={async () => {
-                            const detailData = d;
-                            setDetail(detailData);
-                            handleOpen();
-                            console.log(detail)
+                            try {
+                              const detailData = d;
+                              console.log(d['_id']['$oid'])
+                              const getDetailList=await fetch(`/api/task/history/list?id=${d['_id']['$oid']}`)
+                              const listData=await getDetailList.json();
+                              console.log(listData[0]['data'])
+                              detailData['list']=listData[0]['data']
+                              setDetail(detailData);
+                              handleOpen();
+                              console.log(detail)
+                            } catch (error) {
+                              console.log(error)
+                            }
+
+
                           }}
                         >
                           <Assignment />
@@ -170,6 +189,18 @@ const index = () => {
             <DialogTitle id="simple-dialog-title">
              {detail['name']}
             </DialogTitle>
+            <List>
+        {detail['list']&&detail['list'].map((l) => (
+          <ListItem button  key={l.id}>
+            <ListItemAvatar>
+              <Avatar >
+                <CloudDownload />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={new Date(l['createdTime']['$date']).toISOString().replace('T',' ').split('.')[0]} />
+          </ListItem>
+        ))}
+      </List>
           </Dialog>
         }
         {

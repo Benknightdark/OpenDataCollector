@@ -1,5 +1,5 @@
 import logging
-from pymongo import MongoClient
+from pymongo import ASCENDING, DESCENDING, MongoClient
 import os
 from bson import json_util
 import json
@@ -113,7 +113,7 @@ async def history_download_query(scheduleId):
     history_data = collection['history'].find(
         {"scheduleId": scheduleId}, {
             "data.createdTime": 2,
-            "data.id": 1
+            "data.id": 1     
         })
     return convert_collection(history_data)
 
