@@ -70,7 +70,7 @@
 </center>
 
 # 待調整
-- [ ] PTHG API Detail API Bug Fix
+- [x] PTHG API Detail API Bug Fix
 - [ ] 套用material-ui至Task相關頁面
 # 其他指令
 ```bash
