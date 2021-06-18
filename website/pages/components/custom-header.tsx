@@ -6,10 +6,6 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 export default function CustomHeader(props) {
   return (
     <div>
-      <div className="ocean">
-        <div className="wave"></div>
-        <div className="wave"></div>
-      </div>
       <Head>
         <title>OpenData Collector</title>
         <link rel="icon" href="/favicon.ico" />

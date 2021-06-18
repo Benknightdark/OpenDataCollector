@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useCustomSnackBar } from "./hooks/custom-snackbar-context";
 import Input from "@material-ui/core/Input";
 import Button from "@material-ui/core/Button";
+import InputLabel from "@material-ui/core/InputLabel";
 
 const TaskForm = ({ detail, events }) => {
   const schema = yup.object().shape({
@@ -60,10 +61,8 @@ const TaskForm = ({ detail, events }) => {
             }
           })}
         >
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              排程名稱
-            </label>
+          <div>
+            <InputLabel>排程名稱</InputLabel>
             <Input
               fullWidth={true}
               type="text"
@@ -78,13 +77,12 @@ const TaskForm = ({ detail, events }) => {
             <p>{errors.name?.message}</p>
           </div>
           <div className="mb-3">
-            <label htmlFor="type" className="form-label">
+            <InputLabel>
               檔案類型
-            </label>
+            </InputLabel>
             <Input
               fullWidth={true}
               autoFocus={true}
-
               type="text"
               className="form-control"
               id="type"
@@ -96,13 +94,12 @@ const TaskForm = ({ detail, events }) => {
             <p>{errors.type?.message}</p>
           </div>
           <div className="mb-3">
-            <label htmlFor="executeTime" className="form-label">
+            <InputLabel>
               執行時間
-            </label>
+            </InputLabel>
             <Input
               fullWidth={true}
               autoFocus={true}
-       
               inputProps={{
                 step: 300, // 5 min
               }}
@@ -117,9 +114,9 @@ const TaskForm = ({ detail, events }) => {
             <p>{errors.executeTime?.message}</p>
           </div>
           <div className="mb-3">
-            <label htmlFor="url" className="form-label">
+            <InputLabel>
               下載網址
-            </label>
+            </InputLabel>
             <Input
               fullWidth={true}
               autoFocus={true}

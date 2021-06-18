@@ -125,7 +125,6 @@ def data_set(data: str = Depends(get_pthg_data)):
     page_count_select = root.find(
         'select', id='ContentPlaceHolder1_ddlPager').find_all('option')
     max_page = page_count_select[len(page_count_select)-1]['value']
-    print(max_page)
     if int(data['page'])>int(max_page):
         return res_data
 

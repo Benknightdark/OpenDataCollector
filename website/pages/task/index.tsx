@@ -76,7 +76,7 @@ const index = () => {
   if (!data) return <Spinner showLoading="true"></Spinner>;
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root} style={{zIndex:1000000}}>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>
