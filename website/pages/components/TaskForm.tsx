@@ -102,8 +102,11 @@ const TaskForm = ({ detail, events }) => {
             <Input
               fullWidth={true}
               autoFocus={true}
-
-              type="text"
+       
+              inputProps={{
+                step: 300, // 5 min
+              }}
+              type="time"
               className="form-control"
               id="executeTime"
               name="executeTime"
