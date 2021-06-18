@@ -113,7 +113,7 @@ async def history_download_query(scheduleId):
     history_data = collection['history'].find(
         {"scheduleId": scheduleId}, {
             "data.createdTime": 2,
-            "data.id": 1     
+            "data.id": 1
         })
     return convert_collection(history_data)
 
@@ -122,7 +122,8 @@ async def history_download_detail(scheduleId, record_id):
     collection = await db('task')
     history_data = collection['history'].find_one(
         {"scheduleId": scheduleId, "data.id": record_id}, {
-            "data": "$data.record",
+            "data": {'$elemMatch': {'id': record_id}},
             "_id": 0
         })
-    return convert_collection(history_data)
+    # gg = list(filter(lambda x: x['id'] == record_id, history_data['data']))
+    return convert_collection(history_data['data'][0]['record'])

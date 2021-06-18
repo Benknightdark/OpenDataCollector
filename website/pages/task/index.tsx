@@ -8,7 +8,6 @@ import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
 import Assignment from "@material-ui/icons/Assignment";
 import CloudDownload from "@material-ui/icons/CloudDownload";
 
-
 import Fab from "@material-ui/core/Fab";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Dialog from "@material-ui/core/Dialog";
@@ -155,19 +154,19 @@ const index = () => {
                           onClick={async () => {
                             try {
                               const detailData = d;
-                              console.log(d['_id']['$oid'])
-                              const getDetailList=await fetch(`/api/task/history/list?id=${d['_id']['$oid']}`)
-                              const listData=await getDetailList.json();
-                              console.log(listData[0]['data'])
-                              detailData['list']=listData[0]['data']
+                              console.log(d["_id"]["$oid"]);
+                              const getDetailList = await fetch(
+                                `/api/task/history/list?id=${d["_id"]["$oid"]}`
+                              );
+                              const listData = await getDetailList.json();
+                              console.log(listData[0]["data"]);
+                              detailData["list"] = listData[0]["data"];
                               setDetail(detailData);
                               handleOpen();
-                              console.log(detail)
+                              console.log(detail);
                             } catch (error) {
-                              console.log(error)
+                              console.log(error);
                             }
-
-
                           }}
                         >
                           <Assignment />
@@ -186,21 +185,36 @@ const index = () => {
             aria-labelledby="simple-dialog-title"
             open={openDetail}
           >
-            <DialogTitle id="simple-dialog-title">
-             {detail['name']}
-            </DialogTitle>
+            <DialogTitle id="simple-dialog-title">{detail["name"]}</DialogTitle>
             <List>
-        {detail['list']&&detail['list'].map((l) => (
-          <ListItem button  key={l.id}>
-            <ListItemAvatar>
-              <Avatar >
-                <CloudDownload />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={new Date(l['createdTime']['$date']).toISOString().replace('T',' ').split('.')[0]} />
-          </ListItem>
-        ))}
-      </List>
+              {detail["list"] &&
+                detail["list"].map((l) => (
+                  <ListItem button key={l.id} onClick={async ()=>{
+                    const link = document.createElement("a");
+                    link.download = `${l.id}`;
+                    link.target = "_blank";
+                    link.href = `/api/task/history/detail?schedule_id=${detail['_id']['$oid']}&record_id=${l.id}`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+
+                  }}>
+                    <ListItemAvatar>
+                      <Avatar>
+                        <CloudDownload />
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        new Date(l["createdTime"]["$date"])
+                          .toISOString()
+                          .replace("T", " ")
+                          .split(".")[0]
+                      }
+                    />
+                  </ListItem>
+                ))}
+            </List>
           </Dialog>
         }
         {
