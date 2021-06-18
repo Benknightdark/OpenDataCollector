@@ -63,7 +63,7 @@ const index = () => {
 
   events.on("close", async () => {
     await mutate();
-    setIsOpen(false);
+    setOpenForm(false);
   });
 
   const handleOpen = () => {
