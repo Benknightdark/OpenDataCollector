@@ -16,6 +16,9 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 const index = () => {
@@ -26,6 +29,7 @@ const index = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const { showSnackBar } = useCustomSnackBar();
   const [openDetail, setOpenDetail] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
 
   const events = new EventEmitter<{
     close: () => void;
@@ -106,7 +110,7 @@ const index = () => {
                             detailData["disable"] = false;
                             setDetail(detailData);
                             // reset(detailData)
-                            setIsOpen(true);
+                            setOpenForm(true);
                           }}
                         >
                           編輯
@@ -119,8 +123,7 @@ const index = () => {
                             detailData["modalTitle"] = "明細";
                             detailData["disable"] = true;
                             setDetail(detailData);
-                            //  reset(detailData)
-                            setIsOpen(true);
+                            setOpenForm(true);
                           }}
                         >
                           明細
@@ -189,16 +192,19 @@ const index = () => {
             <List>
               {detail["list"] &&
                 detail["list"].map((l) => (
-                  <ListItem button key={l.id} onClick={async ()=>{
-                    const link = document.createElement("a");
-                    link.download = `${l.id}`;
-                    link.target = "_blank";
-                    link.href = `/api/task/history/detail?schedule_id=${detail['_id']['$oid']}&record_id=${l.id}`;
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-
-                  }}>
+                  <ListItem
+                    button
+                    key={l.id}
+                    onClick={async () => {
+                      const link = document.createElement("a");
+                      link.download = `${l.id}`;
+                      link.target = "_blank";
+                      link.href = `/api/task/history/detail?schedule_id=${detail["_id"]["$oid"]}&record_id=${l.id}`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                  >
                     <ListItemAvatar>
                       <Avatar>
                         <CloudDownload />
@@ -218,26 +224,24 @@ const index = () => {
           </Dialog>
         }
         {
-          <Modal
-            isOpen={modalIsOpen}
-            appElement={document.querySelector("#root")}
+          <Dialog
+            onClose={() => {
+              setOpenForm(false);
+            }}
+            open={openForm}
           >
-            <div className="d-flex justify-content-end">
-              <button
-                type="button"
-                className="btn"
-                onClick={() => {
-                  setIsOpen(false);
-                }}
-                aria-label="Close"
-              >
-                <span aria-hidden="true" style={{ fontSize: "40px" }}>
-                  x
-                </span>
-              </button>
-            </div>
-            <TaskForm detail={detail} events={events}></TaskForm>
-          </Modal>
+            <DialogTitle>{detail["name"]}</DialogTitle>
+
+            <DialogContent>
+              <TaskForm detail={detail} events={events}></TaskForm>
+            </DialogContent>
+            <DialogActions>
+              <Button color="primary" onClick={()=>{setOpenForm(false);}}>
+                Disagree
+              </Button>
+  
+            </DialogActions>
+          </Dialog>
         }
       </div>
     </div>
