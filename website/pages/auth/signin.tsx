@@ -2,12 +2,30 @@ import { getCsrfToken, signIn } from "next-auth/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import  {useRouter}  from "next/router";
+import { useRouter } from "next/router";
 import Spinner from "../components/spinner";
 import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
-import { useState } from "react"
-
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import CardContent from "@material-ui/core/CardContent";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      padding: theme.spacing(2),
+    },
+  })
+);
 export default function SignIn({ csrfToken }) {
+  const classes = useStyles();
+
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),
@@ -44,17 +62,23 @@ export default function SignIn({ csrfToken }) {
     });
   };
   return (
-    <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
-      <div className="card" style={{ width: "1000px" }}>
-        <div className="card-header">登入</div>
-        <div className="card-body">
-          <form method="post" onSubmit={handleSubmit(onSubmit)}>
+    <Grid
+      container
+      justify="center"
+      alignItems="baseline"
+      direction="row"
+      className={classes.root}
+    >
+      <Grid item xs={12} md={6}>
+        <Card className='card'>
+          <CardHeader title="登入" className="gradient-green"></CardHeader>
+          <CardContent>
+            <form method="post" onSubmit={handleSubmit(onSubmit)}>
             <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-            <div className="mb-3">
-              <label htmlFor="userName" className="form-label">
-                帳號
-              </label>
-              <input
+
+              <InputLabel>帳號</InputLabel>
+              <Input
+                fullWidth={true}
                 type="text"
                 className="form-control"
                 id="userName"
@@ -62,12 +86,9 @@ export default function SignIn({ csrfToken }) {
                 {...register("userName")}
               />
               <p>{errors.userName?.message}</p>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="password" className="form-label">
-                密碼
-              </label>
-              <input
+              <InputLabel>密碼</InputLabel>
+              <Input
+                fullWidth={true}
                 type="password"
                 className="form-control"
                 id="password"
@@ -75,23 +96,22 @@ export default function SignIn({ csrfToken }) {
                 {...register("password")}
               />
               <p>{errors.password?.message}</p>
-            </div>
 
-            <input
-              type="submit"
-              className="btn btn-primary"
-              value="送出"
-            ></input>
-            {customError && (
-              <div className="animate__animated animate__wobble p-3 m-2 bg-danger text-white">
-                {customError}
-              </div>
-            )}
-          </form>
-        </div>
-      </div>
+              <Button type="submit" variant="contained" color="primary">送出</Button>
+              {customError && (
+                <Alert
+                  className="animate__animated animate__wobble"
+                  severity="error"
+                >
+                  {customError}
+                </Alert>
+              )}
+            </form>
+          </CardContent>
+        </Card>
+      </Grid>
       <Spinner showLoading={showLoading}></Spinner>
-    </div>
+    </Grid>
   );
 }
 
