@@ -35,6 +35,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import Refresh from "@material-ui/icons/Refresh";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -76,12 +77,21 @@ const index = () => {
   if (!data) return <Spinner showLoading="true"></Spinner>;
 
   return (
-    <div className={classes.root} style={{zIndex:1000000}}>
+    <div className={classes.root} style={{ zIndex: 1000000 }}>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: "20%" }}></TableCell>
+              <TableCell style={{ width: "20%" }}>
+                <IconButton
+                  aria-label="重新整理"
+                  onClick={() => {
+                    mutate();
+                  }}
+                >
+                  <Refresh />
+                </IconButton>
+              </TableCell>
               <TableCell>排程名稱</TableCell>
               <TableCell>檔案類型</TableCell>
               <TableCell>執行時間</TableCell>
