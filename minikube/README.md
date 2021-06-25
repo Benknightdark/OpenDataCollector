@@ -152,6 +152,6 @@ minikube service dapr-dashboard -n dapr-system
 minikube service api-gateway-service
 # 開啟website服務
 minikube service nodeapp
-# 開啟jaeger-query服務
-minikube service jaeger-query
+# 開啟zipkin服務
+minikube service zipkin
 ```
