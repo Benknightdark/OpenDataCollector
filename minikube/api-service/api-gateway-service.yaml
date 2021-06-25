@@ -36,6 +36,7 @@ spec:
         dapr.io/app-id: "api-gateway-service"
         dapr.io/app-port: "80"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: api-gateway-service

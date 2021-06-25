@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "subscribe-service"
         dapr.io/app-port: "8949"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: subscribe-service

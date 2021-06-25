@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "task-service"
         dapr.io/app-port: "8799"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: task-service

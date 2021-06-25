@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "pthg-service"
         dapr.io/app-port: "8780"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: pthg-service

@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "taichung-service"
         dapr.io/app-port: "8778"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: taichung-service

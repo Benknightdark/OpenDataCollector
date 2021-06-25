@@ -10,6 +10,12 @@ minikube addons enable metrics-server
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --set global.logAsJson=true  --wait
+# 安裝 Jaeger
+helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
+helm install jaeger-operator jaegertracing/jaeger-operator
+kubectl apply -f ./minikube/jaeger-operator.yaml
+kubectl wait deploy --selector app.kubernetes.io/name=jaeger --for=condition=available
+kubectl apply -f ./minikube/tracing.yaml
 # 安裝redis
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
@@ -21,6 +27,7 @@ helm install mongo  bitnami/mongodb --set auth.rootPassword=example
 # 安裝SqlServer
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
+
 #################Optional#######################
 # # 安裝prometheus (Optional)
 # helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -148,4 +155,6 @@ minikube service dapr-dashboard -n dapr-system
 minikube service api-gateway-service
 # 開啟website服務
 minikube service nodeapp
+# 開啟jaeger-query服務
+minikube service jaeger-query
 ```

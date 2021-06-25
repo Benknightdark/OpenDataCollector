@@ -18,6 +18,7 @@ spec:
         dapr.io/app-id: "tainan-service"
         dapr.io/app-port: "8779"
         dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
     spec:
       containers:
       - name: tainan-service
