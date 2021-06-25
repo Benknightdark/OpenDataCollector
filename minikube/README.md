@@ -10,12 +10,9 @@ minikube addons enable metrics-server
 helm repo add dapr https://dapr.github.io/helm-charts/
 helm repo update
 helm upgrade --install dapr dapr/dapr --namespace dapr-system --create-namespace --set global.ha.enabled=true --set global.logAsJson=true  --wait
-# 安裝 Jaeger
-helm repo add jaegertracing https://jaegertracing.github.io/helm-charts
-helm install jaeger-operator jaegertracing/jaeger-operator
-kubectl apply -f ./minikube/jaeger-operator.yaml
-kubectl wait deploy --selector app.kubernetes.io/name=jaeger --for=condition=available
-kubectl apply -f ./minikube/tracing.yaml
+# 安裝 zipkin
+kubectl create deployment zipkin --image openzipkin/zipkin
+kubectl expose deployment zipkin --type ClusterIP --port 9411
 # 安裝redis
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update

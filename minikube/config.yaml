@@ -43,23 +43,8 @@ spec:
   - name: schedule
     value: "@every 1s"
 
-# jaeger settings
----
-apiVersion: jaegertracing.io/v1
-kind: "Jaeger"
-metadata:
-  name: jaeger
-spec:
-  strategy: allInOne
-  ingress:
-    enabled: false
-  allInOne:
-    image: jaegertracing/all-in-one:1.22
-    options:
-      query:
-        base-path: /jaeger  
         
-# jaeger settings
+# zipkin settings
 ---
 apiVersion: dapr.io/v1alpha1
 kind: Configuration
@@ -70,4 +55,4 @@ spec:
   tracing:
     samplingRate: "1"
     zipkin:
-      endpointAddress: "http://jaeger-collector/api/v2/spans"
+      endpointAddress: "http://zipkin.default.svc.cluster.local:9411/api/v2/spans"
