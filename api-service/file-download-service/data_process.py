@@ -19,7 +19,5 @@ def download(url, data_type, file_name, user_id, schedule_id):
         httpx.post(f'{pubsub_url}/addFile',json=publish_data)
     else:
         logging.info("修改")
-        httpx.post(f'{pubsub_url}/updateFile',json=publish_data)
-    
-        
+        httpx.post(f'{pubsub_url}/updateFile',json=publish_data)      
     logging.info(f'----------------END: {file_name}------------------------')
