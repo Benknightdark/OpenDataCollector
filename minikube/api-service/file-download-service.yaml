@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-download-service
+  labels:
+    app: file-download-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file-download-service
+  template:
+    metadata:
+      labels:
+        app: file-download-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "file-download-service"
+        dapr.io/app-port: "8999"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"               
+    spec:
+      containers:
+      - name: file-download-service
+        image: localhost:5000/file-download-service:latest
+        env:               
+          - name: ENVIRONMENT
+            value: production                              
+        ports:
+        - containerPort: 8999
+        imagePullPolicy: Always

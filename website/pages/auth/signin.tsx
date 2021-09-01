@@ -1,107 +1,117 @@
-import { csrfToken, getCsrfToken, signIn, useSession } from "next-auth/client";
+import { getCsrfToken, signIn } from "next-auth/client";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import Layout from "../components/layout";
 import Spinner from "../components/spinner";
-
-import { toast, ToastContainer } from "react-toastify";
-import { checkIsLogin } from "../../helpers/common_helper";
-
+import { useCustomSnackBar } from "../components/hooks/custom-snackbar-context";
+import React, { useState } from "react";
+import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
+import CardContent from "@material-ui/core/CardContent";
+import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import Alert from "@material-ui/lab/Alert";
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+      padding: theme.spacing(2),
+    },
+  })
+);
 export default function SignIn({ csrfToken }) {
-// useEffect(()=>{
-//   checkIsLogin();
-// });
+  const classes = useStyles();
+
   const router = useRouter();
   const schema = yup.object().shape({
     userName: yup.string().required("不能為空值"),
     password: yup.string().required("不能為空值"),
   });
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
   const [showLoading, setshowLoading] = useState(false);
   const [customError, setCustomError] = useState("");
+  const showSnackBar = useCustomSnackBar();
+
   const onSubmit = (data) => {
-    setCustomError("")
-    setshowLoading(true)
+    setCustomError("");
+    setshowLoading(true);
     signIn("credentials", {
       username: data.userName,
       password: data.password,
       redirect: false,
     }).then((r) => {
-      setshowLoading(false)
+      setshowLoading(false);
       if (r.error === null) {
-        toast("已登入", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-        })
+        showSnackBar.showSnackBar("已登入", "info");
         setTimeout(() => {
           router.push("/");
         }, 1000);
-
       } else {
-        setCustomError(r['error'])
+        setCustomError(r["error"]);
       }
-
     });
   };
   return (
-      <div className='d-flex p-2 bd-highlight justify-content-center align-items-center align-self-center"'>
-        <div className="card" style={{ width: "1000px" }}>
-          <div className="card-header">登入</div>
-          <div className="card-body">
+    <Grid
+      container
+      justify="center"
+      alignItems="baseline"
+      direction="row"
+      className={classes.root}
+    >
+      <Grid item xs={12} md={6}>
+        <Card className='card'>
+          <CardHeader title="登入" className="gradient-green"></CardHeader>
+          <CardContent>
             <form method="post" onSubmit={handleSubmit(onSubmit)}>
-              <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
-              <div className="mb-3">
-                <label htmlFor="userName" className="form-label">
-                  帳號
-              </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="userName"
-                  name="userName"
-                  {...register("userName")}
+            <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
 
-                />
-                <p>{errors.userName?.message}</p>
-              </div>
-              <div className="mb-3">
-                <label htmlFor="password" className="form-label">
-                  密碼
-              </label>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  name="password"
-                  {...register("password")}
-                />
-                <p>{errors.password?.message}</p>
-              </div>
+              <InputLabel>帳號</InputLabel>
+              <Input
+                fullWidth={true}
+                type="text"
+                className="form-control"
+                id="userName"
+                name="userName"
+                {...register("userName")}
+              />
+              <p>{errors.userName?.message}</p>
+              <InputLabel>密碼</InputLabel>
+              <Input
+                fullWidth={true}
+                type="password"
+                className="form-control"
+                id="password"
+                name="password"
+                {...register("password")}
+              />
+              <p>{errors.password?.message}</p>
 
-              <input
-                type="submit"
-                className="btn btn-primary"
-                value="送出"
-              ></input>
-              {
-                customError && <div className="animate__animated animate__wobble p-3 m-2 bg-danger text-white">{customError}</div>
-              }
+              <Button type="submit" variant="contained" color="primary">送出</Button>
+              {customError && (
+                <Alert
+                  className="animate__animated animate__wobble"
+                  severity="error"
+                >
+                  {customError}
+                </Alert>
+              )}
             </form>
-          </div>
-        </div>
-        <Spinner showLoading={showLoading}></Spinner>
-
-      </div>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Spinner showLoading={showLoading}></Spinner>
+    </Grid>
   );
 }
 

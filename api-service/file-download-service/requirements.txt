@@ -1,0 +1,7 @@
+httpx
+apscheduler
+uvicorn
+fastapi
+pydantic
+pydantic[email,typing_extensions,dotenv]
+httpx[http2]

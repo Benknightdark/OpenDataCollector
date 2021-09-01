@@ -9,7 +9,6 @@ export const getApiUrl=( apiName:string='')=>{
 export const checkIsLogin=async ()=>{
    const req = await fetch("/api/personal");
    const resStatus=req.status;
-   console.log(resStatus)
    if(resStatus==200)
       window.history.back();
 }
@@ -18,7 +17,6 @@ export const checkIsLogin=async ()=>{
 export const checkIsNotLogin=async ()=>{
    const req = await fetch("/api/personal");
    const resStatus=req.status;
-   console.log(resStatus)
    if(resStatus!=200)
       window.location.replace('/auth/signin');
 }

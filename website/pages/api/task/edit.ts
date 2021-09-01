@@ -8,7 +8,8 @@ const updateTaskData = async (data, token) => {
         method: 'PUT',
         body: JSON.stringify(data),
         headers: new Headers({
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + token, 'content-type': 'application/json'
+
         }),
     })
     const resData = await reqData.json()
@@ -17,7 +18,8 @@ const updateTaskData = async (data, token) => {
 const deleteFileDownload = async (data, token) => {
     const delFielDownloadReq = await fetch(`${getApiUrl("file-download-service")}/scheduler/jobs/${data['_id']['$oid']}`, {
         method: 'DELETE', headers: new Headers({
-            'Authorization': 'Bearer ' + token,
+            'Authorization': 'Bearer ' + token, 'content-type': 'application/json'
+
         })
     })
     const delFileDownloadRes = await delFielDownloadReq.text();
@@ -34,7 +36,7 @@ const AddFileDownload = async (data, session) => {
                 data['url'],
                 data['type'],
                 data['name'],
-                session.user.id,
+                session.user['id'],
                 data['_id']['$oid']
             ],
             kwargs: {},
@@ -43,7 +45,7 @@ const AddFileDownload = async (data, session) => {
             minute: data['executeTime'].split(':')[1]
         }),
         headers: new Headers({
-            'Authorization': 'Bearer ' + session.user.token,
+            'Authorization': 'Bearer ' + session.user['token'],
         }),
     })
     const resData2 = await reqData2.json()
@@ -53,13 +55,13 @@ export default async (req, res) => {
     try {
         const session = await getSession({ req })
         const data = JSON.parse(req.body);
-        const updateTaskDataRes = await updateTaskData(data, session.user.token);
-        const deleteRes = await deleteFileDownload(data, session.user.token);
+        const updateTaskDataRes = await updateTaskData(data, session.user['token']);
+        const deleteRes = await deleteFileDownload(data, session.user['token']);
         const resData2 = await AddFileDownload(data, session);
-        res.status(200).json({status:true})
+        res.status(200).json({ status: true })
     } catch (error) {
         console.error(error)
-        res.status(500).json({ status:false,error:error })
+        res.status(500).json({ status: false, error: error })
     }
 }
 

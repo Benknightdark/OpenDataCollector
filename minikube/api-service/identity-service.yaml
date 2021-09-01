@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: identity-service
+  labels:
+    app: identity-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: identity-service
+  template:
+    metadata:
+      labels:
+        app: identity-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "identity-service"
+        dapr.io/app-port: "80"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
+    spec:
+      containers:
+      - name: identity-service
+        image: localhost:5000/identity-service:latest
+        env:
+          - name: SQLSERVER
+            valueFrom:
+              secretKeyRef:
+                name: opendatasecrets
+                key: sqlserver
+          - name: ENVIRONMENT
+            value: production                        
+        ports:
+        - containerPort: 8779
+        imagePullPolicy: Always

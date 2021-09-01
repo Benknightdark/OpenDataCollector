@@ -9,11 +9,14 @@ namespace identity_service.Extensions
 {
     public static class ServiceCollection
     {
-
+        /// <summary>
+        /// 產生jwk檔
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static IIdentityServerBuilder AddCustomCredential(
             this IIdentityServerBuilder builder )
         {
-
             bool persistKey = true;
             string filename = "Credential.jwk";
             IdentityServer4.IdentityServerConstants.RsaSigningAlgorithm signingAlgorithm = IdentityServer4.IdentityServerConstants.RsaSigningAlgorithm.RS256;
@@ -34,7 +37,6 @@ namespace identity_service.Extensions
                 {
                     File.WriteAllText(filename, JsonConvert.SerializeObject(jwk));
                 }
-
                 return builder.AddSigningCredential(key, signingAlgorithm);
             }
         }

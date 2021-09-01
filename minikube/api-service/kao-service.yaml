@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kao-service
+  labels:
+    app: kao-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kao-service
+  template:
+    metadata:
+      labels:
+        app: kao-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "kao-service"
+        dapr.io/app-port: "8777"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
+    spec:
+      containers:
+      - name: kao-service
+        image: localhost:5000/kao-service:latest
+        env:
+          - name: ENVIRONMENT
+            value: production                              
+        ports:
+        - containerPort: 8777
+        imagePullPolicy: Always

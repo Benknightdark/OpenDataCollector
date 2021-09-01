@@ -1,5 +1,4 @@
 from typing import Optional
-import requests
 from bs4 import BeautifulSoup
 import httpx
 async def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org: Optional[str] = '',group: Optional[str] = ''):
@@ -17,9 +16,6 @@ async def get_pthg_data(target: Optional[str] = '', page: Optional[int] = 1,org:
         'input', id='__EVENTVALIDATION')['value']
     view_state_generator_value = soup.find(
         'input', id='__VIEWSTATEGENERATOR')['value']
-    print(event_validation_value)    
-    print(view_state_generator_value)
-    print(target)
     if group=="所有分類":
         group=""
     if org=="所有單位":

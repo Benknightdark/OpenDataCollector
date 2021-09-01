@@ -13,7 +13,6 @@ const index = () => {
         close: () => void,
     }>();
     events.on('close', async () => {
-        console.log('ok')
         // await fetchDetailData.mutate();
          router.back();
     })

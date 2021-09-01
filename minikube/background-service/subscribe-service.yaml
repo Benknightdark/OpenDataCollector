@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: subscribe-service
+  labels:
+    app: subscribe-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscribe-service
+  template:
+    metadata:
+      labels:
+        app: subscribe-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "subscribe-service"
+        dapr.io/app-port: "8949"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
+    spec:
+      containers:
+      - name: subscribe-service
+        image: localhost:5000/subscribe-service:latest
+        env:              
+          - name: ENVIRONMENT
+            value: production                              
+        ports:
+        - containerPort: 8949
+        imagePullPolicy: Always

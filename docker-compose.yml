@@ -11,7 +11,9 @@ services:
     ports:
       - "3333:3000"
     networks:
-      - open-data     
+      - open-data 
+    env_file:
+        - .env          
   nodeapp-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
@@ -35,12 +37,14 @@ services:
       - "50003:50002"
       # - "8100:8000"     
     networks:
-      - open-data     
+      - open-data
+    env_file:
+        - .env            
   kao-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "kao-service",
-    "-app-port", "8000",
+    "-app-port", "8777",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50003",
      "-components-path", "/components"]
@@ -62,11 +66,13 @@ services:
       # - "8200:8000"       
     networks:
       - open-data
+    env_file:
+        - .env       
   tainan-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "tainan-service",
-    "-app-port", "8000",
+    "-app-port", "8779",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50007",
      "-components-path", "/components"]
@@ -88,11 +94,13 @@ services:
       # - "8400:8000"       
     networks:
       - open-data
+    env_file:
+        - .env         
   pthg-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "pthg-service",
-    "-app-port", "8000",
+    "-app-port", "8780",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50009",
      "-components-path", "/components"]
@@ -114,11 +122,13 @@ services:
       # - "8600:8000"       
     networks:
       - open-data
+    env_file:
+      - .env     
   taichung-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "taichung-service",
-    "-app-port", "8000",
+    "-app-port", "8778",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50010",
      "-components-path", "/components"]
@@ -142,13 +152,13 @@ services:
       # - "8300:8000"       
     networks:
       - open-data
-    environment:
-        ENVIRONMENT: production
+    env_file:
+        - .env        
   account-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "account-service",
-    "-app-port", "8000",
+    "-app-port", "8781",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50008",
      "-components-path", "/components"]
@@ -171,13 +181,13 @@ services:
       # - "8300:8000"       
     networks:
       - open-data
-    environment:
-        ENVIRONMENT: production
+    env_file:
+        - .env 
   personal-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "personal-service",
-    "-app-port", "8000",
+    "-app-port", "8782",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50016",
      "-components-path", "/components"]
@@ -190,13 +200,14 @@ services:
   # Api Gateway Service
   ############################
   api-gateway-service:
-      image: envoyproxy/envoy:v1.18-latest
+      build: ./api-service/api-gateway-service
         #v1.18-latest      
         #v1.17-latest
         #v1.16-latest
         #v1.14.2
-      volumes:
-        - ./api-service/api-gateway-service:/etc/envoy
+        #envoyproxy/envoy:v1.18-latest
+      # volumes:
+      #   - ./api-service/api-gateway-service:/etc/envoy
       ports:
         - "5202:80"
         - "15202:8001"
@@ -206,7 +217,7 @@ services:
         - placement
         # - identity-service   
       networks:
-        - open-data            
+        - open-data                    
   api-gateway-service-dapr:
       image: "daprio/daprd:edge"
       command: ["./daprd",
@@ -233,6 +244,8 @@ services:
       - identity-server-db       
     networks:
       - open-data
+    env_file:
+        - .env       
   identity-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
@@ -260,13 +273,13 @@ services:
       - mongo       
     networks:
       - open-data
-    environment:
-        ENVIRONMENT: production      
+    env_file:
+        - .env     
   task-service-dapr:
     image: "daprio/daprd:edge"
     command: ["./daprd",
     "-app-id", "task-service",
-    "-app-port", "8000",
+    "-app-port", "8799",
     "-placement-host-address", "placement:50006",
     "-dapr-grpc-port", "50018",
      "-components-path", "/components"]
@@ -281,20 +294,19 @@ services:
   file-download-service:
     ports:
       - "50032:50002"      
-    build: ./background-services/file-download-service   
+    build: ./api-service/file-download-service   
     depends_on:
       - redis
       - placement      
-      - mongo 
     networks:
       - open-data
-    environment:
-        ENVIRONMENT: production
+    env_file:
+        - .env 
   file-download-service-dapr:
           image: "daprio/daprd:edge"
           command: ["./daprd",
           "-app-id", "file-download-service",
-          "-app-port", "5000",
+          "-app-port", "8999",
           "-placement-host-address", "placement:50006",
           "-dapr-grpc-port", "50032",
            "-components-path", "/components"]
@@ -302,7 +314,35 @@ services:
             - "./components/:/components"
           depends_on:
             - file-download-service
-          network_mode: "service:file-download-service"                                         
+          network_mode: "service:file-download-service"   
+  ############################
+  # Subscribe Service
+  ############################
+  subscribe-service:
+    ports:
+      - "50052:50002"      
+    build: ./background-services/subscribe-service   
+    depends_on:
+      - redis
+      - placement      
+      - mongo 
+    networks:
+      - open-data
+    env_file:
+        - .env 
+  subscribe-service-dapr:
+          image: "daprio/daprd:edge"
+          command: ["./daprd",
+          "-app-id", "subscribe-service",
+          "-app-port", "8949",
+          "-placement-host-address", "placement:50006",
+          "-dapr-grpc-port", "50052",
+           "-components-path", "/components"]
+          volumes:
+            - "./components/:/components"
+          depends_on:
+            - subscribe-service
+          network_mode: "service:subscribe-service"                                                  
   ############################
   # Dapr placement service
   ############################
@@ -367,8 +407,8 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
         - identity-server-db-data:/var/opt/mssql      
-    # ports:
-    #   - 8734:1433
+    ports:
+      - 8734:1433
     networks:
       - open-data                                                    
 networks:

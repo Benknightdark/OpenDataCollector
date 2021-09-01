@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pthg-service
+  labels:
+    app: pthg-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pthg-service
+  template:
+    metadata:
+      labels:
+        app: pthg-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "pthg-service"
+        dapr.io/app-port: "8780"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
+    spec:
+      containers:
+      - name: pthg-service
+        image: localhost:5000/pthg-service:latest
+        env:
+          - name: ENVIRONMENT
+            value: production        
+        ports:
+        - containerPort: 8780
+        imagePullPolicy: Always

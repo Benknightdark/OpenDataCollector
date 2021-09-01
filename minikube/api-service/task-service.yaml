@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-service
+  labels:
+    app: task-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-service
+  template:
+    metadata:
+      labels:
+        app: task-service
+      annotations:
+        dapr.io/enabled: "true"
+        dapr.io/app-id: "task-service"
+        dapr.io/app-port: "8799"
+        dapr.io/log-as-json: "true"
+        dapr.io/config: "tracing"        
+    spec:
+      containers:
+      - name: task-service
+        image: localhost:5000/task-service:latest
+        env:               
+          - name: ENVIRONMENT
+            value: production                              
+        ports:
+        - containerPort: 8799
+        imagePullPolicy: Always

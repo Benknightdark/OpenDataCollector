@@ -2,9 +2,9 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr
 import os
 from internal import db_service,identity_service
-import python_jwt as jwt
-import jwcrypto.jwk as jwk
-import datetime
+# import python_jwt as jwt
+# import jwcrypto.jwk as jwk
+# import datetime
 
 
 class Login(BaseModel):
@@ -27,7 +27,7 @@ else:
 @app.post("/api/login")
 async def read_root(data: Login):
     data_dict=data.dict()
-    query_data=db_service.user_query(data_dict)
+    query_data=await db_service.user_query(data_dict)
 
     if query_data !=None:
         user_id=str(query_data['_id']['$oid'])
@@ -39,6 +39,6 @@ async def read_root(data: Login):
 @app.post("/api/register")
 async def register(data:Register,summary="註冊"):
     data_dict=data.dict()
-    create_data=db_service.user_create(data_dict)
+    create_data=await db_service.user_create(data_dict)
     token=await identity_service.token_endpoint(data_dict['userName'],str(create_data.inserted_id))      
     return {"displayName": data_dict['displayName'], "token": token['access_token']}
