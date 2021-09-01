@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import useSWR from "swr";
 import Spinner from "../spinner";
-const CustomAuthContext = createContext({});
+const CustomAuthContext = createContext({ });
 export default function CustomAuthProvider({ children }) {
   const fetcher = (url) => fetch(url).then((r) => r.json());
   const protectedRoute = ["task"];
@@ -18,16 +18,13 @@ export default function CustomAuthProvider({ children }) {
   );
   const { data, error, isValidating, mutate } = useSWR(
     `/api/personal`,
-    fetcher,
-    {
-      refreshInterval: 3000,
-    }
+    fetcher
   );
-useEffect(()=>{
-  if (data?.message == null) {
-    setDisplayName(data?.displayName);
-  }
-})
+  useEffect(() => {
+    if (data?.message == null) {
+      setDisplayName(data?.displayName);
+    }
+  })
   if (!data) return <Spinner showLoading="true"></Spinner>;
   if (data?.message != null) {
     if (protectedRouteCheck.length > 0) {
@@ -41,7 +38,7 @@ useEffect(()=>{
 
   return (
     data && (
-      <CustomAuthContext.Provider value={{displayName:displayName}}>
+      <CustomAuthContext.Provider value={{ displayName: displayName }}>
         {children}
       </CustomAuthContext.Provider>
     )

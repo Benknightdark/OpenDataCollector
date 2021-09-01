@@ -34,7 +34,6 @@ async def init_scheduler():
                     trigger='cron', args=(d['url'], d['type'], d['name'], s['userId'], d['_id']['$oid'])
                 )
         await client.aclose()
-
         sched.start()
 
 if os.getenv("ENVIRONMENT") == 'production':

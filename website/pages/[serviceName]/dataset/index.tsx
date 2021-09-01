@@ -1,6 +1,6 @@
 import { useRouter } from "next/router"
 import Spinner from '../../components/spinner'
-import { useSWRInfinite } from "swr"
+import useSWRInfinite from 'swr/infinite'
 import React, { useEffect, useState } from "react"
 import Grid from "@material-ui/core/Grid"
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -35,7 +35,7 @@ export default function Index() {
         const url = `/api/dataset?serviceName=${serviceName}&pageUrl=${queryUrl}&page=${pageIndex + 1}${otherQueryString}`;
         return url
     }
-    const { data, size, setSize } = useSWRInfinite(getKey, fetcher)
+    const { data, error, isValidating, mutate, size, setSize } = useSWRInfinite(getKey, fetcher);
     useEffect(() => {
         window.onscroll = async () => {
             if (showLoading) return;

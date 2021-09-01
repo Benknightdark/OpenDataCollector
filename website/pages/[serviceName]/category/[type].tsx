@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { useSWRInfinite } from "swr";
+// import { useSWRInfinite } from "swr";
+import useSWRInfinite from 'swr/infinite'
 import Spinner from "../../components/spinner";
 import React, { useEffect, useState } from "react";
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -33,7 +34,7 @@ export default function Type() {
       }`;
     return url;
   };
-  const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
+  const { data, error, isValidating, mutate, size, setSize } = useSWRInfinite(getKey, fetcher);
   const classes = useStyles();
 
   useEffect(() => {
