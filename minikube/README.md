@@ -1,7 +1,11 @@
 # 啟用minikube的Scripts
+- 需先安裝以下工具
+  - minikube
+  - helm
 ``` Bash
+
 # 啟動minikube 16384  4096
-minikube start --cpus=4 --memory=9961  
+minikube start --cpus=4 --memory=4933
 minikube addons enable dashboard
 minikube addons enable ingress
 minikube addons enable registry

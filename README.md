@@ -1,10 +1,17 @@
 
 # 系統啟動方式
 1. docker-compose
+   - 如果是第一次啟動系統，則需執行以下指令，以建立identity-service需要用到的資料庫
+      ``` bash
+      cd api-service/identity-service
+      dotnet restore
+      dotnet ef database update --context PersistedGrantDbContext
+      dotnet ef database update --context ConfigurationDbContext
+      ```
    - 在終端機界面執行以下指令
-    ```Bash
-    docker compose up -d --build
-    ```
+      ``` bash
+      docker compose up -d --build
+      ```      
    - 開啟 http://localhost:3333
 2. kubernetes
    - [參考此文件](./minikube#readme)
