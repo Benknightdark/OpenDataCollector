@@ -29,6 +29,7 @@ helm install mongo  bitnami/mongodb --set auth.rootPassword=example
 kubectl create secret generic mssql --from-literal=SA_PASSWORD="MyC0m9l&xP@ssw0rd"
 kubectl apply -f ./minikube/sqlserver.yaml
 
+
 #################Optional#######################
 # # 安裝prometheus (Optional)
 # helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
@@ -50,6 +51,14 @@ kubectl apply -f ./minikube/sqlserver.yaml
 # # 安裝fluentd (Optional)
 # kubectl apply -f ./minikube/fluentd-config-map.yaml
 # kubectl apply -f ./minikube/fluentd-dapr-with-rbac.yaml
+# 安裝argo
+# helm repo add argo https://argoproj.github.io/argo-helm
+# helm repo update
+# helm install argo-server --set secure=false    argo/argo-workflows 
+# kubectl create rolebinding default-admin --clusterrole=admin --serviceaccount=default:default -n default
+# kubectl create rolebinding namespace-admin --clusterrole=admin --serviceaccount=default:default
+# # 取得argo workflow login token
+# kubectl exec pod/argo-server-argo-workflows-server-859d6f7f5f-gmkhk  -- argo auth token
 
 ```
 ``` Powershell
@@ -158,4 +167,8 @@ minikube service api-gateway-service
 minikube service nodeapp
 # 開啟zipkin服務
 minikube service zipkin
+
+
+minikube service argo-server-argo-workflows-server
+
 ```
