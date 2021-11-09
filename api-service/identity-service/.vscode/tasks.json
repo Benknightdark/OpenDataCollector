@@ -53,7 +53,6 @@
             ],
             "problemMatcher": "$msCompile"
         },
-
         {
             "label": "daprd-debug-identity-service",
             "type": "daprd",
@@ -62,6 +61,7 @@
             "httpPort": 3500,
             "metricsPort": 9090,
             "grpcPort": 53320,
+            "isBackground": true,
             "dependsOn": "build"
         },
     ]
