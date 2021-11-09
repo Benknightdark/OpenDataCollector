@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
+#nullable disable
+
+namespace identityservice.Data.Migrations.IdentityServer.ConfigurationDb
 {
     public partial class InitialIdentityServerConfigurationDbMigration : Migration
     {
@@ -19,6 +21,7 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     AllowedAccessTokenSigningAlgorithms = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    RequireResourceIndicator = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
                     LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -41,7 +44,11 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Required = table.Column<bool>(type: "bit", nullable: false),
                     Emphasize = table.Column<bool>(type: "bit", nullable: false),
-                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false)
+                    ShowInDiscoveryDocument = table.Column<bool>(type: "bit", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -90,17 +97,38 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                     AlwaysSendClientClaims = table.Column<bool>(type: "bit", nullable: false),
                     ClientClaimsPrefix = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     PairWiseSubjectSalt = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserSsoLifetime = table.Column<int>(type: "int", nullable: true),
                     UserCodeType = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     DeviceCodeLifetime = table.Column<int>(type: "int", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     NonEditable = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Clients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "IdentityProviders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Scheme = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    DisplayName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Enabled = table.Column<bool>(type: "bit", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Properties = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastAccessed = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    NonEditable = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IdentityProviders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -479,14 +507,16 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceClaims_ApiResourceId",
+                name: "IX_ApiResourceClaims_ApiResourceId_Type",
                 table: "ApiResourceClaims",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceProperties_ApiResourceId",
+                name: "IX_ApiResourceProperties_ApiResourceId_Key",
                 table: "ApiResourceProperties",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiResources_Name",
@@ -495,9 +525,10 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiResourceScopes_ApiResourceId",
+                name: "IX_ApiResourceScopes_ApiResourceId_Scope",
                 table: "ApiResourceScopes",
-                column: "ApiResourceId");
+                columns: new[] { "ApiResourceId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiResourceSecrets_ApiResourceId",
@@ -505,14 +536,16 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 column: "ApiResourceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeClaims_ScopeId",
+                name: "IX_ApiScopeClaims_ScopeId_Type",
                 table: "ApiScopeClaims",
-                column: "ScopeId");
+                columns: new[] { "ScopeId", "Type" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ApiScopeProperties_ScopeId",
+                name: "IX_ApiScopeProperties_ScopeId_Key",
                 table: "ApiScopeProperties",
-                column: "ScopeId");
+                columns: new[] { "ScopeId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApiScopes_Name",
@@ -521,39 +554,46 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientClaims_ClientId",
+                name: "IX_ClientClaims_ClientId_Type_Value",
                 table: "ClientClaims",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Type", "Value" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientCorsOrigins_ClientId",
+                name: "IX_ClientCorsOrigins_ClientId_Origin",
                 table: "ClientCorsOrigins",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Origin" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientGrantTypes_ClientId",
+                name: "IX_ClientGrantTypes_ClientId_GrantType",
                 table: "ClientGrantTypes",
-                column: "ClientId");
+                columns: new[] { "ClientId", "GrantType" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientIdPRestrictions_ClientId",
+                name: "IX_ClientIdPRestrictions_ClientId_Provider",
                 table: "ClientIdPRestrictions",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Provider" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientPostLogoutRedirectUris_ClientId",
+                name: "IX_ClientPostLogoutRedirectUris_ClientId_PostLogoutRedirectUri",
                 table: "ClientPostLogoutRedirectUris",
-                column: "ClientId");
+                columns: new[] { "ClientId", "PostLogoutRedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientProperties_ClientId",
+                name: "IX_ClientProperties_ClientId_Key",
                 table: "ClientProperties",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientRedirectUris_ClientId",
+                name: "IX_ClientRedirectUris_ClientId_RedirectUri",
                 table: "ClientRedirectUris",
-                column: "ClientId");
+                columns: new[] { "ClientId", "RedirectUri" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_ClientId",
@@ -562,9 +602,10 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClientScopes_ClientId",
+                name: "IX_ClientScopes_ClientId_Scope",
                 table: "ClientScopes",
-                column: "ClientId");
+                columns: new[] { "ClientId", "Scope" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClientSecrets_ClientId",
@@ -572,14 +613,22 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceClaims_IdentityResourceId",
-                table: "IdentityResourceClaims",
-                column: "IdentityResourceId");
+                name: "IX_IdentityProviders_Scheme",
+                table: "IdentityProviders",
+                column: "Scheme",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_IdentityResourceProperties_IdentityResourceId",
+                name: "IX_IdentityResourceClaims_IdentityResourceId_Type",
+                table: "IdentityResourceClaims",
+                columns: new[] { "IdentityResourceId", "Type" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IdentityResourceProperties_IdentityResourceId_Key",
                 table: "IdentityResourceProperties",
-                column: "IdentityResourceId");
+                columns: new[] { "IdentityResourceId", "Key" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_IdentityResources_Name",
@@ -634,6 +683,9 @@ namespace identity_service.Data.Migrations.IdentityServer.ConfigurationDb
 
             migrationBuilder.DropTable(
                 name: "ClientSecrets");
+
+            migrationBuilder.DropTable(
+                name: "IdentityProviders");
 
             migrationBuilder.DropTable(
                 name: "IdentityResourceClaims");

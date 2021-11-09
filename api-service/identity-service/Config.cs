@@ -1,5 +1,4 @@
-using IdentityServer4.Models;
-using System.Collections.Generic;
+using Duende.IdentityServer.Models;
 namespace identity_service
 {
     public static class Config
@@ -15,7 +14,7 @@ namespace identity_service
             {
                 new Client
                 {
-                    ClientId = "client11",//client
+                    ClientId = "client11",
                     RequireRequestObject = true,
 
                     // no interactive user, use the clientid/secret for authentication
