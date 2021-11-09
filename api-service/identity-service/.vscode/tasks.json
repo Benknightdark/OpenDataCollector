@@ -1,6 +1,21 @@
 {
     "version": "2.0.0",
     "tasks": [
+        
+        {
+            "label": "clear-all-daprd-processes",
+            "type": "shell",
+            "isBackground": true,
+            "windows": {
+                "command": "Get-Process -Name 'daprd' | Stop-Process"
+            },
+            "linux": {
+                "command": "kill -9 $(ps aux | grep daprd | awk '{print $2}')"
+            },
+            "osx": {
+                "command": "ps aux | grep daprd|grep -v grep | awk '{print $2}'|xargs kill -9"
+            },
+        },
         {
             "label": "build",
             "command": "dotnet",
@@ -38,61 +53,16 @@
             ],
             "problemMatcher": "$msCompile"
         },
+
         {
-            "type": "docker-build",
-            "label": "docker-build: debug",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "identityservice:dev",
-                "target": "base",
-                "dockerfile": "${workspaceFolder}/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/identity-service.csproj"
-            }
+            "label": "daprd-debug-identity-service",
+            "type": "daprd",
+            "appId": "identity-service",
+            "appPort": 5000,
+            "httpPort": 3500,
+            "metricsPort": 9090,
+            "grpcPort": 53320,
+            "dependsOn": "build"
         },
-        {
-            "type": "docker-build",
-            "label": "docker-build: release",
-            "dependsOn": [
-                "build"
-            ],
-            "dockerBuild": {
-                "tag": "identityservice:latest",
-                "dockerfile": "${workspaceFolder}/Dockerfile",
-                "context": "${workspaceFolder}",
-                "pull": true
-            },
-            "netCore": {
-                "appProject": "${workspaceFolder}/identity-service.csproj"
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: debug",
-            "dependsOn": [
-                "docker-build: debug"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/identity-service.csproj",
-                "enableDebugging": true
-            }
-        },
-        {
-            "type": "docker-run",
-            "label": "docker-run: release",
-            "dependsOn": [
-                "docker-build: release"
-            ],
-            "dockerRun": {},
-            "netCore": {
-                "appProject": "${workspaceFolder}/identity-service.csproj"
-            }
-        }
     ]
 }

@@ -1,1 +1,3 @@
-    "db": "Server=mssql-deployment;Database=IdentityServerDB;user id=sa;password=MyC0m9l&xP@ssw0rd"
+``` bash
+http://localhost:3500/v1.0/invoke/identity-service/method/.well-known/openid-configuration
+```
