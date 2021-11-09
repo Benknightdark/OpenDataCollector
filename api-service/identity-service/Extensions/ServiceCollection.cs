@@ -1,5 +1,6 @@
 using System.IO;
-using IdentityServer4.Configuration;
+using Duende.IdentityServer;
+using Duende.IdentityServer.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace identity_service.Extensions
         {
             bool persistKey = true;
             string filename = "Credential.jwk";
-            IdentityServer4.IdentityServerConstants.RsaSigningAlgorithm signingAlgorithm = IdentityServer4.IdentityServerConstants.RsaSigningAlgorithm.RS256;
+            IdentityServerConstants.RsaSigningAlgorithm signingAlgorithm = IdentityServerConstants.RsaSigningAlgorithm.RS256;
              if (File.Exists(filename))
             {
                 var json = File.ReadAllText(filename);
@@ -35,7 +36,7 @@ namespace identity_service.Extensions
 
                 if (persistKey)
                 {
-                    File.WriteAllText(filename, JsonConvert.SerializeObject(jwk));
+                    File.WriteAllText(filename, System.Text.Json.JsonSerializer.Serialize(jwk));
                 }
                 return builder.AddSigningCredential(key, signingAlgorithm);
             }

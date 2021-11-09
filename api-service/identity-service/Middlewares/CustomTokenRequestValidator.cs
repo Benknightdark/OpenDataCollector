@@ -1,6 +1,6 @@
+using Duende.IdentityServer.Validation;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityServer4.Validation;
 
 namespace identity_service.Middlewares
 {
@@ -9,8 +9,8 @@ namespace identity_service.Middlewares
         public Task ValidateAsync(CustomTokenRequestValidationContext context)
         {
             context.Result.ValidatedRequest.Client.AlwaysSendClientClaims = true;
-            var ReqParamsDict = context.Result.ValidatedRequest.Raw["user_id"].ToString();
-            context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id", ReqParamsDict));
+            var ReqParamsDict = context.Result.ValidatedRequest.Raw["user_id"]?.ToString();
+            context.Result.ValidatedRequest.ClientClaims.Add(new Claim("user_id", ReqParamsDict!));
             return Task.CompletedTask;
         }
 

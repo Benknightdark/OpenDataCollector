@@ -1,12 +1,6 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using IdentityServer4.EntityFramework.DbContexts;
-using IdentityServer4.EntityFramework.Mappers;
-using IdentityServer4.Models;
+using Duende.IdentityServer.EntityFramework.Mappers;
+using Duende.IdentityServer.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace identity_service.Services
 {
@@ -14,11 +8,11 @@ namespace identity_service.Services
     public class SecretService
     {
         private ILogger<SecretService> _logger;
-        private ConfigurationDbContext _context;
+        private Duende.IdentityServer.EntityFramework.DbContexts.ConfigurationDbContext _context;
         public HttpClient _client { get; }
         public SecretService(
            ILogger<SecretService> logger,
-           HttpClient client, ConfigurationDbContext context)
+           HttpClient client, Duende.IdentityServer.EntityFramework.DbContexts.ConfigurationDbContext context)
         {
             _client = client; ;
             _logger = logger;
@@ -43,9 +37,9 @@ namespace identity_service.Services
             }
             else
             {
-                clientString = Environment.GetEnvironmentVariable("CLIENT");
-                scope = Environment.GetEnvironmentVariable("SCOPE");
-                secret = Environment.GetEnvironmentVariable("SECRET");
+                clientString = Environment.GetEnvironmentVariable("CLIENT")!;
+                scope = Environment.GetEnvironmentVariable("SCOPE")!;
+                secret = Environment.GetEnvironmentVariable("SECRET")!;
             }
             _logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(_context.Clients.ToList()));
             if (!_context.Clients.Any())

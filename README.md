@@ -5,6 +5,10 @@
       ``` bash
       cd api-service/identity-service
       dotnet restore
+
+      dotnet ef migrations add InitialIdentityServerPersistedGrantDbMigration -c PersistedGrantDbContext -o Data/Migrations/IdentityServer/PersistedGrantDb
+      dotnet ef migrations add InitialIdentityServerConfigurationDbMigration -c ConfigurationDbContext  -o Data/Migrations/IdentityServer/ConfigurationDb
+
       dotnet ef database update --context PersistedGrantDbContext
       dotnet ef database update --context ConfigurationDbContext
       ```
@@ -13,7 +17,7 @@
       docker compose up -d --build
       ```      
    - 開啟 http://localhost:3333
-2. kubernetes
+1. kubernetes
    - [參考此文件](./minikube#readme)
 # 系統功能
 - 建立排程下載政府OpenData
