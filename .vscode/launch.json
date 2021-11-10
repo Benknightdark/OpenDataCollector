@@ -24,7 +24,8 @@
                 "/Views": "${workspaceFolder}/Views"
             },
             "postDebugTask": "daprd-down-identity-service"
-        }
+        },
+
     ],
     "compounds": [
         {

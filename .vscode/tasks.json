@@ -30,8 +30,7 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile",
-            "dependsOn":"daprd-debug-identity-service"
-
+            "dependsOn": "daprd-debug-identity-service"
         },
         // daprd-debug-identity-service
         {
@@ -41,7 +40,6 @@
             "type": "daprd",
             "componentsPath": "C:/Users/smart/Projects/OpenDataCollector/components"
             // "dependsOn": "build",
-
         },
         // daprd-down-identity-service
         {

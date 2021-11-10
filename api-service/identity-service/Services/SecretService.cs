@@ -26,7 +26,7 @@ namespace identity_service.Services
             string scope = string.Empty;
             string secret = string.Empty;
             var AspnetCoreEnv = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if (AspnetCoreEnv!="Development")
+            if (AspnetCoreEnv != "Development")
             {
                 var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/kubernetes/opendatasecrets");
                 System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
@@ -37,13 +37,16 @@ namespace identity_service.Services
             }
             else
             {
-                 var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/local-secret-store/jwtConfig");
-                 _logger.LogError(await r.Content.ReadAsStringAsync());
-                // clientString = Environment.GetEnvironmentVariable("CLIENT")!;
-                // scope = Environment.GetEnvironmentVariable("SCOPE")!;
-                // secret = Environment.GetEnvironmentVariable("SECRET")!;
+                var r = await _client.GetAsync("http://localhost:3500/v1.0/secrets/local-secret-store/jwtConfig");
+                System.Text.Json.JsonDocument jd = System.Text.Json.JsonDocument.Parse(await r.Content.ReadAsStringAsync());
+                clientString = jd.RootElement.GetProperty("client").ToString();
+                scope = jd.RootElement.GetProperty("scope").ToString();
+                secret = jd.RootElement.GetProperty("secret").ToString();
+                _logger.LogInformation(clientString);
+                _logger.LogInformation(scope);
+                _logger.LogInformation(secret);
+
             }
-            _logger.LogInformation(System.Text.Json.JsonSerializer.Serialize(_context.Clients.ToList()));
             if (!_context.Clients.Any())
             {
                 var NewClients = new Client
