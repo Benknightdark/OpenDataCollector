@@ -1,7 +1,7 @@
 {
     "version": "2.0.0",
     "tasks": [
-        
+        // 清除所有daprd執行緒
         {
             "label": "clear-all-daprd-processes",
             "type": "shell",
@@ -14,8 +14,9 @@
             },
             "osx": {
                 "command": "ps aux | grep daprd|grep -v grep | awk '{print $2}'|xargs kill -9"
-            },
+            }
         },
+        // dotnet build 
         {
             "label": "build",
             "command": "dotnet",
@@ -28,6 +29,7 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        // dotnet publish
         {
             "label": "publish",
             "command": "dotnet",
@@ -40,6 +42,7 @@
             ],
             "problemMatcher": "$msCompile"
         },
+        // dotnet watch 
         {
             "label": "watch",
             "command": "dotnet",
@@ -51,18 +54,24 @@
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn":"daprd-debug-identity-service"
+
         },
+        // daprd-debug-identity-service
         {
-            "label": "daprd-debug-identity-service",
-            "type": "daprd",
             "appId": "identity-service",
             "appPort": 5000,
-            "httpPort": 3500,
-            "metricsPort": 9090,
-            "grpcPort": 53320,
-            "isBackground": true,
-            "dependsOn": "build"
+            "label": "daprd-debug-identity-service",
+            "type": "daprd",
+            // "dependsOn": "build",
+
         },
+        // daprd-down-identity-service
+        {
+            "appId": "identity-service",
+            "label": "daprd-down-identity-service",
+            "type": "daprd-down"
+        }
     ]
 }

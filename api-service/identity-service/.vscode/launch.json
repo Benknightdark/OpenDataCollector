@@ -5,10 +5,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "identity-service",
+            "name": "identity-service with Dapr",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "daprd-debug-identity-service",
+            "preLaunchTask": "watch",
             "program": "${workspaceFolder}/bin/Debug/net6.0/identity-service.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
@@ -22,7 +22,8 @@
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
-            }
+            },
+            "postDebugTask": "daprd-down-identity-service"
         }
     ],
     "compounds": [
@@ -30,7 +31,7 @@
             "name": "Debug All",
             "preLaunchTask": "clear-all-daprd-processes",
             "configurations": [
-                "identity-service"
+                "identity-service with Dapr"
             ]
         }
     ]

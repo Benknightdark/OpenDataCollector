@@ -53,6 +53,9 @@ Task.Run(async () =>
               }
           });
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => {
+    var cc=1;
+    return "Hello World!";
+});
 
 app.Run();
