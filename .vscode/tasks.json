@@ -39,7 +39,7 @@
             "appPort": 5000,
             "label": "daprd-debug-identity-service",
             "type": "daprd",
-            // "componentsPath": "./components"
+            "componentsPath": "C:/Users/smart/Projects/OpenDataCollector/components"
             // "dependsOn": "build",
 
         },
