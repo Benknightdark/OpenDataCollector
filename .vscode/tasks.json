@@ -1,19 +1,53 @@
 {
     "version": "2.0.0",
     "tasks": [
+        // 清除所有daprd執行緒
         {
-            "label": "daprd-debug-python",
-            "type": "daprd",
-            "appId": "kao-service",
-            "httpPort": 8777,
-            "grpcPort": 53317,
-            "metricsPort": 9091,
-            "componentsPath": "${workspaceFolder}/components",
+            "label": "clear-all-daprd-processes",
+            "type": "shell",
+            "isBackground": true,
+            "windows": {
+                "command": "Get-Process -Name 'daprd' | Stop-Process"
+            },
+            "linux": {
+                "command": "kill -9 $(ps aux | grep daprd | awk '{print $2}')"
+            },
+            "osx": {
+                "command": "ps aux | grep daprd|grep -v grep | awk '{print $2}'|xargs kill -9"
+            }
         },
+        // dotnet watch 
         {
-            "label": "daprd-down-python",
-            "type": "daprd-down",
-            "appId": "kao-service"
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/api-service/identity-service/identity-service.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "dependsOn":"daprd-debug-identity-service"
+
+        },
+        // daprd-debug-identity-service
+        {
+            "appId": "identity-service",
+            "appPort": 5000,
+            "label": "daprd-debug-identity-service",
+            "type": "daprd",
+            // "componentsPath": "./components"
+            // "dependsOn": "build",
+
+        },
+        // daprd-down-identity-service
+        {
+            "appId": "identity-service",
+            "label": "daprd-down-identity-service",
+            "type": "daprd-down"
         }
     ]
 }

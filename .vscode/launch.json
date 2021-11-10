@@ -3,22 +3,36 @@
     // 暫留以檢視現有屬性的描述。
     // 如需詳細資訊，請瀏覽: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-
-    "configurations": [      
+    "configurations": [
         {
-            "type": "python",
+            "name": "identity-service with Dapr",
+            "type": "coreclr",
             "request": "launch",
-            "name": "Pythonapp with Dapr",
-            "program": "${workspaceFolder}/api-service/kao-service/main.py",
-            "console": "integratedTerminal",
-            "preLaunchTask": "daprd-debug-python",
-            "postDebugTask": "daprd-down-python"
+            "preLaunchTask": "watch",//daprd-debug-identity-service
+            "program": "${workspaceFolder}/api-service/identity-service/bin/Debug/net6.0/identity-service.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "postDebugTask": "daprd-down-identity-service"
         }
     ],
     "compounds": [
         {
-          "name": "Node/Python Dapr",
-          "configurations": ["Pythonapp with Dapr"]
+            "name": "Debug All",
+            "preLaunchTask": "clear-all-daprd-processes",
+            "configurations": [
+                "identity-service with Dapr"
+            ]
         }
-      ]
+    ]
 }

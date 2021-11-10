@@ -38,11 +38,9 @@ builder.Services.AddHttpClient<SecretService>();
 #endregion
 
 var app = builder.Build();
-
 app.UseIdentityServer();
 app.MapControllers();
 
-app.Logger.LogInformation("hihihih");
 Task.Run(async () =>
           {
               using (var serviceScope = app?.Services?.GetService<IServiceScopeFactory>()?.CreateScope())
@@ -52,10 +50,4 @@ Task.Run(async () =>
 
               }
           });
-
-app.MapGet("/", () => {
-    var cc=1;
-    return "Hello World!";
-});
-
 app.Run();

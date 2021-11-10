@@ -1,7 +1,0 @@
-{
-    "python.pythonPath": "C:\\Python39\\python.exe",
-    "python.linting.enabled": true,
-    "editor.fontFamily": "'Cascadia Code', Consolas, 'Courier New', monospace",
-    "editor.fontSize": 16,
-    "editor.fontLigatures": true
-}
