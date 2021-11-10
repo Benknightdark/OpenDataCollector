@@ -8,7 +8,7 @@
             "name": "identity-service with Dapr",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "watch",//daprd-debug-identity-service
+            "preLaunchTask": "watch",
             "program": "${workspaceFolder}/api-service/identity-service/bin/Debug/net6.0/identity-service.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
@@ -25,6 +25,24 @@
             },
             "postDebugTask": "daprd-down-identity-service"
         },
+        {
+            "name": "api-gateway-service with Dapr",
+            "type": "chrome",
+            "preLaunchTask": "daprd-debug-api-gateway-service",
+            "postDebugTask": "daprd-down-api-gateway-service",
+            "request": "launch"
+        },
+        {
+            "name": "kao-service with Dapr",
+            "type": "python",
+            "request": "launch",
+            "console": "integratedTerminal",
+            "jinja": true,
+            "program": "${workspaceFolder}/api-service/kao-service/main.py",
+            "preLaunchTask": "daprd-debug-kao-service",
+            "postDebugTask": "daprd-down-kao-service",
+            // "envFile": "${workspaceFolder}/.develop.env"
+          },
 
     ],
     "compounds": [
@@ -32,7 +50,7 @@
             "name": "Debug All",
             "preLaunchTask": "clear-all-daprd-processes",
             "configurations": [
-                "identity-service with Dapr"
+                "api-gateway-service with Dapr","identity-service with Dapr","kao-service with Dapr"
             ]
         }
     ]

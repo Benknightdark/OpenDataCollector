@@ -1,0 +1,396 @@
+version: '3.4'
+services:
+  ############################
+  # Website Service
+  ############################
+  nodeapp:
+    build: ./website
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "3333:3000"
+    networks:
+      - open-data 
+    env_file:
+        - .env          
+  nodeapp-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "nodeapp",
+    "-placement-host-address", "placement:50006",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - nodeapp
+    network_mode: "service:nodeapp"
+  ############################
+  # Kao Api Service
+  ############################
+  kao-service:
+    build: ./api-service/kao-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50003:50002"
+      # - "8100:8000"     
+    networks:
+      - open-data
+    env_file:
+        - .env            
+  kao-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "kao-service",
+    "-app-port", "8777",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50003",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - kao-service
+    network_mode: "service:kao-service" 
+  ############################
+  # Tainan Api Service
+  ############################
+  tainan-service:
+    build: ./api-service/tainan-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50007:50002"  
+      # - "8200:8000"       
+    networks:
+      - open-data
+    env_file:
+        - .env       
+  tainan-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "tainan-service",
+    "-app-port", "8779",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50007",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - tainan-service
+    network_mode: "service:tainan-service"  
+  ############################
+  # PTHG Api Service
+  ############################
+  pthg-service:
+    build: ./api-service/pthg-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50009:50002"  
+      # - "8400:8000"       
+    networks:
+      - open-data
+    env_file:
+        - .env         
+  pthg-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "pthg-service",
+    "-app-port", "8780",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50009",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - pthg-service
+    network_mode: "service:pthg-service"  
+  ############################
+  # Taichung Api Service
+  ############################
+  taichung-service:
+    build: ./api-service/taichung-service
+    depends_on:
+      - redis
+      - placement
+    ports:
+      - "50010:50002"  
+      # - "8600:8000"       
+    networks:
+      - open-data
+    env_file:
+      - .env     
+  taichung-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "taichung-service",
+    "-app-port", "8778",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50010",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - taichung-service
+    network_mode: "service:taichung-service"      
+  ############################
+  # Account Api Service
+  ############################
+  account-service:
+    build: ./api-service/account-service
+    depends_on:
+      - redis
+      - placement
+      - mongo
+      # - identity-service       
+    ports:
+      - "50008:50002"  
+      # - "8300:8000"       
+    networks:
+      - open-data
+    env_file:
+        - .env        
+  account-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "account-service",
+    "-app-port", "8781",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50008",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - account-service
+    network_mode: "service:account-service" 
+  ############################
+  # Personal Api Service
+  ############################
+  personal-service:
+    build: ./api-service/personal-service
+    depends_on:
+      - redis
+      - placement
+      - mongo
+    ports:
+      - "50016:50002"  
+      # - "8300:8000"       
+    networks:
+      - open-data
+    env_file:
+        - .env 
+  personal-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "personal-service",
+    "-app-port", "8782",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50016",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - personal-service
+    network_mode: "service:personal-service"    
+  ############################
+  # Api Gateway Service
+  ############################
+  api-gateway-service:
+      build: ./api-service/api-gateway-service
+      ports:
+        - "5202:80"
+        - "15202:8001"
+        - "50011:50001"
+      depends_on:
+        - redis
+        - placement
+        # - identity-service   
+      networks:
+        - open-data                    
+  api-gateway-service-dapr:
+      image: "daprio/daprd:edge"
+      command: ["./daprd",
+      "-app-id", "api-gateway-service",
+      "-app-port", "80",
+       "-components-path", "/components"]
+      volumes:
+        - "./components/:/components"      
+      network_mode: "service:api-gateway-service"
+      depends_on:
+        - api-gateway-service
+  ############################
+  # Identity Service
+  ############################
+  identity-service:
+    restart: always
+    build: ./api-service/identity-service  
+    ports:
+      - "9414:80" 
+      - "50014:50002"  
+    depends_on:
+      - redis
+      - placement      
+      - identity-server-db       
+    networks:
+      - open-data
+    env_file:
+        - .env       
+  identity-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "identity-service",
+    "-app-port", "80",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50014",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - identity-service
+    network_mode: "service:identity-service" 
+  ############################
+  # Task Service
+  ############################
+  task-service:
+    restart: always
+    build: ./api-service/task-service  
+    ports:
+      - "50018:50002"  
+    depends_on:
+      - redis
+      - placement      
+      - mongo       
+    networks:
+      - open-data
+    env_file:
+        - .env     
+  task-service-dapr:
+    image: "daprio/daprd:edge"
+    command: ["./daprd",
+    "-app-id", "task-service",
+    "-app-port", "8799",
+    "-placement-host-address", "placement:50006",
+    "-dapr-grpc-port", "50018",
+     "-components-path", "/components"]
+    volumes:
+      - "./components/:/components"
+    depends_on:
+      - task-service
+    network_mode: "service:task-service"    
+  ############################
+  # File Download Service
+  ############################
+  file-download-service:
+    ports:
+      - "50032:50002"      
+    build: ./api-service/file-download-service   
+    depends_on:
+      - redis
+      - placement      
+    networks:
+      - open-data
+    env_file:
+        - .env 
+  file-download-service-dapr:
+          image: "daprio/daprd:edge"
+          command: ["./daprd",
+          "-app-id", "file-download-service",
+          "-app-port", "8999",
+          "-placement-host-address", "placement:50006",
+          "-dapr-grpc-port", "50032",
+           "-components-path", "/components"]
+          volumes:
+            - "./components/:/components"
+          depends_on:
+            - file-download-service
+          network_mode: "service:file-download-service"   
+  ############################
+  # Subscribe Service
+  ############################
+  subscribe-service:
+    ports:
+      - "50052:50002"      
+    build: ./background-services/subscribe-service   
+    depends_on:
+      - redis
+      - placement      
+      - mongo 
+    networks:
+      - open-data
+    env_file:
+        - .env 
+  subscribe-service-dapr:
+          image: "daprio/daprd:edge"
+          command: ["./daprd",
+          "-app-id", "subscribe-service",
+          "-app-port", "8949",
+          "-placement-host-address", "placement:50006",
+          "-dapr-grpc-port", "50052",
+           "-components-path", "/components"]
+          volumes:
+            - "./components/:/components"
+          depends_on:
+            - subscribe-service
+          network_mode: "service:subscribe-service"                                                  
+  ############################
+  # Dapr placement service
+  ############################
+  placement:
+    restart: always
+    image: "daprio/dapr:latest"
+    command: ["./placement", "-port", "50006"]
+    ports:
+      - "50006:50006"
+    networks:
+      - open-data   
+  ############################
+  # Redis state store
+  ############################
+  redis:
+    restart: always
+    image: "redis:alpine"
+    ports:
+      - "6380:6379"
+    networks:
+      - open-data
+  ############################
+  # MongoDB
+  ############################
+  mongo:
+    restart: always
+    image: mongo
+    restart: always
+    ports:
+            - 1769:27017
+    environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+            - auth-db-data:/data/db
+    networks:
+            - open-data        
+  ############################
+  # identity server資料庫
+  ############################             
+  identity-server-db:
+    restart: always
+    build: ./db/identity-server-db  
+    user: root
+    environment:
+      SA_PASSWORD: "YourStrong!Passw0rd"
+      ACCEPT_EULA: "Y"
+    volumes:
+        - identity-server-db-data:/var/opt/mssql      
+    ports:
+      - 8734:1433
+    networks:
+      - open-data                                                    
+networks:
+    open-data:
+volumes:
+    auth-db-data:
+    identity-server-db-data:

@@ -172,3 +172,9 @@ async def data_set_detail(q: str):
         })
     await client.aclose()            
     return res_data
+
+if __name__ == '__main__':
+    import uvicorn
+    import logging
+    logging.info('RUN KAO SERVICE')
+    uvicorn.run("main:app",port=8777,debug=True,reload=True)

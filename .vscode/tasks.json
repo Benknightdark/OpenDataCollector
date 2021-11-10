@@ -32,19 +32,53 @@
             "problemMatcher": "$msCompile",
             "dependsOn": "daprd-debug-identity-service"
         },
+        // daprd-debug-api-gateway-service
+        {
+            "appId": "api-gateway-service",
+            "appPort": 5202,
+            "label": "daprd-debug-api-gateway-service",
+            "type": "daprd",
+            "componentsPath": "C:/Users/smart/Projects/OpenDataCollector/components",
+        },
+        // daprd-down-api-gateway-service
+        {
+            "appId": "api-gateway-service",
+            "label": "daprd-down-api-gateway-service",
+            "type": "daprd-down"
+        },
         // daprd-debug-identity-service
         {
             "appId": "identity-service",
             "appPort": 5000,
             "label": "daprd-debug-identity-service",
             "type": "daprd",
-            "componentsPath":"C:/Users/smart/Projects/OpenDataCollector/components",
+            "httpPort": 3501,
+            "metricsPort": 9091,
+            "grpcPort": 53317,
+            "componentsPath": "C:/Users/smart/Projects/OpenDataCollector/components",
         },
         // daprd-down-identity-service
         {
             "appId": "identity-service",
             "label": "daprd-down-identity-service",
             "type": "daprd-down"
-        }
+        },
+        // daprd-debug-kao-service
+        {
+            "appId": "kao-service",
+            "appPort": 8777,
+            "label": "daprd-debug-kao-service",
+            "type": "daprd",
+            "httpPort": 3502,
+            "metricsPort": 9092,
+            "grpcPort": 53319,
+            "componentsPath": "C:/Users/smart/Projects/OpenDataCollector/components",
+        },
+        // daprd-down-kao-service
+        {
+            "appId": "kao-service",
+            "label": "daprd-down-kao-service",
+            "type": "daprd-down"
+        },
     ]
 }
